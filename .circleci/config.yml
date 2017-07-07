@@ -1,7 +1,7 @@
 jobs:
     build:
       docker:
-        image: circleci/oraclejdk:1.8
+        image: circleci/openjdk:8-jdk
         environment:
           MAJOR_VERSION: 0.9
           MAVEN_OPTS: "-Xmx1g -DbuildNumber=${CIRCLE_BUILD_NUM} -Dorg.xml.sax.driver='com.sun.org.apache.xerces.internal.parsers.SAXParser' "
