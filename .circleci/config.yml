@@ -43,7 +43,6 @@ jobs:
         - deploy:
             command: |
               if [ "${CIRCLE_BRANCH}" == "staging" ]; then
-                      sudo apt-get -y install gettext-base
                       ~/build-utils/promote_from_staging.sh
               fi
               if [ "${CIRCLE_BRANCH}" == "master" ]; then
