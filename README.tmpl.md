@@ -76,17 +76,6 @@ Bug Reporting
 Use this GitHub project.
 
 
-${FOOTER}
-
-
-
-
-
-
-
-
-
-
 
 Historical Details 
 ==================
