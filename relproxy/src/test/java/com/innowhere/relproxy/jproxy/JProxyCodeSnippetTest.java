@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.innowhere.relproxy.jproxy;
+package com.sillelien.relproxy.jproxy;
 
 import org.junit.After;
 import org.junit.AfterClass;

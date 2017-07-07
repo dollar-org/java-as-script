@@ -1,16 +1,12 @@
 
-package example.groovyex;
+package example.groovyex
 
-import org.itsnat.core.http.ItsNatHttpServlet;
-import org.itsnat.core.tmpl.ItsNatDocumentTemplate;
 import org.itsnat.core.event.ItsNatServletRequestListener;
 import groovy.util.GroovyScriptEngine;
 import java.lang.reflect.Method;
-import com.innowhere.relproxy.RelProxyOnReloadListener;
-import com.innowhere.relproxy.gproxy.GProxy;
-import com.innowhere.relproxy.gproxy.GProxyGroovyScriptEngine;
-import com.innowhere.relproxy.gproxy.GProxyConfig;
-
+import com.sillelien.relproxy.RelProxyOnReloadListener;
+import com.sillelien.relproxy.gproxy.GProxy;
+import com.sillelien.relproxy.gproxy.GProxyGroovyScriptEngine
 
 GroovyScriptEngine groovyEngine = servlet.getGroovyScriptEngine();
 

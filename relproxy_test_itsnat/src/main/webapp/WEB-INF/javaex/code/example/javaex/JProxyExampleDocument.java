@@ -1,13 +1,12 @@
 package example.javaex;
 
-import com.innowhere.relproxy.jproxy.JProxy;
+import com.sillelien.relproxy.jproxy.JProxy;
 import example.javaex.hotreload.JProxyExampleAux2;
 import example.javaex.nothotreload.JProxyExampleAuxIgnored2;
 import example.javaex.nothotreload.JProxyExampleAuxIgnored3;
 import org.itsnat.comp.ItsNatComponentManager;
 import org.itsnat.comp.text.ItsNatHTMLInputText;
 import org.itsnat.core.ItsNatServletRequest;
-import org.itsnat.core.event.ItsNatServletRequestListener;
 import org.itsnat.core.html.ItsNatHTMLDocument;
 import org.w3c.dom.Element;
 import org.w3c.dom.events.Event;

@@ -8,6 +8,57 @@
     <artifactId>relproxy</artifactId>
     <version>0</version>
 
+    <name>relproxy</name>
+
+    <description>Simple Java and Groovy hot class reloader,and Java based shell and scripting used by Dollar project, original project is  https://github.com/jmarranz/relproxy</description>
+
+    <url>https://github.com/dollar-org/relproxy</url>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Jose Maria Arranz</name>
+            <email>jmarranz@innowhere.com</email>
+            <organization>Innowhere Software</organization>
+            <organizationUrl>http://www.innowhere.com</organizationUrl>
+            <roles>
+                <role>Original Author</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <contributors>
+        <contributor>
+            <name>Daniel López (greeneyed)</name>
+            <email></email>
+            <organization></organization>
+            <organizationUrl>https://github.com/Verdoso</organizationUrl>
+            <roles>
+                <role>Original Contributor</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Michael Vorburger</name>
+            <email>mike@vorburger.ch</email>
+            <organization>Vorburger.CH</organization>
+            <organizationUrl>http://www.vorburger.ch</organizationUrl>
+            <roles>
+                <role>Original Contributor</role>
+            </roles>
+        </contributor>
+    </contributors>
+
+    <scm>
+        <connection>scm:git:git@github.com:dollar-org/relproxy.git</connection>
+        <developerConnection>scm:git:git@github.com:dollar-org/relproxy.git</developerConnection>
+        <url>git@github.com:dollar-org/relproxy.git</url>
+    </scm>
+
+
     <properties>
         <bcel.version>2.0.2</bcel.version>
         <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
@@ -22,16 +73,16 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>com.versioneye</groupId>
-                    <artifactId>versioneye-maven-plugin</artifactId>
-                    <version>3.11.4</version>
-                    <configuration>
-                        <apiKey>0c797be864338a3649f0</apiKey>
-                        <organisation>neilellis_orga</organisation>
-                        <team>Owners</team>
-                    </configuration>
-                </plugin>
+                <!--<plugin>-->
+                <!--<groupId>com.versioneye</groupId>-->
+                <!--<artifactId>versioneye-maven-plugin</artifactId>-->
+                <!--<version>3.11.4</version>-->
+                <!--<configuration>-->
+                <!--<apiKey>0c797be864338a3649f0</apiKey>-->
+                <!--<organisation>neilellis_orga</organisation>-->
+                <!--<team>Owners</team>-->
+                <!--</configuration>-->
+                <!--</plugin>-->
                 <!--Check for license headers-->
                 <plugin>
                     <groupId>org.apache.rat</groupId>
