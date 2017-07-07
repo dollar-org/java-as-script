@@ -630,7 +630,7 @@ Both types of web applications, publishing source code to war and direct access 
 
 == GProxy or how to be able to reload Groovy classes on the Java environment
 
-`com.innowhere.relproxy.gproxy.GProxy` is the main Java class of RelProxy to provide this feature, with `GProxy` you can create Java proxies for Groovy objects because
+`GProxy` is the main Java class of RelProxy to provide this feature, with `GProxy` you can create Java proxies for Groovy objects because
 a `java.lang.reflect.Proxy` wrapper is passed instead of the original Groovy object, the original Groovy object is retained under the hood and method calls to the proxy
 are redirected to the real object calling the corresponding method using reflection. When the source code of the Groovy class changes GProxy automatically reloads the Groovy
 class and creates a new object to replace the old one, the fields of the original object are got and re-set to the new object to keep the state (number of fields and types
@@ -651,10 +651,10 @@ import org.itsnat.core.tmpl.ItsNatDocumentTemplate;
 import org.itsnat.core.event.ItsNatServletRequestListener;
 import groovy.util.GroovyScriptEngine;
 import java.lang.reflect.Method;
-import com.innowhere.relproxy.RelProxyOnReloadListener;
-import com.innowhere.relproxy.gproxy.GProxy;
-import com.innowhere.relproxy.gproxy.GProxyGroovyScriptEngine;
-import com.innowhere.relproxy.gproxy.GProxyConfig;
+import RelProxyOnReloadListener;
+import GProxy;
+import GProxyGroovyScriptEngine;
+import GProxyConfig;
 
 
 GroovyScriptEngine groovyEngine = servlet.getGroovyScriptEngine();
@@ -825,7 +825,7 @@ Finally we have been able to reload Groovy classes mixed in a Java environment.
 Java hot reloadable proxies are very similar to Groovy support of RelProxy, in this case the task of detecting source changes, recompiling and reloading is fully done by RelProxy
 (in case of Groovy provided `groovy.util.GroovyScriptEngine` does most of this work).
 
-`com.innowhere.relproxy.jproxy.JProxy` is the main Java class of RelProxy for hot reload of pure Java, with `JProxy` you can create Java `java.lang.reflect.Proxy` proxies wrapping
+`JProxy` is the main Java class of RelProxy for hot reload of pure Java, with `JProxy` you can create Java `java.lang.reflect.Proxy` proxies wrapping
 your original objects to be passed to listeners, the original object is retained under the hood and method calls to the proxy are redirected to the real object calling the
 corresponding method using reflection. When the source code of a monitored Java file is changed, it is automatically recompiled in memory. When the `processRequest` method of
 the proxied `JProxyExampleLoadListener` object is called because an end user is reloading the related web page, `JProxy` detects something has changed and reload all monitored
@@ -860,12 +860,12 @@ import javax.tools.JavaFileObject;
 import org.itsnat.core.event.ItsNatServletRequestListener;
 import org.itsnat.core.http.HttpServletWrapper;
 import org.itsnat.core.tmpl.ItsNatDocumentTemplate;
-import com.innowhere.relproxy.RelProxyOnReloadListener;
-import com.innowhere.relproxy.jproxy.JProxy;
-import com.innowhere.relproxy.jproxy.JProxyCompilerListener;
-import com.innowhere.relproxy.jproxy.JProxyConfig;
-import com.innowhere.relproxy.jproxy.JProxyDiagnosticsListener;
-import com.innowhere.relproxy.jproxy.JProxyInputSourceFileExcludedListener;
+import RelProxyOnReloadListener;
+import JProxy;
+import JProxyCompilerListener;
+import JProxyConfig;
+import JProxyDiagnosticsListener;
+import JProxyInputSourceFileExcludedListener;
 
 
 /**
@@ -1304,12 +1304,12 @@ import javax.tools.DiagnosticCollector;
 import javax.tools.JavaFileObject;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.innowhere.relproxy.RelProxyOnReloadListener;
-import com.innowhere.relproxy.jproxy.JProxy;
-import com.innowhere.relproxy.jproxy.JProxyConfig;
-import com.innowhere.relproxy.jproxy.JProxyDiagnosticsListener;
-import com.innowhere.relproxy.jproxy.JProxyInputSourceFileExcludedListener;
-import com.innowhere.relproxy.jproxy.JProxyCompilerListener;
+import RelProxyOnReloadListener;
+import JProxy;
+import JProxyConfig;
+import JProxyDiagnosticsListener;
+import JProxyInputSourceFileExcludedListener;
+import JProxyCompilerListener;
 import com.innowhere.relproxyexgwt.client.GreetingService;
 
 /**
@@ -2121,7 +2121,7 @@ public class RelProxyBuiltinRoot
 ----
 package com.innowhere.relproxy_builtin_ex;
 
-import com.innowhere.relproxy.jproxy.JProxyScriptEngine;
+import JProxyScriptEngine;
 import java.io.InputStream;
 import java.io.PrintStream;
 
@@ -2174,8 +2174,8 @@ Now the implementation details, this class shows how simple is to built-in RelPr
 ----
 package com.innowhere.relproxy_builtin_ex.impl;
 
-import com.innowhere.relproxy.jproxy.JProxyScriptEngine;
-import com.innowhere.relproxy.jproxy.JProxyScriptEngineFactory;
+import JProxyScriptEngine;
+import JProxyScriptEngineFactory;
 import com.innowhere.relproxy_builtin_ex.CommandListener;
 import com.innowhere.relproxy_builtin_ex.OutputListener;
 import com.innowhere.relproxy_builtin_ex.RelProxyBuiltin;
@@ -2332,13 +2332,13 @@ This is the example code of this console based program (names are inspired on JU
 ----
 package com.innowhere.relproxy_builtin_ex_main;
 
-import com.innowhere.relproxy.RelProxyOnReloadListener;
-import com.innowhere.relproxy.jproxy.JProxy;
-import com.innowhere.relproxy.jproxy.JProxyCompilerListener;
-import com.innowhere.relproxy.jproxy.JProxyConfig;
-import com.innowhere.relproxy.jproxy.JProxyDiagnosticsListener;
-import com.innowhere.relproxy.jproxy.JProxyInputSourceFileExcludedListener;
-import com.innowhere.relproxy.jproxy.JProxyScriptEngine;
+import RelProxyOnReloadListener;
+import JProxy;
+import JProxyCompilerListener;
+import JProxyConfig;
+import JProxyDiagnosticsListener;
+import JProxyInputSourceFileExcludedListener;
+import JProxyScriptEngine;
 import com.innowhere.relproxy_builtin_ex.CommandListener;
 import com.innowhere.relproxy_builtin_ex.RelProxyBuiltin;
 import com.innowhere.relproxy_builtin_ex.RelProxyBuiltinRoot;

@@ -1,8 +1,8 @@
-package com.innowhere.relproxy.jproxy;
+package com.sillelien.relproxy.jproxy;
 
-import com.innowhere.relproxy.RelProxyOnReloadListener;
-import static com.innowhere.relproxy.jproxy.util.JProxyTestUtil.RESOURCES_FOLDER;
-import static com.innowhere.relproxy.jproxy.util.JProxyTestUtil.getProjectFolder;
+import com.sillelien.relproxy.RelProxyOnReloadListener;
+import static com.sillelien.relproxy.jproxy.util.JProxyTestUtil.RESOURCES_FOLDER;
+import static com.sillelien.relproxy.jproxy.util.JProxyTestUtil.getProjectFolder;
 
 
 import java.io.File;

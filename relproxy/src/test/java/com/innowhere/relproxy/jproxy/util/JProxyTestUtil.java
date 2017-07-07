@@ -1,5 +1,5 @@
 
-package com.innowhere.relproxy.jproxy.util;
+package com.sillelien.relproxy.jproxy.util;
 
 import java.io.File;
 import java.net.URL;
@@ -15,7 +15,7 @@ public class JProxyTestUtil
     
     public static File getProjectFolder()
     {
-         String className = JProxyTestUtil.class.getName(); // com.innowhere.relproxy.jproxy.util.JProxyTestUtil
+         String className = JProxyTestUtil.class.getName(); // com.sillelien.relproxy.jproxy.util.JProxyTestUtil
          URL urlClass = JProxyTestUtil.class.getClassLoader().getResource(className.replace('.','/') + ".class");         
          File fileClass = new File(urlClass.getPath());
          File projectFolder = fileClass.getParentFile();

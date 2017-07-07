@@ -1,6 +1,6 @@
-package com.innowhere.relproxy.jproxy;
+package com.sillelien.relproxy.jproxy;
 
-import com.innowhere.relproxy.jproxy.util.JProxyTestUtil;
+import com.sillelien.relproxy.jproxy.util.JProxyTestUtil;
 import java.io.File;
 import org.junit.After;
 import org.junit.AfterClass;
