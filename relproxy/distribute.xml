@@ -19,7 +19,7 @@
         <echo message="DO NOT FORGET TO CHANGE version num in conf.properties, RelProxy.getVersion() and Manual (and date)" />
 
         <copy file="${program}/LICENSE-2.0.txt" tofile="${distribution_tmp_folder}/LICENSE-2.0.txt" />
-        <!-- <copy file="${program}/README.md" tofile="${distribution_tmp_folder}/README.md" /> -->
+        <!-- <copy file="${progrREADME.tmpl.mdE.md" tofile="${distribution_tmp_foldREADME.tmpl.mdE.md" /> -->
         <copy file="${program}/CHANGES.txt" tofile="${distribution_tmp_folder}/CHANGES.txt" />
 
         <delete dir="${distribution_tmp_folder}/tmp" />        
