@@ -10,7 +10,7 @@ RelProxy is a simple Java and Groovy hot class reloader for Java and Groovy prov
 <dependency>
     <groupId>com.sillelien</groupId>
     <artifactId>java-as-script</artifactId>
-    <version>0.9.51</version>
+    <version>0.9.66</version>
     <type>jar</type>
 </dependency>
 ```
@@ -83,37 +83,6 @@ Bug Reporting
 ------
 
 Use this GitHub project.
-
-
---------
-
-# Referral Links
-
-This is an open source project, which means that we are giving our time to you for free. However like yourselves, we do have bills to pay. Please consider visiting some of these excellent services, they are not junk we can assure you, all services we would or do use ourselves.
-
-[Really Excellent Dedicated Servers from Limestone Networks](http://www.limestonenetworks.com/?utm_campaign=rwreferrer&utm_medium=affiliate&utm_source=RFR16798) - fantastic service, great price.
-
-[Low Cost and High Quality Cloud Hosting from Digital Ocean](https://www.digitalocean.com/?refcode=7b4639fc8194) - truly awesome service.
-
-# Copyright and License
-
-[![GitHub License](https://img.shields.io/github/license/sillelien/java-as-script.svg)](https://raw.githubusercontent.com/sillelien/java-as-script/master/LICENSE)
-
-(c) 2014-2017 Neil Ellis all rights reserved. Please see [LICENSE](https://raw.githubusercontent.com/sillelien/java-as-script/master/LICENSE) for license details of this project. Please visit http://neilellis.me for help and raise issues on [GitHub](https://github.com/sillelien/java-as-script/issues).
-
-For commercial support please <a href="mailto:hello@neilellis.me">contact me directly</a>.
-
-<div width="100%" align="right">
-<img>
-</div>
-
-
-
-
-
-
-
-
 
 
 
