@@ -30,40 +30,33 @@ import java.util.zip.ZipInputStream;
  *
  * @author jmarranz
  */
-public class JavaFileObjectInputClassFinderByClassLoader 
-{
+public class JavaFileObjectInputClassFinderByClassLoader {
     private static final String CLASS_FILE_EXTENSION = ".class";
 
-    private final ClassLoader classLoader;    
+    private final ClassLoader classLoader;
     private final FolderSourceList requiredExtraJarPaths;
-    
-    public JavaFileObjectInputClassFinderByClassLoader(ClassLoader classLoader,FolderSourceList requiredExtraJarPaths) 
-    {
+
+    public JavaFileObjectInputClassFinderByClassLoader(ClassLoader classLoader, FolderSourceList requiredExtraJarPaths) {
         this.classLoader = classLoader;
         this.requiredExtraJarPaths = requiredExtraJarPaths;
     }
 
     @NotNull
-    public List<JavaFileObjectInputClassInFileSystem> find(@NotNull String packageName) throws IOException
-    {
-    	// http://www.dzone.com/snippets/get-all-classes-within-package
-    	// http://sourceforge.net/p/scannotation/code/HEAD/tree/scannotation/src/main/java/org/scannotation/ClasspathUrlFinder.java#l124
+    public List<JavaFileObjectInputClassInFileSystem> find(@NotNull String packageName) throws IOException {
+        // http://www.dzone.com/snippets/get-all-classes-within-package
+        // http://sourceforge.net/p/scannotation/code/HEAD/tree/scannotation/src/main/java/org/scannotation/ClasspathUrlFinder.java#l124
 
         String packagePath = packageName.replaceAll("\\.", "/");
 
         List<JavaFileObjectInputClassInFileSystem> result = new ArrayList<JavaFileObjectInputClassInFileSystem>();
 
         Enumeration<URL> urlEnumeration = classLoader.getResources(packagePath);
-        if (urlEnumeration.hasMoreElements())
-        {
-            while (urlEnumeration.hasMoreElements()) 
-            { // one URL for each jar on the classpath that has the given package
+        if (urlEnumeration.hasMoreElements()) {
+            while (urlEnumeration.hasMoreElements()) { // one URL for each jar on the classpath that has the given package
                 URL packageFolderURL = urlEnumeration.nextElement();
-                listUnder(packageName,packageFolderURL,result);
+                listUnder(packageName, packageFolderURL, result);
             }
-        }
-        else
-        {
+        } else {
             // Enumeration vacía, chungo, esto nos ha ocurrido con el jar lib/ext/portlet.jar del Tomcat 6.2 del bundle liferay-portal-6.2-ce-ga3
             // daba un error de de javax.portlet.PortletRquest not found.
             // En teoría debería responder a la búsqueda classLoader.getResources("javax/portlet") devolviendo el jar, pero devuelve un Enumeration vacío
@@ -73,145 +66,132 @@ public class JavaFileObjectInputClassFinderByClassLoader
             // requerido en el parámetro de este método find() y le evitamos modificar un jar de infraestructura que queda muy feo e inmantenible respecto a una solución
             // basada en configuración del usuario.
 
-            if (requiredExtraJarPaths != null)
-            {
+            if (requiredExtraJarPaths != null) {
                 FileExt[] jarFileList = requiredExtraJarPaths.getArray();
-                if (jarFileList != null)
-                {
-                    for (FileExt jarFile : jarFileList)
-                    {
-                        listUnderJarCustom(packagePath,jarFile,result);                    
+                if (jarFileList != null) {
+                    for (FileExt jarFile : jarFileList) {
+                        listUnderJarCustom(packagePath, jarFile, result);
                     }
                 }
             }
         }
-        
+
         return result;
     }
 
- 
-    private void listUnder(String packageName, @NotNull URL packageFolderURL, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result)
-    {
-    	String pkgPath = packageFolderURL.toExternalForm(); //packageFolderURL.getFile(); El problema de getFile es que tambiÃ©n estÃ¡ URL-encoded (un espacio es %20) lo cual no es compatible con File
 
-        if (pkgPath.startsWith("file:"))
-        {
-            listUnderDir(packageName,pkgPath,result);
-        }
-        else 
-        { // browse a jar file
-            listUnderJar(packageFolderURL,result);
+    private void listUnder(String packageName, @NotNull URL packageFolderURL, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result) {
+        String pkgPath = packageFolderURL.toExternalForm(); //packageFolderURL.getFile(); El problema de getFile es que tambiÃ©n estÃ¡ URL-encoded (un espacio es %20) lo cual no es compatible con File
+
+        if (pkgPath.startsWith("file:")) {
+            listUnderDir(packageName, pkgPath, result);
+        } else { // browse a jar file
+            listUnderJar(packageFolderURL, result);
         } // maybe there can be something else for more involved class loaders
     }
 
-    private void listUnderDir(String packageName, String pkgPath, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result)
-    {        
+    private void listUnderDir(String packageName, String pkgPath, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result) {
         pkgPath = pkgPath.substring("file:".length());
 
-        try { pkgPath = URLDecoder.decode(pkgPath, "UTF-8"); } // Detecté el problema con Vaadin en un path con "Documents%20and%20Settings" con %20 obviamente no es un path correcto, deben ser espacios
-        catch (UnsupportedEncodingException ex) { throw new RelProxyException(ex); }
+        try {
+            pkgPath = URLDecoder.decode(pkgPath, "UTF-8");
+        } // Detecté el problema con Vaadin en un path con "Documents%20and%20Settings" con %20 obviamente no es un path correcto, deben ser espacios
+        catch (UnsupportedEncodingException ex) {
+            throw new RelProxyException(ex);
+        }
 
-        File directory = new File(pkgPath);           
-        if (!directory.isDirectory())  
+        File directory = new File(pkgPath);
+        if (!directory.isDirectory())
             throw new RelProxyException("Internal Error:" + pkgPath);
-        
+
         // browse local .class files - useful for local execution
-        
+
         File[] childFiles = directory.listFiles();
-        for (File childFile : childFiles) 
-        {
+        for (File childFile : childFiles) {
             if (!childFile.isFile()) continue;
-            
+
             // We only want the .class files.
             String name = childFile.getName();
-            if (name.endsWith(CLASS_FILE_EXTENSION)) 
-            {
-                String binaryName = ClassDescriptor.getClassNameFromPackageAndClassFileName(packageName,name);
-                result.add(new JavaFileObjectInputClassInFile(childFile,binaryName, childFile.toURI()));
-            }            
-        }     
-    }        
-    
-    private void listUnderJar(@NotNull URL packageFolderURL, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result)
-    {
-        try 
-        {
+            if (name.endsWith(CLASS_FILE_EXTENSION)) {
+                String binaryName = ClassDescriptor.getClassNameFromPackageAndClassFileName(packageName, name);
+                result.add(new JavaFileObjectInputClassInFile(childFile, binaryName, childFile.toURI()));
+            }
+        }
+    }
+
+    private void listUnderJar(@NotNull URL packageFolderURL, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result) {
+        try {
             String jarUri = packageFolderURL.toExternalForm().split("!")[0];
-            
+
             JarURLConnection jarConn = (JarURLConnection) packageFolderURL.openConnection();
             String rootEntryName = jarConn.getEntryName();
             int rootEnd = rootEntryName.length() + 1;
 
             Enumeration<JarEntry> entryEnum = jarConn.getJarFile().entries();
-            while (entryEnum.hasMoreElements()) 
-            {
+            while (entryEnum.hasMoreElements()) {
                 JarEntry jarEntry = entryEnum.nextElement();
                 String name = jarEntry.getName();
                 // Empieza por packagePath y no hay más folders siguientes, terminando en un .class (una clase concreta)                                
-                if (name.startsWith(rootEntryName) && name.indexOf('/', rootEnd) == -1 && name.endsWith(CLASS_FILE_EXTENSION)) 
-                {
+                if (name.startsWith(rootEntryName) && name.indexOf('/', rootEnd) == -1 && name.endsWith(CLASS_FILE_EXTENSION)) {
                     URI uri = URI.create(jarUri + "!/" + name);
                     String binaryName = ClassDescriptor.getClassNameFromRelativeClassFilePath(name);
-                    result.add(new JavaFileObjectInputClassInJar(binaryName, uri,jarEntry.getTime()));
+                    result.add(new JavaFileObjectInputClassInJar(binaryName, uri, jarEntry.getTime()));
                 }
             }
-        }
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             throw new RelProxyException("Wasn't able to open " + packageFolderURL + " as a jar file", e);
         }
     }
 
-    
-    private void listUnderJarCustom(@NotNull String packagePath, @NotNull FileExt jarFile, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result)
-    {
-    	String normalizedPath = jarFile.getCanonicalPath();
-    	if (normalizedPath.contains("\\")) // Windows
-    	{
-            // No estoy seguro de que sea necesario normalizar pero por si acaso
-            normalizedPath = normalizedPath.replace("\\","/"); // "C:/folder"
-            normalizedPath = "/" + normalizedPath; //  "/C:/folder"
-    	}
-    	
-    	String urlPath = "file:" + normalizedPath;
-    	
-    	URL packageFolderURL;    	
-    	try { packageFolderURL = new URL(urlPath); }
-    	catch (MalformedURLException ex) { throw new RelProxyException(ex); }    	
-    	
-        String jarUri = "jar:" + packageFolderURL.toExternalForm();    	
-    	        
-        int posEnd = packagePath.length() + 1;        
-        
-        ZipInputStream zip = null;
-        
-        try
-        {
-            zip = new ZipInputStream(packageFolderURL.openStream());
-            ZipEntry zipEntry = zip.getNextEntry();
-            while(zipEntry != null) 
-            {
-                String name = zipEntry.getName(); 
-                // Empieza por packagePath y no hay más folders siguientes, terminando en un .class (una clase concreta)
-                if (name.startsWith(packagePath) && name.indexOf('/', posEnd) == -1 && name.endsWith(CLASS_FILE_EXTENSION)) 
-                {
-                    URI uri = URI.create(jarUri + "!/" + name);
-                    String binaryName = ClassDescriptor.getClassNameFromRelativeClassFilePath(name);
-                    result.add(new JavaFileObjectInputClassInJar(binaryName, uri,zipEntry.getTime()));
-                }	        	
 
-                zipEntry = zip.getNextEntry();
-            }    
-        }
-        catch(IOException ex)
+    private void listUnderJarCustom(@NotNull String packagePath, @NotNull FileExt jarFile, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result) {
+        String normalizedPath = jarFile.getCanonicalPath();
+        if (normalizedPath.contains("\\")) // Windows
         {
+            // No estoy seguro de que sea necesario normalizar pero por si acaso
+            normalizedPath = normalizedPath.replace("\\", "/"); // "C:/folder"
+            normalizedPath = "/" + normalizedPath; //  "/C:/folder"
+        }
+
+        String urlPath = "file:" + normalizedPath;
+
+        URL packageFolderURL;
+        try {
+            packageFolderURL = new URL(urlPath);
+        } catch (MalformedURLException ex) {
             throw new RelProxyException(ex);
         }
-        finally
-        {
-            if (zip != null) try { zip.close(); } catch (IOException ex) { throw new RelProxyException(ex); }
+
+        String jarUri = "jar:" + packageFolderURL.toExternalForm();
+
+        int posEnd = packagePath.length() + 1;
+
+        ZipInputStream zip = null;
+
+        try {
+            zip = new ZipInputStream(packageFolderURL.openStream());
+            ZipEntry zipEntry = zip.getNextEntry();
+            while (zipEntry != null) {
+                String name = zipEntry.getName();
+                // Empieza por packagePath y no hay más folders siguientes, terminando en un .class (una clase concreta)
+                if (name.startsWith(packagePath) && name.indexOf('/', posEnd) == -1 && name.endsWith(CLASS_FILE_EXTENSION)) {
+                    URI uri = URI.create(jarUri + "!/" + name);
+                    String binaryName = ClassDescriptor.getClassNameFromRelativeClassFilePath(name);
+                    result.add(new JavaFileObjectInputClassInJar(binaryName, uri, zipEntry.getTime()));
+                }
+
+                zipEntry = zip.getNextEntry();
+            }
+        } catch (IOException ex) {
+            throw new RelProxyException(ex);
+        } finally {
+            if (zip != null) try {
+                zip.close();
+            } catch (IOException ex) {
+                throw new RelProxyException(ex);
+            }
         }
-    }    
-    
-        
+    }
+
+
 }

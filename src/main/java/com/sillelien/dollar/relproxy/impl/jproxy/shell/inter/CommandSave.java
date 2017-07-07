@@ -7,57 +7,46 @@ import java.io.File;
 import java.util.List;
 
 /**
- *
  * @author jmarranz
  */
-public class CommandSave extends Command
-{
+public class CommandSave extends Command {
     public static final String NAME = "save";
-    protected String path;     
-    
-    public CommandSave(JProxyShellProcessor parent,String url)
-    {
-        super(parent,NAME);
-        this.path = url;        
-    }    
-    
-    public static CommandSave createCommandSave(JProxyShellProcessor parent, @NotNull String cmd)
-    {
-        String url = getParameter(NAME,cmd);
-        if (url == null)
-        {
+    protected String path;
+
+    public CommandSave(JProxyShellProcessor parent, String url) {
+        super(parent, NAME);
+        this.path = url;
+    }
+
+    public static CommandSave createCommandSave(JProxyShellProcessor parent, @NotNull String cmd) {
+        String url = getParameter(NAME, cmd);
+        if (url == null) {
             System.out.println("Command error: <path> parameter is required");
             return null;
         }
 
-        return new CommandSave(parent,url);    
+        return new CommandSave(parent, url);
     }
-    
+
     @Override
-    public boolean run()
-    {
-        try
-        {
+    public boolean run() {
+        try {
             List<String> codeBuffer = parent.getCodeBuffer();
             StringBuilder code = new StringBuilder();
-            for(String line : codeBuffer)
-            {
+            for (String line : codeBuffer) {
                 code.append(line);
-                code.append("\n");                
+                code.append("\n");
             }
             byte[] content = code.toString().getBytes(parent.getEncoding()); // Como no conocemos encoding...
-            JProxyUtil.saveFile(new File(path),content);
+            JProxyUtil.saveFile(new File(path), content);
             return true;
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
-    }    
-    
+    }
+
     @Override
-    public void runPostCommand()
-    {
+    public void runPostCommand() {
     }
 }

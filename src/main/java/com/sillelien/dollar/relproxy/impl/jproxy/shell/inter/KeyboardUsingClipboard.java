@@ -18,40 +18,33 @@ import java.nio.charset.Charset;
  * http://stackoverflow.com/questions/1248510/convert-string-to-keyevents
  * http://en.wikipedia.org/wiki/Unicode_input#Hexadecimal_code_input
  * http://stackoverflow.com/questions/9814701/accent-with-robot-keypress
- * 
+ *
  * @author jmarranz
  */
-public class KeyboardUsingClipboard extends Keyboard implements ClipboardOwner
-{
+public class KeyboardUsingClipboard extends Keyboard implements ClipboardOwner {
     @NotNull
     protected final Robot robot;
     protected Charset cs;
-   
-    
-    public KeyboardUsingClipboard(Charset cs) 
-    {
+
+
+    public KeyboardUsingClipboard(Charset cs) {
         this.cs = cs;
-        try
-        {
+        try {
             this.robot = new Robot();
-        }
-        catch (AWTException ex)
-        {
+        } catch (AWTException ex) {
             throw new RelProxyException(ex);
         }
     }
 
-    public static KeyboardUsingClipboard create(Charset cs)
-    {
+    public static KeyboardUsingClipboard create(Charset cs) {
         return new KeyboardUsingClipboard(cs);
-    }    
+    }
 
-    
+
     @Override
-    public void type(@NotNull CharSequence characters)
-    {
+    public void type(@NotNull CharSequence characters) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        StringSelection stringSelection = new StringSelection( characters.toString() );
+        StringSelection stringSelection = new StringSelection(characters.toString());
         clipboard.setContents(stringSelection, this);
 
         robot.keyPress(KeyEvent.VK_CONTROL);
@@ -61,8 +54,7 @@ public class KeyboardUsingClipboard extends Keyboard implements ClipboardOwner
     }
 
     @Override
-    public void lostOwnership(Clipboard clipboard, Transferable contents)
-    {
+    public void lostOwnership(Clipboard clipboard, Transferable contents) {
 
     }
 

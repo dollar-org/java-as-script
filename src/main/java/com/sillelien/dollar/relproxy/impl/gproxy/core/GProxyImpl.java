@@ -8,29 +8,24 @@ import org.jetbrains.annotations.NotNull;
 
 
 /**
- *
  * @author jmarranz
  */
-public abstract class GProxyImpl extends GenericProxyImpl
-{
-    public static GProxyImpl SINGLETON;    
+public abstract class GProxyImpl extends GenericProxyImpl {
+    public static GProxyImpl SINGLETON;
     protected GProxyGroovyScriptEngine engine;
-    
-    public void init(@NotNull GProxyConfigImpl config)
-    {
+
+    public void init(@NotNull GProxyConfigImpl config) {
         super.init(config);
         this.engine = config.getGProxyGroovyScriptEngine();
     }
-    
-    public GProxyGroovyScriptEngine getGProxyGroovyScriptEngine()
-    {
+
+    public GProxyGroovyScriptEngine getGProxyGroovyScriptEngine() {
         return engine;
-    }   
-    
+    }
+
     @NotNull
     @Override
-    public GenericProxyInvocationHandler createGenericProxyInvocationHandler(@NotNull Object obj)
-    {
-        return new GProxyInvocationHandler(obj,this);
+    public GenericProxyInvocationHandler createGenericProxyInvocationHandler(@NotNull Object obj) {
+        return new GProxyInvocationHandler(obj, this);
     }
 }
