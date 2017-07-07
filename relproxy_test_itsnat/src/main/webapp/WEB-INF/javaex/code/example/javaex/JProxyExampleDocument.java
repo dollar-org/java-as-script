@@ -1,6 +1,6 @@
 package example.javaex;
 
-import com.sillelien.relproxy.jproxy.JProxy;
+import com.sillelien.dollar.relproxy.jproxy.JProxy;
 import example.javaex.hotreload.JProxyExampleAux2;
 import example.javaex.nothotreload.JProxyExampleAuxIgnored2;
 import example.javaex.nothotreload.JProxyExampleAuxIgnored3;

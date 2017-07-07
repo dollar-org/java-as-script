@@ -1,7 +1,7 @@
 package example.javashellex;
 
 import javax.script.ScriptEngine;
-import com.sillelien.relproxy.jproxy.JProxyScriptEngine;
+import com.sillelien.dollar.relproxy.jproxy.JProxyScriptEngine;
 
 /**
  *

@@ -1,8 +1,8 @@
-package com.sillelien.relproxy.jproxy;
+package com.sillelien.dollar.relproxy.jproxy;
 
-import com.sillelien.relproxy.RelProxyOnReloadListener;
-import static com.sillelien.relproxy.jproxy.util.JProxyTestUtil.RESOURCES_FOLDER;
-import static com.sillelien.relproxy.jproxy.util.JProxyTestUtil.getProjectFolder;
+import com.sillelien.dollar.relproxy.RelProxyOnReloadListener;
+import static com.sillelien.dollar.relproxy.jproxy.util.JProxyTestUtil.RESOURCES_FOLDER;
+import static com.sillelien.dollar.relproxy.jproxy.util.JProxyTestUtil.getProjectFolder;
 
 
 import java.io.File;

@@ -1,6 +1,6 @@
-package com.sillelien.relproxy.jproxy;
+package com.sillelien.dollar.relproxy.jproxy;
 
-import com.sillelien.relproxy.jproxy.util.JProxyTestUtil;
+import com.sillelien.dollar.relproxy.jproxy.util.JProxyTestUtil;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

@@ -1,11 +1,11 @@
 package example.javaex;
 
-import com.sillelien.relproxy.RelProxyOnReloadListener;
-import com.sillelien.relproxy.jproxy.JProxy;
-import com.sillelien.relproxy.jproxy.JProxyCompilerListener;
-import com.sillelien.relproxy.jproxy.JProxyConfig;
-import com.sillelien.relproxy.jproxy.JProxyDiagnosticsListener;
-import com.sillelien.relproxy.jproxy.JProxyInputSourceFileExcludedListener;
+import com.sillelien.dollar.relproxy.RelProxyOnReloadListener;
+import com.sillelien.dollar.relproxy.jproxy.JProxy;
+import com.sillelien.dollar.relproxy.jproxy.JProxyCompilerListener;
+import com.sillelien.dollar.relproxy.jproxy.JProxyConfig;
+import com.sillelien.dollar.relproxy.jproxy.JProxyDiagnosticsListener;
+import com.sillelien.dollar.relproxy.jproxy.JProxyInputSourceFileExcludedListener;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
