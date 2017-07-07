@@ -6,7 +6,7 @@
 
     <groupId>com.sillelien.dollar</groupId>
     <artifactId>relproxy</artifactId>
-    <version>LATEST</version>
+    <version>0</version>
 
     <properties>
         <bcel.version>2.0.2</bcel.version>
