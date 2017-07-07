@@ -4,9 +4,9 @@ package example.groovyex
 import org.itsnat.core.event.ItsNatServletRequestListener;
 import groovy.util.GroovyScriptEngine;
 import java.lang.reflect.Method;
-import com.sillelien.relproxy.RelProxyOnReloadListener;
-import com.sillelien.relproxy.gproxy.GProxy;
-import com.sillelien.relproxy.gproxy.GProxyGroovyScriptEngine
+import com.sillelien.dollar.relproxy.RelProxyOnReloadListener;
+import com.sillelien.dollar.relproxy.gproxy.GProxy;
+import com.sillelien.dollar.relproxy.gproxy.GProxyGroovyScriptEngine
 
 GroovyScriptEngine groovyEngine = servlet.getGroovyScriptEngine();
 

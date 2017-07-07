@@ -82,9 +82,9 @@ public class ItsNatGroovyServlet extends HttpServletWrapper
         binding.setVariable("context",     getServletContext());
         binding.setVariable("application", getServletContext());        
         
-        com.sillelien.relproxy.gproxy.GProxyGroovyScriptEngine.class.getName();
-        com.sillelien.relproxy.gproxy.GProxyConfig.class.getName();
-        com.sillelien.relproxy.gproxy.GProxy.class.getName();
+        com.sillelien.dollar.relproxy.gproxy.GProxyGroovyScriptEngine.class.getName();
+        com.sillelien.dollar.relproxy.gproxy.GProxyConfig.class.getName();
+        com.sillelien.dollar.relproxy.gproxy.GProxy.class.getName();
         
         execGroovyScript(initScript,binding);      
     }    

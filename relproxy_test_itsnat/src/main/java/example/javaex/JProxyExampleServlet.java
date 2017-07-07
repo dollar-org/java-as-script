@@ -1,7 +1,7 @@
 
 package example.javaex;
 
-import com.sillelien.relproxy.jproxy.JProxy;
+import com.sillelien.dollar.relproxy.jproxy.JProxy;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

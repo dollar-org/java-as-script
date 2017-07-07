@@ -147,7 +147,7 @@
                   <windowtitle>RelProxy v${project.version}</windowtitle>                  
                   <doctitle>RelProxy v${project.version}</doctitle>                  
                   <bottom><![CDATA[Copyright © Innowhere Software, Jose Maria Arranz Santamaria.]]></bottom>
-                  <excludePackageNames>com.sillelien.relproxy.impl</excludePackageNames>
+                  <excludePackageNames>com.sillelien.dollar.relproxy.impl</excludePackageNames>
               </configuration>
             </plugin>
 
