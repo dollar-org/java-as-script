@@ -8,13 +8,13 @@
     <artifactId>java-as-script</artifactId>
     <version>0</version>
 
-    <name>relproxy</name>
+    <name>Java-as-Script</name>
 
     <description>Simple Java and Groovy hot class reloader,and Java based shell and scripting used by Dollar project,
         original project is https://github.com/jmarranz/relproxy
     </description>
 
-    <url>https://github.com/dollar-org/dollar-java-as-script</url>
+    <url>https://github.com/dollar-org/java-as-script</url>
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
