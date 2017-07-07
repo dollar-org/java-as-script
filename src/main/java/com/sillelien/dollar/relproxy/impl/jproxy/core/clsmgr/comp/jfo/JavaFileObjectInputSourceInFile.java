@@ -1,6 +1,8 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.jfo;
 
 import com.sillelien.dollar.relproxy.impl.jproxy.JProxyUtil;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
 /**
@@ -13,7 +15,7 @@ public class JavaFileObjectInputSourceInFile extends JavaFileObjectInputSourceBa
     protected File file;
     protected String source;
     
-    public JavaFileObjectInputSourceInFile(String name,File file,String encoding) 
+    public JavaFileObjectInputSourceInFile(@NotNull String name, File file, String encoding)
     {
         super(name,encoding); 
         this.file = file;

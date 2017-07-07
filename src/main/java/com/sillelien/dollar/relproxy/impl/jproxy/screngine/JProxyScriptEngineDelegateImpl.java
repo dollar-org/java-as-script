@@ -9,6 +9,9 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScrip
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootInMemory;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.JProxyCompilationException;
 import com.sillelien.dollar.relproxy.impl.jproxy.shell.JProxyShellClassLoader;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import javax.script.ScriptContext;
 import javax.script.ScriptException;
@@ -20,6 +23,7 @@ import javax.script.ScriptException;
 public class JProxyScriptEngineDelegateImpl extends JProxyImpl
 {
     protected JProxyScriptEngineImpl parent;
+    @Nullable
     protected ClassDescriptorSourceScript classDescSourceScript;
     protected long codeBufferModTimestamp = 0;     
     protected long lastCodeCompiledTimestamp = 0;
@@ -29,8 +33,9 @@ public class JProxyScriptEngineDelegateImpl extends JProxyImpl
         this.parent = parent;              
     }    
     
-    @Override    
-    public ClassDescriptorSourceScript init(JProxyConfigImpl config)
+    @Nullable
+    @Override
+    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config)
     {               
         SourceScriptRoot sourceFileScript = SourceScriptRootInMemory.createSourceScriptInMemory("");
 
@@ -43,12 +48,14 @@ public class JProxyScriptEngineDelegateImpl extends JProxyImpl
         return classDescSourceScript;
     }
     
+    @NotNull
     @Override
     public Class getMainParamClass()
     {
         return ScriptContext.class;
     }
     
+    @NotNull
     private SourceScriptRootInMemory getSourceScriptInMemory()
     {
         return (SourceScriptRootInMemory)classDescSourceScript.getSourceScript();

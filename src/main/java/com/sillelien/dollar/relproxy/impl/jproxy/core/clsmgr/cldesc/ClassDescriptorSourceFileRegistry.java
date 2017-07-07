@@ -1,5 +1,8 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,6 +14,7 @@ import java.util.Map;
  */
 public class ClassDescriptorSourceFileRegistry
 {
+    @NotNull
     protected final Map<String,ClassDescriptorSourceUnit> sourceUnitMapByClassName;
     
     public ClassDescriptorSourceFileRegistry()
@@ -18,7 +22,7 @@ public class ClassDescriptorSourceFileRegistry
         this.sourceUnitMapByClassName = new HashMap<String,ClassDescriptorSourceUnit>();
     }
 
-    public ClassDescriptorSourceFileRegistry(ClassDescriptorSourceFileRegistry origin)
+    public ClassDescriptorSourceFileRegistry(@NotNull ClassDescriptorSourceFileRegistry origin)
     {
         this.sourceUnitMapByClassName = new HashMap<String,ClassDescriptorSourceUnit>( origin.sourceUnitMapByClassName );
     }    
@@ -28,6 +32,7 @@ public class ClassDescriptorSourceFileRegistry
         return sourceUnitMapByClassName.isEmpty();
     }
       
+    @NotNull
     public Collection<ClassDescriptorSourceUnit> getClassDescriptorSourceFileColl()
     {
         return sourceUnitMapByClassName.values();
@@ -43,7 +48,7 @@ public class ClassDescriptorSourceFileRegistry
         return sourceUnitMapByClassName.remove(className);
     }            
     
-    public void addClassDescriptorSourceUnit(ClassDescriptorSourceUnit sourceFile)
+    public void addClassDescriptorSourceUnit(@NotNull ClassDescriptorSourceUnit sourceFile)
     {
         sourceUnitMapByClassName.put(sourceFile.getClassName(), sourceFile);
     }
@@ -54,7 +59,8 @@ public class ClassDescriptorSourceFileRegistry
             entries.getValue().setPendingToRemove(pending);        
     }
     
-    public LinkedList<ClassDescriptorSourceUnit> getAllClassDescriptorSourceFilesPendingToRemove(LinkedList<ClassDescriptorSourceUnit> deletedSourceFiles)
+    @NotNull
+    public LinkedList<ClassDescriptorSourceUnit> getAllClassDescriptorSourceFilesPendingToRemove(@NotNull LinkedList<ClassDescriptorSourceUnit> deletedSourceFiles)
     {      
         for(Map.Entry<String,ClassDescriptorSourceUnit> entries : sourceUnitMapByClassName.entrySet())        
         {
@@ -66,7 +72,8 @@ public class ClassDescriptorSourceFileRegistry
         return deletedSourceFiles;
     }         
     
-    public ClassDescriptor getClassDescriptor(String className)
+    @Nullable
+    public ClassDescriptor getClassDescriptor(@NotNull String className)
     {
         // Puede ser el de una innerclass
         // Las innerclasses no están como tales en sourceFileMap pues sólo está la clase contenedora pero también la consideramos hotloadable

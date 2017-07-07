@@ -2,6 +2,8 @@ package com.sillelien.dollar.relproxy.impl.gproxy;
 
 import com.sillelien.dollar.relproxy.gproxy.GProxyConfig;
 import com.sillelien.dollar.relproxy.impl.gproxy.core.GProxyImpl;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  *
@@ -14,7 +16,7 @@ public class GProxyDefaultImpl extends GProxyImpl
         return new GProxyConfigImpl();
     }      
     
-    public static void initStatic(GProxyConfigImpl config)
+    public static void initStatic(@NotNull GProxyConfigImpl config)
     {
         if (!config.isEnabled()) return;
         
@@ -23,7 +25,8 @@ public class GProxyDefaultImpl extends GProxyImpl
         SINGLETON.init(config);
     }    
     
-    public static <T> T createStatic(T obj,Class<T> clasz)
+    @Nullable
+    public static <T> T createStatic(T obj, Class<T> clasz)
     {
         if (SINGLETON == null) 
             return obj; // No se ha llamado al init o enabled = false
@@ -31,7 +34,8 @@ public class GProxyDefaultImpl extends GProxyImpl
         return SINGLETON.create(obj, clasz);
     }        
     
-    public static Object createStatic(Object obj,Class<?>[] classes)
+    @Nullable
+    public static Object createStatic(Object obj, @NotNull Class<?>[] classes)
     {
         if (SINGLETON == null) 
             return obj; // No se ha llamado al init o enabled = false

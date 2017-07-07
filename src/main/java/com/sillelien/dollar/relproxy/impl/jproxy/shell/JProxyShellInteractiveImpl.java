@@ -7,6 +7,9 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.FolderSourceList;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootInMemory;
 import com.sillelien.dollar.relproxy.impl.jproxy.shell.inter.JProxyShellProcessor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.LinkedList;
 
 /**
@@ -17,10 +20,12 @@ import java.util.LinkedList;
 public class JProxyShellInteractiveImpl extends JProxyShellImpl
 {
     protected boolean test = false;
+    @NotNull
     protected JProxyShellProcessor processor = new JProxyShellProcessor(this);
+    @Nullable
     protected ClassDescriptorSourceScript classDescSourceScript;
     
-    public void init(String[] args)
+    public void init(@NotNull String[] args)
     {          
         this.classDescSourceScript = super.init(args, null);
 
@@ -33,18 +38,21 @@ public class JProxyShellInteractiveImpl extends JProxyShellImpl
         processor.loop();
     }      
     
+    @Nullable
     public ClassDescriptorSourceScript getClassDescriptorSourceScript()
     {
         return classDescSourceScript;
     }
     
+    @NotNull
     public SourceScriptRootInMemory getSourceScriptInMemory()
     {
         return (SourceScriptRootInMemory)classDescSourceScript.getSourceScript();
     }
     
+    @Nullable
     @Override
-    public ClassDescriptorSourceScript init(JProxyConfigImpl config,SourceScriptRoot scriptFile,ClassLoader classLoader)
+    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config, SourceScriptRoot scriptFile, ClassLoader classLoader)
     {    
         ClassDescriptorSourceScript script = super.init(config,scriptFile, classLoader);
         
@@ -60,7 +68,7 @@ public class JProxyShellInteractiveImpl extends JProxyShellImpl
     }    
     
     @Override
-    protected void processConfigParams(String[] args,LinkedList<String> argsToScript,JProxyConfigImpl config)
+    protected void processConfigParams(@NotNull String[] args, @NotNull LinkedList<String> argsToScript, @NotNull JProxyConfigImpl config)
     {    
         super.processConfigParams(args, argsToScript, config);
         
@@ -68,13 +76,15 @@ public class JProxyShellInteractiveImpl extends JProxyShellImpl
         if (classFolder != null && !classFolder.trim().isEmpty()) throw new RelProxyException("cacheClassFolder is useless to execute in interactive mode");                
     }    
 
-    @Override    
+    @NotNull
+    @Override
     protected SourceScriptRoot createSourceScriptRoot(String[] args,LinkedList<String> argsToScript,FolderSourceList folderSourceList) 
     {
         return SourceScriptRootInMemory.createSourceScriptInMemory(""); // La primera vez no hace nada, sirve para "calentar" la app
     }    
     
-    @Override    
+    @Nullable
+    @Override
     protected JProxyShellClassLoader getJProxyShellClassLoader(JProxyConfigImpl config)
     {
         // No hay classFolder => no hay necesidad de nuevo ClassLoader

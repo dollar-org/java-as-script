@@ -6,6 +6,8 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescrip
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.JProxyEngine;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.JProxyCompilationException;
 import com.sillelien.dollar.relproxy.impl.jproxy.shell.JProxyShellInteractiveImpl;
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,8 +24,11 @@ public class JProxyShellProcessor
     public static final int LINE_OFFSET = 2; // El índice en codeBuffer + este valor = al valor de la línea que se muestra al usuario, hay que tener en cuenta que contamos desde uno y la primera línea es siempre vacía
     
     protected JProxyShellInteractiveImpl parent;
+    @NotNull
     protected Charset encoding = Charset.defaultCharset();
-    protected ArrayList<String> codeBuffer = new ArrayList<String>(20);   
+    @NotNull
+    protected ArrayList<String> codeBuffer = new ArrayList<String>(20);
+    @NotNull
     protected Keyboard keyboard = KeyboardNotUsingClipboard.create(encoding);
     protected int lastLine = -1; // Indice respecto a codeBuffer
     protected int lineEditing = -1;  // Indice respecto a codeBuffer
@@ -35,11 +40,13 @@ public class JProxyShellProcessor
         this.parent = parent;
     }
     
+    @NotNull
     public Keyboard getKeyboard()
     {
         return keyboard;
     }
    
+    @NotNull
     public Charset getEncoding()
     {
         return encoding;
@@ -108,6 +115,7 @@ public class JProxyShellProcessor
         }
     }    
     
+    @NotNull
     public List<String> getCodeBuffer()
     {
         return Collections.unmodifiableList(codeBuffer);
@@ -120,7 +128,7 @@ public class JProxyShellProcessor
         this.lastLine = index;        
     }
     
-    public void setCodeBuffer(LinkedList<String> codeBuffer)
+    public void setCodeBuffer(@NotNull LinkedList<String> codeBuffer)
     {
         codeBuffer.clear();
         this.codeBuffer.addAll(codeBuffer);        

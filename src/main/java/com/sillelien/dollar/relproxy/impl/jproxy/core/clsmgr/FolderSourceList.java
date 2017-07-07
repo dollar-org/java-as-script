@@ -2,6 +2,9 @@ package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr;
 
 import com.sillelien.dollar.relproxy.RelProxyException;
 import com.sillelien.dollar.relproxy.impl.FileExt;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 
 /**
@@ -12,7 +15,7 @@ public class FolderSourceList
 {
     protected FileExt[] sourceList;
     
-    public FolderSourceList(String[] sourcePathList,boolean expectedDirectory)
+    public FolderSourceList(@Nullable String[] sourcePathList, boolean expectedDirectory)
     {
         if (sourcePathList != null) // En el caso de shell interactivo es null
         {
@@ -44,7 +47,8 @@ public class FolderSourceList
         return sourceList; 
     }
     
-    public String buildClassNameFromFile(FileExt sourceFile)
+    @Nullable
+    public String buildClassNameFromFile(@NotNull FileExt sourceFile)
     {
         for(FileExt rootFolderOfSources : sourceList)
         {
@@ -55,7 +59,7 @@ public class FolderSourceList
         throw new RelProxyException("File not found in source folders: " + sourceFile.getFile().getAbsolutePath());
     }           
     
-    public static String buildClassNameFromFile(FileExt sourceFile,FileExt rootFolderOfSources)
+    public static String buildClassNameFromFile(@NotNull FileExt sourceFile, @NotNull FileExt rootFolderOfSources)
     {        
         String path = sourceFile.getCanonicalPath();
 

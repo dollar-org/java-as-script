@@ -12,6 +12,8 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescrip
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.JProxyEngineChangeDetectorAndCompiler;
 import com.sillelien.dollar.relproxy.jproxy.JProxyDiagnosticsListener;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -42,14 +44,15 @@ public class JProxyCompilerInMemory
         this.compiler = ToolProvider.getSystemJavaCompiler();       
     }
     
-    public JProxyCompilerContext createJProxyCompilerContext() 
+    @NotNull
+    public JProxyCompilerContext createJProxyCompilerContext()
     {
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
         StandardJavaFileManager standardFileManager = compiler.getStandardFileManager(diagnostics, null, null);   
         return new JProxyCompilerContext(standardFileManager,diagnostics,diagnosticsListener);
     }
     
-    public void compileSourceFile(ClassDescriptorSourceUnit sourceFileDesc,JProxyCompilerContext context,ClassLoader currentClassLoader,ClassDescriptorSourceFileRegistry sourceRegistry)
+    public void compileSourceFile(@NotNull ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, ClassLoader currentClassLoader, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry)
     {
         //File sourceFile = sourceFileDesc.getSourceFile();
         LinkedList<JavaFileObjectOutputClass> outClassList = compile(sourceFileDesc,context,currentClassLoader,sourceRegistry);
@@ -104,7 +107,7 @@ public class JProxyCompilerInMemory
         }
     }        
     
-    private LinkedList<JavaFileObjectOutputClass> compile(ClassDescriptorSourceUnit sourceFileDesc,JProxyCompilerContext context,ClassLoader currentClassLoader,ClassDescriptorSourceFileRegistry sourceRegistry)
+    private LinkedList<JavaFileObjectOutputClass> compile(ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, ClassLoader currentClassLoader, ClassDescriptorSourceFileRegistry sourceRegistry)
     {
         // http://stackoverflow.com/questions/12173294/compiling-fully-in-memory-with-javax-tools-javacompiler
         // http://www.accordess.com/wpblog/an-overview-of-java-compilation-api-jsr-199/
@@ -151,7 +154,7 @@ public class JProxyCompilerInMemory
         return classObj;
     }
 
-    private boolean compile(Iterable<? extends JavaFileObject> compilationUnits,JavaFileManager fileManager,JProxyCompilerContext context)
+    private boolean compile(Iterable<? extends JavaFileObject> compilationUnits, JavaFileManager fileManager, @NotNull JProxyCompilerContext context)
     {
         /*
         String systemClassPath = System.getProperty("java.class.path");

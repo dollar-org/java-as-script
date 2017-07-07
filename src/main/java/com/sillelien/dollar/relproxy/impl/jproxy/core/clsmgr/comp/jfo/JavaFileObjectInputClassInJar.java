@@ -1,5 +1,7 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.jfo;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -12,7 +14,7 @@ public class JavaFileObjectInputClassInJar extends JavaFileObjectInputClassInFil
 {
     protected long timestamp;
     
-    public JavaFileObjectInputClassInJar(String binaryName, URI uri,long timestamp) 
+    public JavaFileObjectInputClassInJar(String binaryName, @NotNull URI uri, long timestamp)
     {
         super(binaryName,uri,uri.getSchemeSpecificPart());        
         this.timestamp = timestamp;
@@ -30,6 +32,7 @@ public class JavaFileObjectInputClassInJar extends JavaFileObjectInputClassInFil
         return timestamp;
     }
 
+    @NotNull
     @Override
     public String toString() 
     {

@@ -1,5 +1,7 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.jfo;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,12 +17,13 @@ public class JavaFileObjectInputClassInFile extends JavaFileObjectInputClassInFi
 {
     protected File file;
     
-    public JavaFileObjectInputClassInFile(File file,String binaryName, URI uri) 
+    public JavaFileObjectInputClassInFile(File file, String binaryName, @NotNull URI uri)
     {
         super(binaryName,uri,uri.getPath());
         this.file = file;
     }
 
+    @NotNull
     @Override
     public InputStream openInputStream() throws IOException 
     {
@@ -34,6 +37,7 @@ public class JavaFileObjectInputClassInFile extends JavaFileObjectInputClassInFi
         return file.lastModified();
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "JavaFileObjectInputClassInFile{uri=" + uri + '}';

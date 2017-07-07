@@ -3,6 +3,7 @@ package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit;
 import com.sillelien.dollar.relproxy.impl.FileExt;
 import com.sillelien.dollar.relproxy.impl.jproxy.JProxyUtil;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.FolderSourceList;
+import org.jetbrains.annotations.NotNull;
 
 /**
  *
@@ -10,13 +11,14 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.FolderSourceList;
  */
 public class SourceScriptRootFileOtherExt extends SourceScriptRootFile
 {
-    public SourceScriptRootFileOtherExt(FileExt sourceFile,FolderSourceList folderSourceList)
+    public SourceScriptRootFileOtherExt(@NotNull FileExt sourceFile, @NotNull FolderSourceList folderSourceList)
     {
         super(sourceFile,folderSourceList);
     }  
     
+    @NotNull
     @Override
-    public String getScriptCode(String encoding,boolean[] hasHashBang)
+    public String getScriptCode(@NotNull String encoding, boolean[] hasHashBang)
     {
         String codeBody = JProxyUtil.readTextFile(sourceFile.getFile(),encoding);         
         // Eliminamos la primera línea #!  (debe estar en la primera línea y sin espacios antes)

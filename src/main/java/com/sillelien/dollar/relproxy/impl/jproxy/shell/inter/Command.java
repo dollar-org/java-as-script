@@ -1,5 +1,7 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.shell.inter;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  *
  * @author jmarranz
@@ -15,7 +17,7 @@ public abstract class Command
         this.name = name;
     }
     
-    public static Command createCommand(JProxyShellProcessor parent,String cmd)
+    public static Command createCommand(@NotNull JProxyShellProcessor parent, String cmd)
     {
         cmd = cmd.trim();
         if (cmd.equals("clear"))
@@ -86,7 +88,7 @@ public abstract class Command
         return null; // No es un comando
     }    
     
-    protected static String getParameter(String cmdName,String cmd)
+    protected static String getParameter(String cmdName, @NotNull String cmd)
     {
         int pos = cmd.indexOf(cmdName + " ");
         if (pos != 0)

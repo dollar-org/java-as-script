@@ -2,6 +2,8 @@ package com.sillelien.dollar.relproxy.impl.jproxy.shell.inter;
 
 
 import com.sillelien.dollar.relproxy.RelProxyException;
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -21,6 +23,7 @@ import java.nio.charset.Charset;
  */
 public class KeyboardUsingClipboard extends Keyboard implements ClipboardOwner
 {
+    @NotNull
     protected final Robot robot;
     protected Charset cs;
    
@@ -45,7 +48,7 @@ public class KeyboardUsingClipboard extends Keyboard implements ClipboardOwner
 
     
     @Override
-    public void type(CharSequence characters) 
+    public void type(@NotNull CharSequence characters)
     {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection stringSelection = new StringSelection( characters.toString() );

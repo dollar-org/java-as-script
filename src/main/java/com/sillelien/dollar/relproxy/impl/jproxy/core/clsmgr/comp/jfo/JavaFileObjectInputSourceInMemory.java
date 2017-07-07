@@ -1,5 +1,7 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.jfo;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * http://www.javablogging.com/dynamic-in-memory-compilation/
  * 
@@ -10,7 +12,7 @@ public class JavaFileObjectInputSourceInMemory extends JavaFileObjectInputSource
     protected String source;
     protected long timestamp;
     
-    public JavaFileObjectInputSourceInMemory(String name,String source,String encoding,long timestamp) 
+    public JavaFileObjectInputSourceInMemory(@NotNull String name, String source, String encoding, long timestamp)
     {
         super(name,encoding);
         this.source = source;

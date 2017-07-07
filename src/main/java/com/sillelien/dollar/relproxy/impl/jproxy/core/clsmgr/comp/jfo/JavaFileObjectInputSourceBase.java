@@ -1,6 +1,8 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.jfo;
 
 import com.sillelien.dollar.relproxy.RelProxyException;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +21,7 @@ public abstract class JavaFileObjectInputSourceBase extends SimpleJavaFileObject
     protected String binaryName;
     protected String encoding;
     
-    public JavaFileObjectInputSourceBase(String name,String encoding) 
+    public JavaFileObjectInputSourceBase(@NotNull String name, String encoding)
     {
         super(URI.create("string:///" + name.replace('.', '/') + Kind.SOURCE.extension), Kind.SOURCE);  // La extensión .java es necesaria aunque sea falsa sino da error
         
@@ -36,7 +38,8 @@ public abstract class JavaFileObjectInputSourceBase extends SimpleJavaFileObject
         return getSource();
     }    
     
-    public byte[] getBytes() 
+    @NotNull
+    public byte[] getBytes()
     {
         try
         {
@@ -45,12 +48,14 @@ public abstract class JavaFileObjectInputSourceBase extends SimpleJavaFileObject
         catch (UnsupportedEncodingException ex) { throw new RelProxyException(ex); }
     }    
     
+    @NotNull
     @Override
     public InputStream openInputStream() throws IOException 
     {
         return new ByteArrayInputStream(getBytes());
     }    
     
+    @NotNull
     @Override
     public OutputStream openOutputStream() throws IOException 
     {

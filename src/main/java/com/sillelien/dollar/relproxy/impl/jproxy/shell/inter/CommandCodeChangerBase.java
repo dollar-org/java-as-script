@@ -1,6 +1,8 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.shell.inter;
 
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  *
  * @author jmarranz
@@ -23,7 +25,7 @@ public abstract class CommandCodeChangerBase extends Command
         this.line = line;        
     }    
     
-    public static int getLineFromParam(JProxyShellProcessor parent,String name,String cmd)
+    public static int getLineFromParam(@NotNull JProxyShellProcessor parent, String name, @NotNull String cmd)
     {
         String param = getParameter(name,cmd);
         if (param == null)

@@ -2,6 +2,8 @@ package com.sillelien.dollar.relproxy.impl.jproxy.screngine;
 
 import com.sillelien.dollar.relproxy.RelProxy;
 import com.sillelien.dollar.relproxy.jproxy.JProxyScriptEngineFactory;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,8 +19,11 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory
     protected static final String SHORT_NAME = "java";        
     protected static final String LANGUAGE_NAME = "Java";    
     
-    protected static final List names;    
+    @NotNull
+    protected static final List names;
+    @NotNull
     protected static final List extensions;
+    @NotNull
     protected static final List mimeTypes;
     
     static
@@ -49,36 +54,42 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory
         return new JProxyScriptEngineFactoryImpl();
     }    
     
+    @NotNull
     @Override
     public String getEngineName()
     {
         return "RelProxy Java Script Engine";
     }
 
+    @NotNull
     @Override
     public String getEngineVersion()
     {
         return RelProxy.getVersion();
     }
 
+    @NotNull
     @Override
     public List<String> getExtensions()
     {
         return extensions;
     }
 
+    @NotNull
     @Override
     public List<String> getMimeTypes()
     {
         return mimeTypes;
     }
 
+    @NotNull
     @Override
     public List<String> getNames()
     {
         return names;
     }
 
+    @NotNull
     @Override
     public String getLanguageName()
     {
@@ -111,8 +122,9 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory
         }
     }
 
+    @NotNull
     @Override
-    public String getMethodCallSyntax(String obj, String method, String... args)
+    public String getMethodCallSyntax(String obj, String method, @NotNull String... args)
     {
         StringBuilder ret = new StringBuilder();
         ret.append(obj + "." + method + "(");
@@ -133,8 +145,9 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory
         return ret.toString();
     }
 
+    @NotNull
     @Override
-    public String getOutputStatement(String toDisplay)
+    public String getOutputStatement(@NotNull String toDisplay)
     {
         StringBuilder buf = new StringBuilder();
         buf.append("System.out.println(\"");
@@ -158,8 +171,9 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory
         return buf.toString();
     }
 
+    @NotNull
     @Override
-    public String getProgram(String... statements)
+    public String getProgram(@NotNull String... statements)
     {
         StringBuilder ret = new StringBuilder();
         int len = statements.length;
@@ -171,6 +185,7 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory
         return ret.toString();
     }
 
+    @NotNull
     @Override
     public ScriptEngine getScriptEngine()
     {

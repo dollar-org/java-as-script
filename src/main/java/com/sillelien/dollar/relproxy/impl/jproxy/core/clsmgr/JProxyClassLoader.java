@@ -3,6 +3,9 @@ package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
 import com.sillelien.dollar.relproxy.impl.jproxy.JProxyUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.net.URL;
 
 /**
@@ -11,16 +14,17 @@ import java.net.URL;
  */
 public class JProxyClassLoader extends ClassLoader
 {
+    @NotNull
     protected final JProxyEngine engine;
     
-    public JProxyClassLoader(JProxyEngine engine)
+    public JProxyClassLoader(@NotNull JProxyEngine engine)
     {
         super(engine.getRootClassLoader());
         
         this.engine = engine;
     }
     
-    public Class defineClass(ClassDescriptor classDesc)
+    public Class defineClass(@NotNull ClassDescriptor classDesc)
     {    
         Object monitor = engine.getMonitor();
         synchronized(monitor)
@@ -34,7 +38,7 @@ public class JProxyClassLoader extends ClassLoader
     }
     
     @Override
-    protected Class<?> findClass(String name) throws ClassNotFoundException 
+    protected Class<?> findClass(@NotNull String name) throws ClassNotFoundException
     {
         Object monitor = engine.getMonitor();
         synchronized(monitor)
@@ -54,7 +58,7 @@ public class JProxyClassLoader extends ClassLoader
         }
     }    
 
-    public Class loadClass(ClassDescriptor classDesc,boolean resolve)
+    public Class loadClass(@NotNull ClassDescriptor classDesc, boolean resolve)
     {    
         Object monitor = engine.getMonitor();
         synchronized(monitor)
@@ -69,7 +73,8 @@ public class JProxyClassLoader extends ClassLoader
         }
     }    
     
-    public Class loadInnerClass(ClassDescriptorSourceUnit parentDesc,String innerClassName)
+    @Nullable
+    public Class loadInnerClass(@NotNull ClassDescriptorSourceUnit parentDesc, @NotNull String innerClassName)
     {
         Object monitor = engine.getMonitor();
         synchronized(monitor)
@@ -88,7 +93,7 @@ public class JProxyClassLoader extends ClassLoader
     }
     
     @Override
-    protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException 
+    protected Class<?> loadClass(@NotNull String name, boolean resolve) throws ClassNotFoundException
     {
         // Inspiraciones en URLClassLoader.findClass y en el propio análisis de ClassLoader.loadClass
         // Lo redefinimos por si acaso porque el objetivo es recargar todas las clases hot-reloaded en este ClassLoader y no delegar en el parent 
@@ -140,7 +145,7 @@ public class JProxyClassLoader extends ClassLoader
         }
     }
     
-    private byte[] getClassBytesFromResource(String className)
+    private byte[] getClassBytesFromResource(@NotNull String className)
     {
         String relClassPath = ClassDescriptor.getRelativeClassFilePathFromClassName(className); 
         URL urlClass = getResource(relClassPath);

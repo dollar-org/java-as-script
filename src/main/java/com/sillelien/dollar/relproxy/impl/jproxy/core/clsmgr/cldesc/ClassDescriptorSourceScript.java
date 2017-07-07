@@ -4,6 +4,8 @@ import com.sillelien.dollar.relproxy.RelProxyException;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.JProxyImpl;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.JProxyEngine;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -18,7 +20,7 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit
 {
     protected String source;  
     
-    public ClassDescriptorSourceScript(JProxyEngine engine,String className,SourceScriptRoot sourceFile,long timestamp)
+    public ClassDescriptorSourceScript(JProxyEngine engine, @NotNull String className, SourceScriptRoot sourceFile, long timestamp)
     {
         super(engine,className, sourceFile, timestamp);
 
@@ -26,6 +28,7 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit
     }
 
     
+    @NotNull
     public SourceScriptRoot getSourceScript()
     {
         return (SourceScriptRoot)sourceUnit;
@@ -73,7 +76,7 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit
         this.source = finalCode.toString();        
     }
     
-    private boolean isCompleteClass(String code)
+    private boolean isCompleteClass(@NotNull String code)
     {
         // Buscamos si hay un " class ..." o un "import..." al comienzo para soportar la definición de una clase completa como script       
         int pos = code.indexOf("class");        
@@ -96,7 +99,7 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit
         return ("private".equals(visibility) || "public".equals(visibility) || "protected".equals(visibility));  
     }
     
-    private int getFirstPosIgnoringCommentsAndSeparators(String code)
+    private int getFirstPosIgnoringCommentsAndSeparators(@NotNull String code)
     {
         int i = -1;
         for(i = 0; i < code.length(); i++)
@@ -122,12 +125,12 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit
         return i;
     }
     
-    private int getFirstPosIgnoringOneLineComment(String code,int start)
+    private int getFirstPosIgnoringOneLineComment(@NotNull String code, int start)
     {
         return code.indexOf('\n',start);
     }    
     
-    private int getFirstPosIgnoringMultiLineComment(String code,int start)
+    private int getFirstPosIgnoringMultiLineComment(@NotNull String code, int start)
     {
         return code.indexOf("*/", start);
     }        
@@ -146,7 +149,7 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit
         return source;
     }
     
-    public void callMainMethod(LinkedList<String> argsToScript) throws Throwable 
+    public void callMainMethod(@NotNull LinkedList<String> argsToScript) throws Throwable
     {       
         try
         {
@@ -168,7 +171,7 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit
         return callMainMethod(scriptClass,engine,context);
     }
     
-    public static Object callMainMethod(Class scriptClass,ScriptEngine engine,ScriptContext context) throws Throwable 
+    public static Object callMainMethod(@NotNull Class scriptClass, ScriptEngine engine, ScriptContext context) throws Throwable
     {       
         try
         {

@@ -16,6 +16,9 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.JProxyCompiler
 import com.sillelien.dollar.relproxy.jproxy.JProxyCompilerListener;
 import com.sillelien.dollar.relproxy.jproxy.JProxyDiagnosticsListener;
 import com.sillelien.dollar.relproxy.jproxy.JProxyInputSourceFileExcludedListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -27,12 +30,14 @@ import java.util.LinkedList;
 public class JProxyEngineChangeDetectorAndCompiler
 {
     protected final JProxyEngine engine;
-    protected final JProxyCompilerInMemory compiler; 
+    @NotNull
+    protected final JProxyCompilerInMemory compiler;
     protected final FolderSourceList folderSourceList;    
     protected final FolderSourceList requiredExtraJarPaths;
     protected final SourceScriptRoot scriptFile; // Puede ser nulo
     protected final String folderClasses; // Puede ser nulo (es decir NO salvar como .class los cambios)    
     protected final JProxyInputSourceFileExcludedListener excludedListener;    
+    @NotNull
     protected final JavaSourcesSearch sourcesSearch;
     protected final JProxyCompilerListener compilerListener;    
     protected volatile ClassDescriptorSourceFileRegistry sourceRegistry;
@@ -77,7 +82,8 @@ public class JProxyEngineChangeDetectorAndCompiler
         return sourceRegistry;
     }    
     
-    public ClassDescriptor getClassDescriptor(String className)
+    @Nullable
+    public ClassDescriptor getClassDescriptor(@NotNull String className)
     {
         return sourceRegistry.getClassDescriptor(className);
     }    
@@ -92,7 +98,7 @@ public class JProxyEngineChangeDetectorAndCompiler
         return compilerListener;
     }
     
-    private void cleanBeforeCompile(ClassDescriptorSourceUnit sourceFile)
+    private void cleanBeforeCompile(@NotNull ClassDescriptorSourceUnit sourceFile)
     {
         if (isSaveClassesMode()) 
             deleteClasses(sourceFile); // Antes de que nos las carguemos en memoria la clase principal y las inner tras recompilar
@@ -100,7 +106,7 @@ public class JProxyEngineChangeDetectorAndCompiler
         sourceFile.cleanOnSourceCodeChanged(); // El código fuente nuevo puede haber cambiado totalmente las innerclasses antiguas (añadido, eliminado) y por supuesto el bytecode necesita olvidarse   
     }
     
-    private void compile(ClassDescriptorSourceUnit sourceFile,JProxyCompilerContext context)
+    private void compile(@NotNull ClassDescriptorSourceUnit sourceFile, @NotNull JProxyCompilerContext context)
     {       
         if (sourceFile.getClassBytes() != null)
             return; // Ya ha sido compilado seguramente por dependencia de un archivo compilado inmediatamente antes, recuerda que el atributo classBytes se pone a null antes de compilar los archivos cambiados/nuevos
@@ -108,6 +114,7 @@ public class JProxyEngineChangeDetectorAndCompiler
         compiler.compileSourceFile(sourceFile,context,engine.getCurrentClassLoader(),sourceRegistry);      
     }            
     
+    @Nullable
     public ClassDescriptorSourceScript detectChangesInSources()
     {
         Object monitor = getJProxyEngine().getMonitor();
@@ -251,7 +258,7 @@ public class JProxyEngineChangeDetectorAndCompiler
         return scriptFileDesc;
     }    
     
-    private void saveClasses(ClassDescriptorSourceUnit sourceFile)
+    private void saveClasses(@NotNull ClassDescriptorSourceUnit sourceFile)
     {
         // Salvamos la clase principal
         {
@@ -271,7 +278,7 @@ public class JProxyEngineChangeDetectorAndCompiler
         }                           
     }    
     
-    private void deleteClasses(ClassDescriptorSourceUnit sourceFile)
+    private void deleteClasses(@NotNull ClassDescriptorSourceUnit sourceFile)
     {
         // Puede ocurrir que esta clase nunca se haya cargado y se ha modificado el código fuente y queramos limpiar los .class correspondientes pues se van a recrear
         // como no conocemos qué inner clases están asociadas para saber que .class hay que eliminar, pues lo que hacemos es directamente obtener los .class que hay 

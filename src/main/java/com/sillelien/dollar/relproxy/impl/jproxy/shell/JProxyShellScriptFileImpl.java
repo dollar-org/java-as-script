@@ -8,6 +8,9 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescrip
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.FolderSourceList;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootFile;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.util.LinkedList;
 
@@ -19,7 +22,7 @@ public class JProxyShellScriptFileImpl extends JProxyShellImpl
 {
     protected FileExt scriptFile;
     
-    public void init(String[] args)
+    public void init(@NotNull String[] args)
     {
         File scriptFile = new File(args[0]);
         if (!scriptFile.exists())        
@@ -33,7 +36,7 @@ public class JProxyShellScriptFileImpl extends JProxyShellImpl
     }    
     
     @Override
-    protected void executeFirstTime(ClassDescriptorSourceScript scriptFileDesc,LinkedList<String> argsToScript,JProxyShellClassLoader classLoader)
+    protected void executeFirstTime(@NotNull ClassDescriptorSourceScript scriptFileDesc, @NotNull LinkedList<String> argsToScript, JProxyShellClassLoader classLoader)
     {
         fixLastLoadedClass(scriptFileDesc,classLoader);
         
@@ -47,14 +50,16 @@ public class JProxyShellScriptFileImpl extends JProxyShellImpl
         }          
     }
     
-    @Override    
-    protected SourceScriptRoot createSourceScriptRoot(String[] args,LinkedList<String> argsToScript,FolderSourceList folderSourceList) 
+    @NotNull
+    @Override
+    protected SourceScriptRoot createSourceScriptRoot(String[] args, LinkedList<String> argsToScript, @NotNull FolderSourceList folderSourceList)
     {
         return SourceScriptRootFile.createSourceScriptRootFile(scriptFile,folderSourceList);
     }    
     
-    @Override    
-    protected JProxyShellClassLoader getJProxyShellClassLoader(JProxyConfigImpl config)
+    @Nullable
+    @Override
+    protected JProxyShellClassLoader getJProxyShellClassLoader(@NotNull JProxyConfigImpl config)
     {
         String classFolder = config.getClassFolder();
         if (classFolder != null)
@@ -63,7 +68,7 @@ public class JProxyShellScriptFileImpl extends JProxyShellImpl
             return null;
     }
     
-    protected void fixLastLoadedClass(ClassDescriptorSourceScript scriptFileDesc,JProxyShellClassLoader classLoader)
+    protected void fixLastLoadedClass(@NotNull ClassDescriptorSourceScript scriptFileDesc, @Nullable JProxyShellClassLoader classLoader)
     {
         Class scriptClass = scriptFileDesc.getLastLoadedClass();
         if (scriptClass != null) return;

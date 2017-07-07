@@ -8,6 +8,9 @@ import com.sillelien.dollar.relproxy.jproxy.JProxyCompilerListener;
 import com.sillelien.dollar.relproxy.jproxy.JProxyConfig;
 import com.sillelien.dollar.relproxy.jproxy.JProxyDiagnosticsListener;
 import com.sillelien.dollar.relproxy.jproxy.JProxyInputSourceFileExcludedListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 
 /**
@@ -27,6 +30,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
     protected JProxyDiagnosticsListener diagnosticsListener;
     protected boolean test = false;
     
+    @NotNull
     @Override
     public JProxyConfig setEnabled(boolean enabled)
     {
@@ -34,6 +38,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         return this;
     }
 
+    @NotNull
     @Override
     public JProxyConfig setRelProxyOnReloadListener(RelProxyOnReloadListener relListener)
     {
@@ -41,13 +46,15 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         return this;        
     }    
     
+    @NotNull
     @Override
-    public JProxyConfig setInputPath(String inputPath)
+    public JProxyConfig setInputPath(@Nullable String inputPath)
     {
         setInputPaths(inputPath != null ? new String[]{inputPath} : null); // inputPath es null en el caso de shell interactive
         return this;
     }
 
+    @NotNull
     @Override
     public JProxyConfig setInputPaths(String[] inputPaths)
     {
@@ -55,27 +62,31 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         return this;
     }    
 
-    @Override    
+    @NotNull
+    @Override
     public JProxyConfig setRequiredExtraJarPaths(String[] inputJarPaths)  
     {
         this.requiredExtraJarPaths = new FolderSourceList(inputJarPaths,false); // inputPaths es null en el caso de shell interactive
         return this;
     }    
     
-    @Override    
+    @NotNull
+    @Override
     public JProxyConfig setJProxyInputSourceFileExcludedListener(JProxyInputSourceFileExcludedListener excludedListener)    
     {
         this.excludedListener = excludedListener;
         return this;
     }
     
-    @Override    
+    @NotNull
+    @Override
     public JProxyConfig setJProxyCompilerListener(JProxyCompilerListener compilerListener)    
     {
         this.compilerListener = compilerListener;
         return this;
     }    
     
+    @NotNull
     @Override
     public JProxyConfig setClassFolder(String classFolder)
     {
@@ -83,6 +94,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         return this;        
     }
 
+    @NotNull
     @Override
     public JProxyConfig setScanPeriod(long scanPeriod)
     {
@@ -91,6 +103,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         return this;        
     }
 
+    @NotNull
     @Override
     public JProxyConfig setCompilationOptions(Iterable<String> compilationOptions)
     {
@@ -98,6 +111,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         return this;        
     }
 
+    @NotNull
     @Override
     public JProxyConfig setJProxyDiagnosticsListener(JProxyDiagnosticsListener diagnosticsListener)
     {

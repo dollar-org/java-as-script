@@ -2,6 +2,8 @@ package com.sillelien.dollar.relproxy.impl.jproxy;
 
 import com.sillelien.dollar.relproxy.impl.jproxy.core.JProxyImpl;
 import com.sillelien.dollar.relproxy.jproxy.JProxyConfig;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  *
@@ -13,7 +15,8 @@ public class JProxyDefaultImpl extends JProxyImpl
     {
     }
     
-    @Override    
+    @Nullable
+    @Override
     public Class getMainParamClass()
     {
         return null;
@@ -24,7 +27,7 @@ public class JProxyDefaultImpl extends JProxyImpl
         return new JProxyConfigImpl();
     }         
     
-    public static void initStatic(JProxyConfigImpl config)
+    public static void initStatic(@NotNull JProxyConfigImpl config)
     {
         if (!config.isEnabled()) return;
         
@@ -34,7 +37,8 @@ public class JProxyDefaultImpl extends JProxyImpl
     }    
        
     
-    public static <T> T createStatic(T obj,Class<T> clasz)
+    @Nullable
+    public static <T> T createStatic(T obj, Class<T> clasz)
     {
         if (SINGLETON == null) 
             return obj; // No se ha llamado al init o enabled = false
@@ -42,7 +46,8 @@ public class JProxyDefaultImpl extends JProxyImpl
         return SINGLETON.create(obj, clasz);
     }    
 
-    public static Object createStatic(Object obj,Class<?>[] classes)
+    @Nullable
+    public static Object createStatic(Object obj, @NotNull Class<?>[] classes)
     {
         if (SINGLETON == null) 
             return obj; // No se ha llamado al init o enabled = false

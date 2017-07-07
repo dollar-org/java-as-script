@@ -1,6 +1,8 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.shell.inter;
 
 import com.sillelien.dollar.relproxy.impl.jproxy.JProxyUtil;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
@@ -22,7 +24,7 @@ public class CommandLoad extends Command
         this.url = url;        
     }    
     
-    public static CommandLoad createCommandLoad(JProxyShellProcessor parent,String cmd)
+    public static CommandLoad createCommandLoad(JProxyShellProcessor parent, @NotNull String cmd)
     {
         String url = getParameter(NAME,cmd);
         if (url == null)
