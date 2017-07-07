@@ -7,6 +7,9 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.JProxyImpl;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.FolderSourceList;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 
@@ -18,7 +21,7 @@ import java.util.LinkedList;
 public abstract class JProxyShellImpl extends JProxyImpl
 {
    
-    public static void main(String[] args)
+    public static void main(@NotNull String[] args)
     {
         if (args[0].isEmpty()) 
         {
@@ -43,7 +46,8 @@ public abstract class JProxyShellImpl extends JProxyImpl
         }
     }
     
-    protected ClassDescriptorSourceScript init(String[] args,String inputPath) 
+    @Nullable
+    protected ClassDescriptorSourceScript init(@NotNull String[] args, String inputPath)
     {
         // Esto quizás necesite una opción en plan "verbose" o "log" para mostrar por pantalla o nada
         RelProxyOnReloadListener proxyListener = new RelProxyOnReloadListener() {
@@ -75,6 +79,7 @@ public abstract class JProxyShellImpl extends JProxyImpl
         return scriptFileDesc;
     }        
 
+    @NotNull
     @Override
     public Class getMainParamClass()
     {
@@ -82,11 +87,14 @@ public abstract class JProxyShellImpl extends JProxyImpl
     }
     
     
-    protected abstract SourceScriptRoot createSourceScriptRoot(String[] args,LinkedList<String> argsToScript,FolderSourceList folderSourceList);
-    protected abstract JProxyShellClassLoader getJProxyShellClassLoader(JProxyConfigImpl config);    
+    @NotNull
+    protected abstract SourceScriptRoot createSourceScriptRoot(String[] args, LinkedList<String> argsToScript, FolderSourceList folderSourceList);
+    @Nullable
+    protected abstract JProxyShellClassLoader getJProxyShellClassLoader(JProxyConfigImpl config);
     protected abstract void executeFirstTime(ClassDescriptorSourceScript scriptFileDesc,LinkedList<String> argsToScript,JProxyShellClassLoader classLoader);    
     
-    private static Iterable<String> parseCompilationOptions(String value)
+    @NotNull
+    private static Iterable<String> parseCompilationOptions(@NotNull String value)
     {
         // Ej -source 1.6 -target 1.6  se convertiría en Arrays.asList(new String[]{"-source","1.6","-target","1.6"});
         String[] options = value.split(" ");
@@ -101,7 +109,7 @@ public abstract class JProxyShellImpl extends JProxyImpl
     }
   
     
-    protected void processConfigParams(String[] args,LinkedList<String> argsToScript,JProxyConfigImpl config)
+    protected void processConfigParams(@NotNull String[] args, @NotNull LinkedList<String> argsToScript, @NotNull JProxyConfigImpl config)
     {
         String classFolder = null;
         long scanPeriod = -1;

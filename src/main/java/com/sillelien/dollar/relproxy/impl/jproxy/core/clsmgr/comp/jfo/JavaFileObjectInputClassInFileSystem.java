@@ -1,5 +1,7 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.jfo;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -41,21 +43,25 @@ public abstract class JavaFileObjectInputClassInFileSystem implements JavaFileOb
         return binaryName;
     }    
     
+    @NotNull
     @Override
     public OutputStream openOutputStream() throws IOException {
         throw new UnsupportedOperationException();
     }
 
+    @NotNull
     @Override
     public Reader openReader(boolean ignoreEncodingErrors) throws IOException {
         throw new UnsupportedOperationException();
     }
 
+    @NotNull
     @Override
     public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
         throw new UnsupportedOperationException();
     }
 
+    @NotNull
     @Override
     public Writer openWriter() throws IOException {
         throw new UnsupportedOperationException();
@@ -66,24 +72,27 @@ public abstract class JavaFileObjectInputClassInFileSystem implements JavaFileOb
         throw new UnsupportedOperationException();
     }        
     
+    @NotNull
     @Override
     public Kind getKind() {
         return Kind.CLASS;
     }
 
     @Override // copied from SimpleJavaFileManager
-    public boolean isNameCompatible(String simpleName, Kind kind) {
+    public boolean isNameCompatible(String simpleName, @NotNull Kind kind) {
         String baseName = simpleName + kind.extension;
         return kind.equals(getKind())
                 && (baseName.equals(getName())
                 || getName().endsWith("/" + baseName));
     }
 
+    @NotNull
     @Override
     public NestingKind getNestingKind() {
         throw new UnsupportedOperationException();
     }
 
+    @NotNull
     @Override
     public Modifier getAccessLevel() {
         throw new UnsupportedOperationException();

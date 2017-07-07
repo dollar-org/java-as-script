@@ -2,6 +2,7 @@
 package com.sillelien.dollar.relproxy.gproxy;
 
 import com.sillelien.dollar.relproxy.RelProxyOnReloadListener;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Interface implemented by the configuration object needed to initialize <code>GProxy</code>.
@@ -21,6 +22,7 @@ public interface GProxyConfig
      * @param enabled whether automatic source code change detection and reload is enabled. By default is true.
      * @return this object for flow API use.
      */
+    @NotNull
     public GProxyConfig setEnabled(boolean enabled);
 
     /**
@@ -29,6 +31,7 @@ public interface GProxyConfig
      * @param relListener the class reload listener. By default is null.
      * @return this object for flow API use.
      */
+    @NotNull
     public GProxyConfig setRelProxyOnReloadListener(RelProxyOnReloadListener relListener);
 
     /**
@@ -39,5 +42,6 @@ public interface GProxyConfig
      * @param engine the <code>GroovyScriptEngine</code> wrapper.
      * @return this object for flow API use.
      */
+    @NotNull
     public GProxyConfig setGProxyGroovyScriptEngine(GProxyGroovyScriptEngine engine);
 }

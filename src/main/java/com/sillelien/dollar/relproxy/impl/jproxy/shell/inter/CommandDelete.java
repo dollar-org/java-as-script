@@ -1,6 +1,8 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.shell.inter;
 
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  *
  * @author jmarranz
@@ -14,7 +16,7 @@ public class CommandDelete extends CommandCodeChangerBase
         super(parent,NAME,line);    
     }    
     
-    public static CommandDelete createCommandDelete(JProxyShellProcessor parent,String cmd)
+    public static CommandDelete createCommandDelete(@NotNull JProxyShellProcessor parent, @NotNull String cmd)
     {
         int line = getLineFromParam(parent,NAME,cmd);
         if (line < 0)

@@ -10,6 +10,8 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScrip
 import com.sillelien.dollar.relproxy.jproxy.JProxyCompilerListener;
 import com.sillelien.dollar.relproxy.jproxy.JProxyDiagnosticsListener;
 import com.sillelien.dollar.relproxy.jproxy.JProxyInputSourceFileExcludedListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  *
@@ -30,12 +32,14 @@ public abstract class JProxyImpl extends GenericProxyImpl
         return Thread.currentThread().getContextClassLoader();
     }
     
-    public ClassDescriptorSourceScript init(JProxyConfigImpl config)
+    @Nullable
+    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config)
     {    
         return init(config,null,null);
     }    
     
-    public ClassDescriptorSourceScript init(JProxyConfigImpl config,SourceScriptRoot scriptFile,ClassLoader classLoader)
+    @Nullable
+    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config, SourceScriptRoot scriptFile, ClassLoader classLoader)
     {
         super.init(config);
         
@@ -80,11 +84,13 @@ public abstract class JProxyImpl extends GenericProxyImpl
         return engine.start();
     }     
     
+    @NotNull
     @Override
-    public GenericProxyInvocationHandler createGenericProxyInvocationHandler(Object obj)    
+    public GenericProxyInvocationHandler createGenericProxyInvocationHandler(@NotNull Object obj)
     {
         return new JProxyInvocationHandler(obj,this);
     }
     
+    @Nullable
     public abstract Class getMainParamClass();
 }

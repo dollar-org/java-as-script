@@ -1,5 +1,7 @@
 package com.sillelien.dollar.relproxy.gproxy;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Interface to implement the object implementing the <code>GroovyScriptEngine</code> wrapper used to reload Groovy classes.
  * 
@@ -27,5 +29,6 @@ public interface GProxyGroovyScriptEngine
      * @param scriptName the name of the Groovy script/class.
      * @return the class associated to the specified Groovy script.
      */
+    @NotNull
     public Class loadScriptByName(String scriptName);
 }

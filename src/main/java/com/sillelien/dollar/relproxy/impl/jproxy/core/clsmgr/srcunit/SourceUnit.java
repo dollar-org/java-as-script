@@ -2,6 +2,8 @@ package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit;
 
 import com.sillelien.dollar.relproxy.impl.FileExt;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.FolderSourceList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  *
@@ -18,12 +20,14 @@ public abstract class SourceUnit
     
     public abstract long lastModified();
     
-    protected static String buildClassNameFromFile(FileExt sourceFile,FolderSourceList sourceList)
+    @Nullable
+    protected static String buildClassNameFromFile(@NotNull FileExt sourceFile, @NotNull FolderSourceList sourceList)
     {
         return sourceList.buildClassNameFromFile(sourceFile);
     }               
     
-    protected static String buildClassNameFromFile(FileExt sourceFile,FileExt rootFolderOfSources)
+    @Nullable
+    protected static String buildClassNameFromFile(@NotNull FileExt sourceFile, @NotNull FileExt rootFolderOfSources)
     {
         return FolderSourceList.buildClassNameFromFile(sourceFile,rootFolderOfSources);
     }                   

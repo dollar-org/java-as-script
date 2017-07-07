@@ -10,6 +10,9 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.JProxyImpl;
 import com.sillelien.dollar.relproxy.jproxy.JProxyCompilerListener;
 import com.sillelien.dollar.relproxy.jproxy.JProxyDiagnosticsListener;
 import com.sillelien.dollar.relproxy.jproxy.JProxyInputSourceFileExcludedListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,12 +25,15 @@ public class JProxyEngine
 {
     protected final Object monitor = new Object(); // Podríamos usar este objeto JProxyEngine directamente pero el monitor es mejor para análisis de dependencias
     protected final JProxyImpl parent;
+    @NotNull
     protected final JProxyEngineChangeDetectorAndCompiler delegateChangeDetector;
     protected final ClassLoader rootClassLoader;
+    @Nullable
     protected JProxyClassLoader customClassLoader;
     protected final long scanPeriod;   
     protected final String sourceEncoding = "UTF-8"; // Por ahora, provisional
     public volatile boolean stop = false;
+    @Nullable
     protected TimerTask task;
     protected boolean pendingReload = false;     
     protected final boolean enabled;    
@@ -44,6 +50,7 @@ public class JProxyEngine
         this.customClassLoader = null; //new JProxyClassLoader(this);
     }
     
+    @NotNull
     public Object getMonitor()
     {
         return monitor;
@@ -59,6 +66,7 @@ public class JProxyEngine
         return enabled;
     }    
     
+    @Nullable
     public ClassDescriptorSourceScript init()
     {
         synchronized(getMonitor())
@@ -80,6 +88,7 @@ public class JProxyEngine
     }
     */
     
+    @Nullable
     public ClassLoader getCurrentClassLoader()
     {
         if (customClassLoader != null)
@@ -133,6 +142,7 @@ public class JProxyEngine
         return rootClassLoader;
     }
     
+    @NotNull
     public String getSourceEncoding()
     {
         return sourceEncoding;
@@ -179,7 +189,8 @@ public class JProxyEngine
     
 
     
-    public ClassDescriptor getClassDescriptor(String className)
+    @Nullable
+    public ClassDescriptor getClassDescriptor(@NotNull String className)
     {
         synchronized(getMonitor())
         {        
@@ -187,7 +198,8 @@ public class JProxyEngine
         }
     }
             
-    public <T> Class<?> findClass(String className)
+    @Nullable
+    public <T> Class<?> findClass(@NotNull String className)
     {     
         // Si ya está cargada la devuelve, y si no se cargó por ningún JProxyClassLoader se intenta cargar por el parent ClassLoader, por lo que siempre devolverá distinto de null si la clase está en el classpath, que debería ser lo normal       
         synchronized(getMonitor())
@@ -220,14 +232,14 @@ public class JProxyEngine
     
 
     
-    private Class reloadSource(ClassDescriptorSourceUnit sourceFile)
+    private Class reloadSource(@NotNull ClassDescriptorSourceUnit sourceFile)
     {
         Class clasz = customClassLoader.loadClass(sourceFile,true);  
         reloadInnerClassesOnly(sourceFile,clasz);
         return clasz;
     }
     
-    private void reloadInnerClassesOnly(ClassDescriptorSourceUnit sourceFile,Class classParent)
+    private void reloadInnerClassesOnly(@NotNull ClassDescriptorSourceUnit sourceFile, @NotNull Class classParent)
     {
         
         LinkedList<ClassDescriptorInner> innerClassDescList = sourceFile.getInnerClassDescriptors(); 
@@ -262,11 +274,13 @@ public class JProxyEngine
         }     
     }    
     
+    @Nullable
     public ClassDescriptorSourceScript detectChangesInSources()
     {
         return delegateChangeDetector.detectChangesInSources();        
     }    
    
+    @Nullable
     public ClassDescriptorSourceScript detectChangesInSourcesAndReload()
     {
         ClassDescriptorSourceScript res = detectChangesInSources();        

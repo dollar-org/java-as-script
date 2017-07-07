@@ -2,6 +2,8 @@ package com.sillelien.dollar.relproxy.impl.jproxy.shell;
 
 import com.sillelien.dollar.relproxy.RelProxyException;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,12 +15,12 @@ import java.net.URLClassLoader;
  */
 public class JProxyShellClassLoader extends URLClassLoader
 {   
-    public JProxyShellClassLoader(ClassLoader parent,File classFolder)
+    public JProxyShellClassLoader(ClassLoader parent, @NotNull File classFolder)
     {
         super(toURLArray(classFolder),parent);
     }
 
-    private static URL[] toURLArray(File file)
+    private static URL[] toURLArray(@NotNull File file)
     {
         try { return new URL[]{file.toURI().toURL()}; } 
         catch (MalformedURLException ex) { throw new RelProxyException(ex); }
@@ -36,7 +38,7 @@ public class JProxyShellClassLoader extends URLClassLoader
         return super.loadClass(name, resolve); 
     }
 
-    public synchronized Class defineClass(ClassDescriptor classDesc)
+    public synchronized Class defineClass(@NotNull ClassDescriptor classDesc)
     {    
         String className = classDesc.getClassName();
         byte[] classBytes = classDesc.getClassBytes();

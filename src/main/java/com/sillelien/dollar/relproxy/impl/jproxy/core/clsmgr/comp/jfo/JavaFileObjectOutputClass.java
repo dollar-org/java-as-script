@@ -1,6 +1,8 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.jfo;
 
 import com.sillelien.dollar.relproxy.RelProxyException;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -32,7 +34,7 @@ public class JavaFileObjectOutputClass extends SimpleJavaFileObject {
     * @param kind
     *            Kind of the data. It will be CLASS in our case
     */
-    public JavaFileObjectOutputClass(String name, Kind kind) 
+    public JavaFileObjectOutputClass(@NotNull String name, @NotNull Kind kind)
     {
         super(URI.create("string:///" + name.replace('.', '/') + kind.extension), kind);
         
@@ -50,6 +52,7 @@ public class JavaFileObjectOutputClass extends SimpleJavaFileObject {
         return bos.toByteArray();
     }
 
+    @NotNull
     @Override
     public OutputStream openOutputStream() throws IOException 
     {

@@ -1,5 +1,7 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.jfo;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +20,7 @@ public class JavaFileObjectInputClassInMemory extends SimpleJavaFileObject imple
     protected byte[] byteCode;
     protected long timestamp;
     
-    public JavaFileObjectInputClassInMemory(String name,byte[] byteCode,long timestamp) 
+    public JavaFileObjectInputClassInMemory(@NotNull String name, byte[] byteCode, long timestamp)
     {
         super(URI.create("string:///" + name.replace('.', '/') + Kind.CLASS.extension), Kind.CLASS);
         
@@ -38,12 +40,14 @@ public class JavaFileObjectInputClassInMemory extends SimpleJavaFileObject imple
         return timestamp;
     }    
     
+    @NotNull
     @Override
     public InputStream openInputStream() throws IOException 
     {
         return new ByteArrayInputStream(getBytes());
     }    
     
+    @NotNull
     @Override
     public OutputStream openOutputStream() throws IOException 
     {

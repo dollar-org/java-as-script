@@ -1,6 +1,8 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.shell.inter;
 
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  *
  * @author jmarranz
@@ -16,7 +18,7 @@ public class CommandEdit extends CommandCodeChangerBase
         this.codeLine = codeLine;        
     }    
     
-    public static CommandEdit createCommandEdit(JProxyShellProcessor parent,String cmd)
+    public static CommandEdit createCommandEdit(@NotNull JProxyShellProcessor parent, @NotNull String cmd)
     {
         int line = getLineFromParam(parent,NAME,cmd);
         if (line < 0)

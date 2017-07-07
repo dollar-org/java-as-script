@@ -2,6 +2,9 @@ package com.sillelien.dollar.relproxy.impl.gproxy.core;
 
 import com.sillelien.dollar.relproxy.gproxy.GProxyGroovyScriptEngine;
 import com.sillelien.dollar.relproxy.impl.GenericProxyVersionedObject;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Field;
 
 /**
@@ -12,19 +15,21 @@ public class GProxyVersionedObject extends GenericProxyVersionedObject
 {    
     protected String path;    
     
-    public GProxyVersionedObject(Object obj,GProxyInvocationHandler parent)
+    public GProxyVersionedObject(@NotNull Object obj, GProxyInvocationHandler parent)
     {
         super(obj,parent);
         this.path = obj.getClass().getName().replace('.','/');
     }        
 
 
+    @NotNull
     public GProxyInvocationHandler getGProxyInvocationHandler()
     {
         return (GProxyInvocationHandler)parent;
     }
 
-    @Override    
+    @Nullable
+    @Override
     protected <T> Class<T> reloadClass() 
     {
         GProxyGroovyScriptEngine engine = getGProxyInvocationHandler().getGProxyImpl().getGProxyGroovyScriptEngine();
@@ -41,7 +46,7 @@ public class GProxyVersionedObject extends GenericProxyVersionedObject
     }
     
     @Override
-    protected boolean ignoreField(Field field)
+    protected boolean ignoreField(@NotNull Field field)
     {
         return field.getName().startsWith("__timeStamp__"); // Este atributo cambia de nombre en cada reload, no lo consideramos
     }

@@ -6,6 +6,9 @@ import com.sillelien.dollar.relproxy.impl.jproxy.JProxyConfigImpl;
 import com.sillelien.dollar.relproxy.impl.jproxy.JProxyUtil;
 import com.sillelien.dollar.relproxy.jproxy.JProxyConfig;
 import com.sillelien.dollar.relproxy.jproxy.JProxyScriptEngine;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Reader;
 import javax.script.AbstractScriptEngine;
 import javax.script.Bindings;
@@ -50,12 +53,13 @@ public class JProxyScriptEngineImpl extends AbstractScriptEngine implements JPro
     }
 
     @Override
-    public Object eval(Reader reader, ScriptContext context) throws ScriptException
+    public Object eval(@NotNull Reader reader, ScriptContext context) throws ScriptException
     {
         String script = JProxyUtil.readTextFile(reader);
         return eval(script,context);
     }
 
+    @NotNull
     @Override
     public Bindings createBindings()
     {
@@ -68,6 +72,7 @@ public class JProxyScriptEngineImpl extends AbstractScriptEngine implements JPro
         return factory;
     }
 
+    @Nullable
     @Override
     public <T> T create(T obj,Class<T> clasz)
     {
@@ -76,8 +81,9 @@ public class JProxyScriptEngineImpl extends AbstractScriptEngine implements JPro
         return jproxy.create(obj, clasz);
     }
 
+    @Nullable
     @Override
-    public Object create(Object obj,Class<?>[] classes)
+    public Object create(Object obj, @NotNull Class<?>[] classes)
     {
         if (jproxy == null) 
             return obj; // No se ha llamado al init o enabled = false

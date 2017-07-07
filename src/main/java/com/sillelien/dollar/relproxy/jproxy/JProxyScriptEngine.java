@@ -1,5 +1,7 @@
 package com.sillelien.dollar.relproxy.jproxy;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.script.ScriptEngine;
 
 /**
@@ -26,7 +28,8 @@ public interface JProxyScriptEngine extends ScriptEngine
      * @param clasz the class of the interface implemented by the original object and proxy object returned.
      * @return the <code>java.lang.reflect.Proxy</code> object associated or the original object when is disabled.
      */
-    public <T> T create(T obj,Class<T> clasz);
+    @Nullable
+    public <T> T create(T obj, Class<T> clasz);
 
     /**
      * This method is the same as {@link JProxy#create(java.lang.Object, java.lang.Class[])} but applied to this <code>JProxyScriptEngine</code>
@@ -35,7 +38,8 @@ public interface JProxyScriptEngine extends ScriptEngine
      * @param classes the classes of the interfaces implemented by the original object and proxy object returned.
      * @return the <code>java.lang.reflect.Proxy</code> object associated or the original object when is disabled.
      */   
-    public Object create(Object obj,Class<?>[] classes);   
+    @Nullable
+    public Object create(Object obj, Class<?>[] classes);
     
     /**
      * This method is the same as {@link JProxy#isEnabled()} but applied to this <code>JProxyScriptEngine</code>

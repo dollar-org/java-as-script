@@ -1,6 +1,8 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.shell.inter;
 
 import com.sillelien.dollar.relproxy.impl.jproxy.JProxyUtil;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class CommandSave extends Command
         this.path = url;        
     }    
     
-    public static CommandSave createCommandSave(JProxyShellProcessor parent,String cmd)
+    public static CommandSave createCommandSave(JProxyShellProcessor parent, @NotNull String cmd)
     {
         String url = getParameter(NAME,cmd);
         if (url == null)

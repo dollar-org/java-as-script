@@ -7,6 +7,8 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.comp.jfo.JavaFileOb
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileRegistry;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.FolderSourceList;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,23 +35,26 @@ import javax.tools.StandardLocation;
 public class JavaFileManagerInMemory extends ForwardingJavaFileManager 
 {
     private final LinkedList<JavaFileObjectOutputClass> outputClassList = new LinkedList<JavaFileObjectOutputClass>();
-    private final JavaFileObjectInputClassFinderByClassLoader classFinder;    
+    @NotNull
+    private final JavaFileObjectInputClassFinderByClassLoader classFinder;
     private final ClassDescriptorSourceFileRegistry sourceRegistry;
     
-    public JavaFileManagerInMemory(StandardJavaFileManager standardFileManager,ClassLoader classLoader,ClassDescriptorSourceFileRegistry sourceRegistry,FolderSourceList requiredExtraJarPaths) 
+    public JavaFileManagerInMemory(@NotNull StandardJavaFileManager standardFileManager, ClassLoader classLoader, ClassDescriptorSourceFileRegistry sourceRegistry, FolderSourceList requiredExtraJarPaths)
     {
         super(standardFileManager);
         this.sourceRegistry = sourceRegistry;
         this.classFinder = new JavaFileObjectInputClassFinderByClassLoader(classLoader,requiredExtraJarPaths);        
     }
 
+    @NotNull
     public LinkedList<JavaFileObjectOutputClass> getJavaFileObjectOutputClassList()
     {
         return outputClassList;
     }
     
+    @NotNull
     @Override
-    public JavaFileObject getJavaFileForOutput(Location location,String className, Kind kind, FileObject sibling) throws IOException 
+    public JavaFileObject getJavaFileForOutput(Location location, @NotNull String className, @NotNull Kind kind, FileObject sibling) throws IOException
     {
         // Normalmente sólo habrá un resultado pero se da el caso de compilar una clase con una o varias inner classes, el compilador las compila de una vez
         JavaFileObjectOutputClass outClass = new JavaFileObjectOutputClass(className, kind);
@@ -58,7 +63,7 @@ public class JavaFileManagerInMemory extends ForwardingJavaFileManager
     }
 
     @Override
-    public Iterable list(Location location, String packageName, Set kinds, boolean recurse) throws IOException 
+    public Iterable list(Location location, @NotNull String packageName, @NotNull Set kinds, boolean recurse) throws IOException
     {
         if (location == StandardLocation.PLATFORM_CLASS_PATH) // let standard manager hanfle         
             return super.list(location, packageName, kinds, recurse);  // En este caso nunca (con PLATFORM_CLASS_PATH) va a encontrar nuestros sources ni .class

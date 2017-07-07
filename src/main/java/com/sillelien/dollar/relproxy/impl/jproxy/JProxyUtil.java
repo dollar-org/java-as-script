@@ -1,6 +1,8 @@
 package com.sillelien.dollar.relproxy.impl.jproxy;
 
 import com.sillelien.dollar.relproxy.RelProxyException;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -20,7 +22,7 @@ import java.net.URLConnection;
  */
 public class JProxyUtil 
 {   
-    public static String getCanonicalPath(File file)
+    public static String getCanonicalPath(@NotNull File file)
     {
         try
         {
@@ -32,7 +34,7 @@ public class JProxyUtil
         }
     }
         
-    public static String getFileExtension(File file)
+    public static String getFileExtension(@NotNull File file)
     {
         String path = file.getAbsolutePath();
         int pos = path.lastIndexOf('.');        
@@ -41,12 +43,12 @@ public class JProxyUtil
         return "";
     }    
     
-    public static File getParentDir(File file)
+    public static File getParentDir(@NotNull File file)
     {
         return file.getParentFile();
     }
     
-    public static byte[] readURL(URL url)
+    public static byte[] readURL(@NotNull URL url)
     {
         URLConnection urlCon;
         try 
@@ -57,7 +59,7 @@ public class JProxyUtil
         catch (IOException ex) { throw new RelProxyException(ex); }       
     }
    
-    public static byte[] readFile(File file)
+    public static byte[] readFile(@NotNull File file)
     {	
         FileInputStream fis = null;
         try 
@@ -72,12 +74,12 @@ public class JProxyUtil
         return readInputStream(fis);
     }		
 
-    public static byte[] readInputStream(InputStream is)
+    public static byte[] readInputStream(@NotNull InputStream is)
     {
         return readInputStream(is,50); // 50Kb => unas 100 lecturas 5 Mb 
     }
 
-    public static byte[] readInputStream(InputStream is,int bufferSizeKb)
+    public static byte[] readInputStream(@NotNull InputStream is, int bufferSizeKb)
     {	
         ByteArrayOutputStream out = new ByteArrayOutputStream();		
         try 
@@ -102,7 +104,7 @@ public class JProxyUtil
         return out.toByteArray();
     }	    
     
-    public static void saveFile(File file,byte[] content)
+    public static void saveFile(@NotNull File file, @NotNull byte[] content)
     {	
         File parent = getParentDir(file);
         if (parent != null) parent.mkdirs();
@@ -122,7 +124,7 @@ public class JProxyUtil
         }
     }    
 
-    public static String readTextFile(File file,String encoding)
+    public static String readTextFile(@NotNull File file, @NotNull String encoding)
     {
         Reader reader = null;
         try 
@@ -134,7 +136,7 @@ public class JProxyUtil
         return readTextFile(reader);
     }    
     
-    public static String readTextFile(Reader reader)
+    public static String readTextFile(@NotNull Reader reader)
     {
         BufferedReader br = null;
         try 

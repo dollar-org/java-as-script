@@ -8,6 +8,7 @@ import org.itsnat.comp.ItsNatComponentManager;
 import org.itsnat.comp.text.ItsNatHTMLInputText;
 import org.itsnat.core.ItsNatServletRequest;
 import org.itsnat.core.html.ItsNatHTMLDocument;
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Element;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
@@ -32,7 +33,7 @@ public class JProxyExampleDocument extends JProxyExampleDocumentBase
     {    
     }
     
-    public JProxyExampleDocument(ItsNatServletRequest request,ItsNatHTMLDocument itsNatDoc,FalseDB db)
+    public JProxyExampleDocument(ItsNatServletRequest request, @NotNull ItsNatHTMLDocument itsNatDoc, @NotNull FalseDB db)
     {
         class AuxMemberInMethod 
         { 
@@ -59,7 +60,7 @@ public class JProxyExampleDocument extends JProxyExampleDocumentBase
             }
            
             @Override
-            public void handleEvent(Event evt) 
+            public void handleEvent(@NotNull Event evt)
             {
                 String text = textInput.getText(); 
                 String comment = " YES I SAID THIS (" + evt.getType() + ")";

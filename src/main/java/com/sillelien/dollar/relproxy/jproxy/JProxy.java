@@ -3,6 +3,8 @@ package com.sillelien.dollar.relproxy.jproxy;
 
 import com.sillelien.dollar.relproxy.impl.jproxy.JProxyConfigImpl;
 import com.sillelien.dollar.relproxy.impl.jproxy.JProxyDefaultImpl;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Is the class to create Java proxy objects based on Java objects and keep track of source code changes reloading classes when detected.
@@ -44,7 +46,8 @@ public class JProxy
      * @param clasz the class of the interface implemented by the original object and proxy object returned.
      * @return the <code>java.lang.reflect.Proxy</code> object associated or the  original object when <code>GProxy</code> is disabled.
      */        
-    public static <T> T create(T obj,Class<T> clasz)
+    @Nullable
+    public static <T> T create(T obj, Class<T> clasz)
     {
         return JProxyDefaultImpl.createStatic(obj, clasz);
     }
@@ -63,7 +66,8 @@ public class JProxy
      * @param classes the classes of the interfaces implemented by the original object and proxy object returned.
      * @return the <code>java.lang.reflect.Proxy</code> object associated or the original object when <code>JProxy</code> is disabled.
      */        
-    public static Object create(Object obj,Class<?>[] classes)
+    @Nullable
+    public static Object create(Object obj, @NotNull Class<?>[] classes)
     {
         return JProxyDefaultImpl.createStatic(obj, classes);
     }    

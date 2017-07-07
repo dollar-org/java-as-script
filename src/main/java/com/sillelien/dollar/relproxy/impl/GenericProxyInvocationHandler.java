@@ -1,6 +1,9 @@
 package com.sillelien.dollar.relproxy.impl;
 
 import com.sillelien.dollar.relproxy.RelProxyOnReloadListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -30,7 +33,7 @@ public abstract class GenericProxyInvocationHandler implements InvocationHandler
     }    
     
     @Override
-    public synchronized Object invoke(Object proxy, Method method, Object[] args) throws Throwable 
+    public synchronized Object invoke(Object proxy, @NotNull Method method, @Nullable Object[] args) throws Throwable
     {
         Object oldObj = getCurrent();
         Object obj = getNewVersion();

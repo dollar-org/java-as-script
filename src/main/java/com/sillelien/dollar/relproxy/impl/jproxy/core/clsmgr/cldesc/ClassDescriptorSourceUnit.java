@@ -4,6 +4,9 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.JProxyEngine;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceFileJavaNormal;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceUnit;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.LinkedList;
 
 /**
@@ -18,7 +21,7 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor
     protected LinkedList<ClassDescriptorInner> innerClasses;
     protected boolean pendingToRemove = false; // Se usa como monohilo, no hay problemas de sincronización
     
-    public ClassDescriptorSourceUnit(JProxyEngine engine,String className,SourceUnit sourceFile, long timestamp) 
+    public ClassDescriptorSourceUnit(JProxyEngine engine, @NotNull String className, SourceUnit sourceFile, long timestamp)
     {
         super(className);
         this.engine = engine;
@@ -26,7 +29,8 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor
         this.timestamp = timestamp;
     }
 
-    public static ClassDescriptorSourceUnit create(boolean script,JProxyEngine engine,String className,SourceUnit sourceFile, long timestamp)
+    @Nullable
+    public static ClassDescriptorSourceUnit create(boolean script, JProxyEngine engine, @NotNull String className, SourceUnit sourceFile, long timestamp)
     {
         if (sourceFile instanceof SourceScriptRoot)
             return new ClassDescriptorSourceScript(engine,className,(SourceScriptRoot)sourceFile,timestamp);  
@@ -41,6 +45,7 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor
         return sourceUnit;
     }
     
+    @NotNull
     public String getEncoding()
     {
         return engine.getSourceEncoding();
@@ -81,7 +86,7 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor
         clearInnerClassDescriptors(); // El código fuente nuevo puede haber cambiado totalmente las innerclasses antiguas (añadido, eliminado)
     }
     
-    public boolean isInnerClass(String className)
+    public boolean isInnerClass(@NotNull String className)
     {
         int pos = className.lastIndexOf('$');
         if (pos == -1)
@@ -101,7 +106,8 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor
             innerClasses.clear();       
     }
     
-    public ClassDescriptorInner getInnerClassDescriptor(String className,boolean addWhenMissing)
+    @Nullable
+    public ClassDescriptorInner getInnerClassDescriptor(@NotNull String className, boolean addWhenMissing)
     {
         if (innerClasses != null)
         {
@@ -117,7 +123,8 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor
         return addInnerClassDescriptor(className);
     }
         
-    public ClassDescriptorInner addInnerClassDescriptor(String className)
+    @Nullable
+    public ClassDescriptorInner addInnerClassDescriptor(@NotNull String className)
     {
         if (!isInnerClass(className))
             return null;

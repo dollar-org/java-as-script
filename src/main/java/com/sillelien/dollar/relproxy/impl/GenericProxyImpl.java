@@ -2,6 +2,9 @@ package com.sillelien.dollar.relproxy.impl;
 
 import com.sillelien.dollar.relproxy.RelProxyException;
 import com.sillelien.dollar.relproxy.RelProxyOnReloadListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
@@ -17,19 +20,19 @@ public abstract class GenericProxyImpl
     {
     }
 
-    public static void checkSingletonNull(GenericProxyImpl singleton)
+    public static void checkSingletonNull(@Nullable GenericProxyImpl singleton)
     {
         if (singleton != null) 
             throw new RelProxyException("Already initialized");
     }
     
-    protected static void checkSingletonExists(GenericProxyImpl singleton)
+    protected static void checkSingletonExists(@Nullable GenericProxyImpl singleton)
     {
         if (singleton == null) 
             throw new RelProxyException("Execute first the init method");
     }    
     
-    protected void init(GenericProxyConfigBaseImpl config)
+    protected void init(@NotNull GenericProxyConfigBaseImpl config)
     {
         this.reloadListener = config.getRelProxyOnReloadListener(); 
     }    
@@ -39,14 +42,16 @@ public abstract class GenericProxyImpl
         return reloadListener;
     }
     
-    public <T> T create(T obj,Class<T> clasz)
+    @Nullable
+    public <T> T create(@Nullable T obj, Class<T> clasz)
     {       
         if (obj == null) return null;   
         
         return (T)create(obj,new Class[] { clasz });
     }
   
-    public Object create(Object obj,Class[] classes)
+    @Nullable
+    public Object create(@Nullable Object obj, @NotNull Class[] classes)
     {       
         if (obj == null) return null;   
         
@@ -57,5 +62,6 @@ public abstract class GenericProxyImpl
     }    
             
             
-    public abstract GenericProxyInvocationHandler createGenericProxyInvocationHandler(Object obj);    
+    @NotNull
+    public abstract GenericProxyInvocationHandler createGenericProxyInvocationHandler(Object obj);
 }

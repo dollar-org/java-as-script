@@ -1,6 +1,7 @@
 package com.sillelien.dollar.relproxy.impl.gproxy.core;
 
 import com.sillelien.dollar.relproxy.impl.GenericProxyInvocationHandler;
+import org.jetbrains.annotations.NotNull;
 
 /**
  *
@@ -8,12 +9,13 @@ import com.sillelien.dollar.relproxy.impl.GenericProxyInvocationHandler;
  */
 public class GProxyInvocationHandler extends GenericProxyInvocationHandler
 {
-    public GProxyInvocationHandler(Object obj,GProxyImpl root)
+    public GProxyInvocationHandler(@NotNull Object obj, GProxyImpl root)
     {
         super(root);
         this.verObj = new GProxyVersionedObject(obj,this);
     }
 
+    @NotNull
     public GProxyImpl getGProxyImpl()
     {
         return (GProxyImpl)root;

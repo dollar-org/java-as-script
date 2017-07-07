@@ -6,6 +6,9 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescrip
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.FolderSourceList;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootInMemory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.LinkedList;
 
 /**
@@ -14,13 +17,13 @@ import java.util.LinkedList;
  */
 public class JProxyShellCodeSnippetImpl extends JProxyShellImpl
 {
-    public void init(String[] args)
+    public void init(@NotNull String[] args)
     {       
         super.init(args, null);
     }      
     
     @Override    
-    protected void executeFirstTime(ClassDescriptorSourceScript scriptFileDesc,LinkedList<String> argsToScript,JProxyShellClassLoader classLoader)
+    protected void executeFirstTime(@NotNull ClassDescriptorSourceScript scriptFileDesc, @NotNull LinkedList<String> argsToScript, JProxyShellClassLoader classLoader)
     {
         try
         {
@@ -33,7 +36,7 @@ public class JProxyShellCodeSnippetImpl extends JProxyShellImpl
     }    
     
     @Override
-    protected void processConfigParams(String[] args,LinkedList<String> argsToScript,JProxyConfigImpl config)
+    protected void processConfigParams(@NotNull String[] args, @NotNull LinkedList<String> argsToScript, @NotNull JProxyConfigImpl config)
     {    
         super.processConfigParams(args, argsToScript, config);
         
@@ -41,8 +44,9 @@ public class JProxyShellCodeSnippetImpl extends JProxyShellImpl
         if (classFolder != null && !classFolder.trim().isEmpty()) throw new RelProxyException("cacheClassFolder is useless to execute a code snippet");        
     }        
     
-    @Override    
-    protected SourceScriptRoot createSourceScriptRoot(String[] args,LinkedList<String> argsToScript,FolderSourceList folderSourceList) 
+    @NotNull
+    @Override
+    protected SourceScriptRoot createSourceScriptRoot(String[] args, @NotNull LinkedList<String> argsToScript, FolderSourceList folderSourceList)
     {
         // En argsToScript no está el args[0] ni falta que hace porque es el flag "-c" 
         StringBuilder code = new StringBuilder();
@@ -51,7 +55,8 @@ public class JProxyShellCodeSnippetImpl extends JProxyShellImpl
         return SourceScriptRootInMemory.createSourceScriptInMemory(code.toString());
     }    
    
-    @Override    
+    @Nullable
+    @Override
     protected JProxyShellClassLoader getJProxyShellClassLoader(JProxyConfigImpl config)
     {
         // No hay classFolder => no hay necesidad de nuevo ClassLoader

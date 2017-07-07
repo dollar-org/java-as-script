@@ -1,6 +1,9 @@
 package com.sillelien.dollar.relproxy.impl;
 
 import com.sillelien.dollar.relproxy.RelProxyException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -22,7 +25,7 @@ public abstract class GenericProxyVersionedObject
         this.parent = parent;
     }
     
-    protected static void getTreeFields(Class clasz,Object obj,ArrayList<Field> fieldList,ArrayList<Object> valueList) throws IllegalAccessException
+    protected static void getTreeFields(@NotNull Class clasz, Object obj, @NotNull ArrayList<Field> fieldList, ArrayList<Object> valueList) throws IllegalAccessException
     {    
         getFields(clasz,obj,fieldList,valueList);
         Class superClass = clasz.getSuperclass();
@@ -30,7 +33,7 @@ public abstract class GenericProxyVersionedObject
             getTreeFields(superClass,obj,fieldList,valueList);
     }
 
-    protected static void getFields(Class clasz,Object obj,ArrayList<Field> fieldList,ArrayList<Object> valueList) throws IllegalAccessException
+    protected static void getFields(@NotNull Class clasz, Object obj, @NotNull ArrayList<Field> fieldList, @Nullable ArrayList<Object> valueList) throws IllegalAccessException
     {
         Field[] fieldListClass = clasz.getDeclaredFields();             
         for(int i = 0; i < fieldListClass.length; i++)
@@ -66,7 +69,7 @@ public abstract class GenericProxyVersionedObject
         return obj;
     }    
     
-    private Object copy(Class oldClass,Object oldObj,Class newClass) throws IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException
+    private Object copy(@NotNull Class oldClass, Object oldObj, @NotNull Class newClass) throws IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException
     {
         Object newObj;
 
@@ -160,6 +163,7 @@ public abstract class GenericProxyVersionedObject
         return newObj;
     }
     
-    protected abstract <T> Class<T> reloadClass();    
+    @Nullable
+    protected abstract <T> Class<T> reloadClass();
     protected abstract boolean ignoreField(Field field);    
 }

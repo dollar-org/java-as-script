@@ -2,6 +2,7 @@
 package com.sillelien.dollar.relproxy.jproxy;
 
 import com.sillelien.dollar.relproxy.RelProxyOnReloadListener;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Interface implemented by the configuration object needed to initialize <code>JProxy</code> and {@link JProxyScriptEngineFactory}.
@@ -21,6 +22,7 @@ public interface JProxyConfig
      * @param enabled whether automatic source code change detection and reload is enabled. By default is true.
      * @return this object for flow API use.
      */
+    @NotNull
     public JProxyConfig setEnabled(boolean enabled);
 
     /**
@@ -29,6 +31,7 @@ public interface JProxyConfig
      * @param relListener the class reload listener. By default is null.
      * @return this object for flow API use.
      */    
+    @NotNull
     public JProxyConfig setRelProxyOnReloadListener(RelProxyOnReloadListener relListener);
 
     /**
@@ -43,6 +46,7 @@ public interface JProxyConfig
      * @return this object for flow API use.
      * @see #setInputPaths(java.lang.String[])       
      */
+    @NotNull
     public JProxyConfig setInputPath(String inputPath);
   
     /**
@@ -58,7 +62,8 @@ public interface JProxyConfig
      * @see #setJProxyInputSourceFileExcludedListener(JProxyInputSourceFileExcludedListener)       
      * @see #setRequiredExtraJarPaths(String[])
      */
-    public JProxyConfig setInputPaths(String[] inputPaths);    
+    @NotNull
+    public JProxyConfig setInputPaths(String[] inputPaths);
     
     /**
      * Defines the extra required jars providing the absolute paths to them.
@@ -73,7 +78,8 @@ public interface JProxyConfig
      * @return this object for flow API use.
      * @see #setInputPaths(String[])       
      */
-    public JProxyConfig setRequiredExtraJarPaths(String[] inputJarPaths);      
+    @NotNull
+    public JProxyConfig setRequiredExtraJarPaths(String[] inputJarPaths);
     
     /**
      * Registers the listener implementing excluding rules to filter source files not to be part of the hot reloading system in spite of included in input paths.
@@ -81,7 +87,8 @@ public interface JProxyConfig
      * @param listener the listener. By default is null.
      * @return this object for flow API use.
      */        
-    public JProxyConfig setJProxyInputSourceFileExcludedListener(JProxyInputSourceFileExcludedListener listener);    
+    @NotNull
+    public JProxyConfig setJProxyInputSourceFileExcludedListener(JProxyInputSourceFileExcludedListener listener);
     
     /**
      * Registers the listener for monitoring files being compiled.
@@ -89,7 +96,8 @@ public interface JProxyConfig
      * @param listener the listener. By default is null.
      * @return this object for flow API use.
      */        
-    public JProxyConfig setJProxyCompilerListener(JProxyCompilerListener  listener);     
+    @NotNull
+    public JProxyConfig setJProxyCompilerListener(JProxyCompilerListener  listener);
     
         
     /**
@@ -102,6 +110,7 @@ public interface JProxyConfig
      * @param classFolder the folder where to save .class files. By default is null (not defined, .class files are not saved).
      * @return this object for flow API use.
      */
+    @NotNull
     public JProxyConfig setClassFolder(String classFolder);
 
     /**
@@ -113,6 +122,7 @@ public interface JProxyConfig
      * @param scanPeriod the delay between source code change checking.
      * @return this object for flow API use.
      */
+    @NotNull
     public JProxyConfig setScanPeriod(long scanPeriod);
     
     /**
@@ -124,6 +134,7 @@ public interface JProxyConfig
      * @param compilationOptions compilation options passed to the internal compiler. By default is null (default compiler settings).
      * @return this object for flow API use.
      */
+    @NotNull
     public JProxyConfig setCompilationOptions(Iterable<String> compilationOptions);
 
     /**
@@ -160,5 +171,6 @@ public interface JProxyConfig
      * @param diagnosticsListener the diagnostic listener to capture compilation errors and warnings. By default is null, an internal listener is used logging to System.err.
      * @return this object for flow API use.
      */
+    @NotNull
     public JProxyConfig setJProxyDiagnosticsListener(JProxyDiagnosticsListener diagnosticsListener);
 }

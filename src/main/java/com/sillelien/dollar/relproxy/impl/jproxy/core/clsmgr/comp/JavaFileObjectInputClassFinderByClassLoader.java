@@ -7,6 +7,8 @@ import com.sillelien.dollar.relproxy.RelProxyException;
 import com.sillelien.dollar.relproxy.impl.FileExt;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
 import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.FolderSourceList;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -41,7 +43,8 @@ public class JavaFileObjectInputClassFinderByClassLoader
         this.requiredExtraJarPaths = requiredExtraJarPaths;
     }
 
-    public List<JavaFileObjectInputClassInFileSystem> find(String packageName) throws IOException 
+    @NotNull
+    public List<JavaFileObjectInputClassInFileSystem> find(@NotNull String packageName) throws IOException
     {
     	// http://www.dzone.com/snippets/get-all-classes-within-package
     	// http://sourceforge.net/p/scannotation/code/HEAD/tree/scannotation/src/main/java/org/scannotation/ClasspathUrlFinder.java#l124
@@ -87,7 +90,7 @@ public class JavaFileObjectInputClassFinderByClassLoader
     }
 
  
-    private void listUnder(String packageName, URL packageFolderURL,Collection<JavaFileObjectInputClassInFileSystem> result) 
+    private void listUnder(String packageName, @NotNull URL packageFolderURL, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result)
     {
     	String pkgPath = packageFolderURL.toExternalForm(); //packageFolderURL.getFile(); El problema de getFile es que tambiÃ©n estÃ¡ URL-encoded (un espacio es %20) lo cual no es compatible con File
 
@@ -101,7 +104,7 @@ public class JavaFileObjectInputClassFinderByClassLoader
         } // maybe there can be something else for more involved class loaders
     }
 
-    private void listUnderDir(String packageName,String pkgPath,Collection<JavaFileObjectInputClassInFileSystem> result) 
+    private void listUnderDir(String packageName, String pkgPath, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result)
     {        
         pkgPath = pkgPath.substring("file:".length());
 
@@ -129,7 +132,7 @@ public class JavaFileObjectInputClassFinderByClassLoader
         }     
     }        
     
-    private void listUnderJar(URL packageFolderURL,Collection<JavaFileObjectInputClassInFileSystem> result) 
+    private void listUnderJar(@NotNull URL packageFolderURL, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result)
     {
         try 
         {
@@ -160,7 +163,7 @@ public class JavaFileObjectInputClassFinderByClassLoader
     }
 
     
-    private void listUnderJarCustom(String packagePath,FileExt jarFile,Collection<JavaFileObjectInputClassInFileSystem> result) 
+    private void listUnderJarCustom(@NotNull String packagePath, @NotNull FileExt jarFile, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result)
     {
     	String normalizedPath = jarFile.getCanonicalPath();
     	if (normalizedPath.contains("\\")) // Windows

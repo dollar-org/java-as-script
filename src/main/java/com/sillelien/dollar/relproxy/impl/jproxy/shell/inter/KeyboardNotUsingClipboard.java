@@ -2,6 +2,8 @@ package com.sillelien.dollar.relproxy.impl.jproxy.shell.inter;
 
 
 import com.sillelien.dollar.relproxy.RelProxyException;
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import static java.awt.event.KeyEvent.VK_0;
@@ -64,6 +66,7 @@ import java.nio.charset.Charset;
  */
 public abstract class KeyboardNotUsingClipboard extends Keyboard
 {
+    @NotNull
     protected final Robot robot;
     protected Charset cs;
     
@@ -90,6 +93,7 @@ public abstract class KeyboardNotUsingClipboard extends Keyboard
         else return new LinuxUnicodeKeyboard(cs);
     }    
 
+    @NotNull
     private int[] getUnicodeInt(char character)
     {
         if (isUseCodePoint())
@@ -116,7 +120,8 @@ public abstract class KeyboardNotUsingClipboard extends Keyboard
         }
     }
        
-    protected String getUnicodeDigits(char character,int radix)
+    @NotNull
+    protected String getUnicodeDigits(char character, int radix)
     {
         int[] uds = getUnicodeInt(character);
         StringBuilder res = new StringBuilder();
@@ -150,7 +155,7 @@ public abstract class KeyboardNotUsingClipboard extends Keyboard
     }    
     
     
-    public void type(CharSequence characters) {
+    public void type(@NotNull CharSequence characters) {
         int length = characters.length();
         for (int i = 0; i < length; i++) {
             char character = characters.charAt(i);
@@ -271,11 +276,11 @@ public abstract class KeyboardNotUsingClipboard extends Keyboard
         return true;
     }
 
-    protected void doType(int... keyCodes) {
+    protected void doType(@NotNull int... keyCodes) {
         doTypeArr(keyCodes);
     }
 
-    private void doTypeArr(int[] keyCodes) {
+    private void doTypeArr(@NotNull int[] keyCodes) {
         int length = keyCodes.length;
         if (length == 1)
         {
