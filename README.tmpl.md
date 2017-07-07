@@ -1,5 +1,6 @@
 ${HEADER}
 
+
 Java-as-Script ${STATE_ALPHA}
 ==============
 RelProxy is a simple Java and Groovy hot class reloader for Java and Groovy providing transparent compilation and class reload on the fly, and scripting support and shell of pure Java code. This version is a fork of [the original project](https://github.com/jmarranz/relproxy) (see the Historical Section below).
@@ -13,6 +14,9 @@ RelProxy is a simple Java and Groovy hot class reloader for Java and Groovy prov
     <type>jar</type>
 </dependency>
 ```
+
+
+Dependencies: [![Dependency Status](https://www.versioneye.com/user/projects/54ae285534ff3e2204000002/badge.svg?style=flat)](https://www.versioneye.com/user/projects/54ae285534ff3e2204000002)
 
 ${BLURB}
 
