@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.sillelien</groupId>
-    <artifactId>dollar-relproxy</artifactId>
+    <artifactId>java-as-script</artifactId>
     <version>0</version>
 
     <name>relproxy</name>
@@ -14,7 +14,7 @@
         original project is https://github.com/jmarranz/relproxy
     </description>
 
-    <url>https://github.com/dollar-org/relproxy</url>
+    <url>https://github.com/dollar-org/dollar-java-as-script</url>
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
@@ -55,9 +55,9 @@
     </contributors>
 
     <scm>
-        <connection>scm:git:git@github.com:dollar-org/relproxy.git</connection>
-        <developerConnection>scm:git:git@github.com:dollar-org/relproxy.git</developerConnection>
-        <url>git@github.com:dollar-org/relproxy.git</url>
+        <connection>scm:git:git@github.com:dollar-org/dollar-java-as-script.git</connection>
+        <developerConnection>scm:git:git@github.com:dollar-org/dollar-java-as-script.git</developerConnection>
+        <url>git@github.com:dollar-org/dollar-java-as-script.git</url>
     </scm>
 
 
@@ -90,16 +90,16 @@
     <build>
         <pluginManagement>
             <plugins>
-                <!--<plugin>-->
-                <!--<groupId>com.versioneye</groupId>-->
-                <!--<artifactId>versioneye-maven-plugin</artifactId>-->
-                <!--<version>3.11.4</version>-->
-                <!--<configuration>-->
-                <!--<apiKey>0c797be864338a3649f0</apiKey>-->
-                <!--<organisation>neilellis_orga</organisation>-->
-                <!--<team>Owners</team>-->
-                <!--</configuration>-->
-                <!--</plugin>-->
+                <plugin>
+                    <groupId>com.versioneye</groupId>
+                    <artifactId>versioneye-maven-plugin</artifactId>
+                    <version>3.11.4</version>
+                    <configuration>
+                        <apiKey>0c797be864338a3649f0</apiKey>
+                        <organisation>neilellis_orga</organisation>
+                        <team>Owners</team>
+                    </configuration>
+                </plugin>
                 <!--Check for license headers-->
                 <plugin>
                     <groupId>org.apache.rat</groupId>
