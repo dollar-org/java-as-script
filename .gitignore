@@ -1,3 +1,6 @@
 /relproxy_dist_tmp/
 /build/
 /tmp/
+.idea/workspace.xml
+out/
+target/
