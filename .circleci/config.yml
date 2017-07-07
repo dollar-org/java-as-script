@@ -1,7 +1,7 @@
 jobs:
     build:
       docker:
-        - image: circleci/openjdk:8-jdk
+        - image: circleci/openjdk:8-jdk-browsers
 
       environment:
         MAJOR_VERSION: 0.9
@@ -27,7 +27,7 @@ jobs:
               mvn -v
               cd ~ && git clone https://github.com/sillelien/build-utils.git && chmod a+x ~/build-utils/*.sh && cd -
               [[ ${CIRCLE_BRANCH} != 'master' ]] || ( mvn versions:set -DnewVersion=$(cat .release) && mvn versions:resolve-ranges && mvn versions:lock-snapshots )
-               mvn install -e -Drat.skip -Dsource.skip=true -DgenerateReports=false -Dmaven.javadoc.skip=true -Dmaven.test.skip
+               mvn install -e -q -Drat.skip -Dsource.skip=true -DgenerateReports=false -Dmaven.javadoc.skip=true -Dmaven.test.skip
 
         - save_cache:
             key: dependency-cache
