@@ -9,7 +9,7 @@ RelProxy is a simple Java and Groovy hot class reloader for Java and Groovy prov
 <dependency>
 <groupId>com.sillelien.dollar</groupId>
 <artifactId>relproxy</artifactId>
-<version>0.9.11</version>
+<version>0.9.12</version>
 <type>jar</type>
 </dependency>
 ```
