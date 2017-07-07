@@ -12,37 +12,34 @@ import javax.lang.model.element.NestingKind;
 import javax.tools.JavaFileObject;
 
 /**
- *
  * @author jmarranz
  */
-public abstract class JavaFileObjectInputClassInFileSystem implements JavaFileObject,JProxyJavaFileObjectInput
-{
+public abstract class JavaFileObjectInputClassInFileSystem implements JavaFileObject, JProxyJavaFileObjectInput {
     protected final String binaryName;
     protected final URI uri;
     protected final String name;
-    
-    public JavaFileObjectInputClassInFileSystem(String binaryName, URI uri,String name) 
-    {
+
+    public JavaFileObjectInputClassInFileSystem(String binaryName, URI uri, String name) {
         this.uri = uri;
         this.binaryName = binaryName;
         this.name = name;
-    }   
-    
+    }
+
     @Override
     public URI toUri() {
         return uri;
     }
-    
+
     @Override
     public String getName() {
         return name;
     }
-    
-    @Override    
+
+    @Override
     public String getBinaryName() {
         return binaryName;
-    }    
-    
+    }
+
     @NotNull
     @Override
     public OutputStream openOutputStream() throws IOException {
@@ -70,8 +67,8 @@ public abstract class JavaFileObjectInputClassInFileSystem implements JavaFileOb
     @Override
     public boolean delete() {
         throw new UnsupportedOperationException();
-    }        
-    
+    }
+
     @NotNull
     @Override
     public Kind getKind() {
@@ -97,5 +94,5 @@ public abstract class JavaFileObjectInputClassInFileSystem implements JavaFileOb
     public Modifier getAccessLevel() {
         throw new UnsupportedOperationException();
     }
-    
+
 }

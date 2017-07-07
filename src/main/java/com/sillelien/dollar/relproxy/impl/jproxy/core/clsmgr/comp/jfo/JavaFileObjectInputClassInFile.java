@@ -10,30 +10,25 @@ import java.io.InputStream;
 import java.net.URI;
 
 /**
- *
  * @author jmarranz
  */
-public class JavaFileObjectInputClassInFile extends JavaFileObjectInputClassInFileSystem 
-{
+public class JavaFileObjectInputClassInFile extends JavaFileObjectInputClassInFileSystem {
     protected File file;
-    
-    public JavaFileObjectInputClassInFile(File file, String binaryName, @NotNull URI uri)
-    {
-        super(binaryName,uri,uri.getPath());
+
+    public JavaFileObjectInputClassInFile(File file, String binaryName, @NotNull URI uri) {
+        super(binaryName, uri, uri.getPath());
         this.file = file;
     }
 
     @NotNull
     @Override
-    public InputStream openInputStream() throws IOException 
-    {
+    public InputStream openInputStream() throws IOException {
         // Podríamos hacer uri.toURL().openStream() pero si tenemos el File es para algo
-        return new BufferedInputStream(new FileInputStream(file),10 * 1024); 
+        return new BufferedInputStream(new FileInputStream(file), 10 * 1024);
     }
-    
+
     @Override
-    public long getLastModified() 
-    {
+    public long getLastModified() {
         return file.lastModified();
     }
 

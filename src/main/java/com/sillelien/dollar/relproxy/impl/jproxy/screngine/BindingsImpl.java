@@ -5,10 +5,8 @@ import java.util.HashMap;
 import javax.script.Bindings;
 
 /**
- *
  * @author jmarranz
  */
-public class BindingsImpl extends HashMap<String, Object> implements Bindings
-{
+public class BindingsImpl extends HashMap<String, Object> implements Bindings {
 
 }

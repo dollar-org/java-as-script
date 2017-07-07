@@ -1,25 +1,20 @@
 package com.sillelien.dollar.relproxy.impl.jproxy.shell.inter;
 
 /**
- *
  * @author jmarranz
  */
-public class CommandError extends Command
-{
-    public CommandError(JProxyShellProcessor parent)
-    {
+public class CommandError extends Command {
+    public CommandError(JProxyShellProcessor parent) {
         super(parent, "ERROR");
     }
 
     @Override
-    public boolean run()
-    {
+    public boolean run() {
         return false;
     }
 
     @Override
-    public void runPostCommand()
-    {
+    public void runPostCommand() {
     }
-    
+
 }

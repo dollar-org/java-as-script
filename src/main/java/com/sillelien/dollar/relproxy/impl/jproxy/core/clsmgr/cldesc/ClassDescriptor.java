@@ -5,11 +5,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 
 /**
- *
  * @author jmarranz
  */
-public abstract class ClassDescriptor 
-{
+public abstract class ClassDescriptor {
     @NotNull
     protected final String className; // El nombre basado en puntos pero usando $ en el caso de innerclasses
     @NotNull
@@ -17,59 +15,50 @@ public abstract class ClassDescriptor
     @NotNull
     protected final String packageName; // El package pero acabado en un "." o bien "" si no hay package, el motivo de acabar en un punto es simplemente para poder concatenar ciegamente el package y el simpleClassName
     protected byte[] classBytes;
-    protected Class clasz;    
-    
-    public ClassDescriptor(@NotNull String className)
-    {
+    protected Class clasz;
+
+    public ClassDescriptor(@NotNull String className) {
         this.className = className;
         int pos = className.lastIndexOf('.');
         this.simpleClassName = (pos != -1) ? className.substring(pos + 1) : className;
-        this.packageName = (pos != -1) ? className.substring(0,pos + 1) : "";  // SE INCLUYE EL . en el caso de existir package
+        this.packageName = (pos != -1) ? className.substring(0, pos + 1) : "";  // SE INCLUYE EL . en el caso de existir package
     }
-    
+
     public abstract boolean isInnerClass();
-    
+
     @NotNull
-    public String getClassName()
-    {
+    public String getClassName() {
         return className;
     }
-        
+
     @NotNull
-    public String getSimpleClassName()
-    {
+    public String getSimpleClassName() {
         return simpleClassName;
     }
-    
+
     @NotNull
-    public String getPackageName()
-    {
+    public String getPackageName() {
         return packageName;
-    }    
-    
-    public byte[] getClassBytes() 
-    {
+    }
+
+    public byte[] getClassBytes() {
         return classBytes;
     }
-    
-    public void setClassBytes(byte[] classBytes)
-    {
+
+    public void setClassBytes(byte[] classBytes) {
         this.classBytes = classBytes;
     }
 
-    public Class getLastLoadedClass() 
-    {
+    public Class getLastLoadedClass() {
         return clasz;
     }
 
-    public void setLastLoadedClass(Class clasz) 
-    {
+    public void setLastLoadedClass(Class clasz) {
         this.clasz = clasz;
-    }    
+    }
 
-    public void resetLastLoadedClass()
-    {
-        setLastLoadedClass(null); 
+    public void resetLastLoadedClass() {
+        setLastLoadedClass(null);
     }    
     
     /*
@@ -78,46 +67,40 @@ public abstract class ClassDescriptor
         return getClassFileNameFromClassName(className);
     }
     */
-    
-    public static String getClassFileNameFromClassName(@NotNull String className)
-    {
+
+    public static String getClassFileNameFromClassName(@NotNull String className) {
         // Es válido también para las innerclasses (ej Nombre$Otro => Nombre$Otro.class,  Nombre$1 => Nombre$1.class, Nombre$1Nombre => Nombre$1Nombre.class 
         int pos = className.lastIndexOf(".");
-        if(pos != -1) className = className.substring(pos + 1);
-        return className + ".class";    
+        if (pos != -1) className = className.substring(pos + 1);
+        return className + ".class";
     }
-    
-    public static String getRelativeClassFilePathFromClassName(@NotNull String className)
-    {
-        return className.replace('.','/') + ".class";    // alternativa: className.replaceAll("\\.", "/") + ".class"
+
+    public static String getRelativeClassFilePathFromClassName(@NotNull String className) {
+        return className.replace('.', '/') + ".class";    // alternativa: className.replaceAll("\\.", "/") + ".class"
     }
-    
+
     @NotNull
-    public static String getRelativePackagePathFromClassName(@NotNull String className)
-    {
-        String packageName = className.replace('.','/');  
+    public static String getRelativePackagePathFromClassName(@NotNull String className) {
+        String packageName = className.replace('.', '/');
         int pos = packageName.lastIndexOf('/');
         if (pos == -1) return packageName;
-        return packageName.substring(0,pos);
-    }    
-    
-    public static File getAbsoluteClassFilePathFromClassNameAndClassPath(@NotNull String className, String classPath)
-    {
+        return packageName.substring(0, pos);
+    }
+
+    public static File getAbsoluteClassFilePathFromClassNameAndClassPath(@NotNull String className, String classPath) {
         String relativePath = getRelativeClassFilePathFromClassName(className);
         classPath = classPath.trim();
-        if (!classPath.endsWith("/") && !classPath.endsWith("\\")) classPath += File.separatorChar;        
-        return new File(classPath + relativePath); 
-    }    
-    
-    public static String getClassNameFromRelativeClassFilePath(@NotNull String path)
-    {
+        if (!classPath.endsWith("/") && !classPath.endsWith("\\")) classPath += File.separatorChar;
+        return new File(classPath + relativePath);
+    }
+
+    public static String getClassNameFromRelativeClassFilePath(@NotNull String path) {
         // Ej. org/w3c/dom/Element.class => org.w3c.dom.Element
         String binaryName = path.replaceAll("/", ".");
         return binaryName.replaceAll(".class$", "");    // El $ indica "el .class del final" 
     }
-    
-    public static String getClassNameFromPackageAndClassFileName(String packageName,String fileName)
-    {
+
+    public static String getClassNameFromPackageAndClassFileName(String packageName, String fileName) {
         String className = packageName + "." + fileName;
         return className.replaceAll(".class$", "");    // El $ indica "el .class del final" 
     }

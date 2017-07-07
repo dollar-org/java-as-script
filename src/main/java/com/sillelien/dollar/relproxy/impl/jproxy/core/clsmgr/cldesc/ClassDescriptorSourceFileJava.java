@@ -6,25 +6,20 @@ import com.sillelien.dollar.relproxy.impl.jproxy.core.clsmgr.srcunit.SourceFileJ
 import org.jetbrains.annotations.NotNull;
 
 /**
- *
  * @author jmarranz
  */
-public class ClassDescriptorSourceFileJava extends ClassDescriptorSourceUnit
-{
-    public ClassDescriptorSourceFileJava(JProxyEngine engine, @NotNull String className, SourceFileJavaNormal sourceFile, long timestamp)
-    {
-        super(engine,className, sourceFile, timestamp);
+public class ClassDescriptorSourceFileJava extends ClassDescriptorSourceUnit {
+    public ClassDescriptorSourceFileJava(JProxyEngine engine, @NotNull String className, SourceFileJavaNormal sourceFile, long timestamp) {
+        super(engine, className, sourceFile, timestamp);
     }
-    
+
     @NotNull
-    public SourceFileJavaNormal getSourceFileJavaNormal()
-    {
-        return (SourceFileJavaNormal)sourceUnit;
+    public SourceFileJavaNormal getSourceFileJavaNormal() {
+        return (SourceFileJavaNormal) sourceUnit;
     }
-    
-    public FileExt getSourceFile()
-    {
+
+    public FileExt getSourceFile() {
         return getSourceFileJavaNormal().getFileExt();
-    }    
-     
+    }
+
 }

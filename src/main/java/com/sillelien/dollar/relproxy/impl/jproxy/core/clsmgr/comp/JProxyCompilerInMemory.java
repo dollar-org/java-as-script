@@ -26,74 +26,59 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
 /**
- *
  * @author jmarranz
  */
-public class JProxyCompilerInMemory
-{
+public class JProxyCompilerInMemory {
     protected JProxyEngineChangeDetectorAndCompiler parent;
     protected JavaCompiler compiler;
     protected Iterable<String> compilationOptions; // puede ser null
     protected JProxyDiagnosticsListener diagnosticsListener; // puede ser null
 
-    public JProxyCompilerInMemory(JProxyEngineChangeDetectorAndCompiler engine,Iterable<String> compilationOptions,JProxyDiagnosticsListener diagnosticsListener)
-    {
+    public JProxyCompilerInMemory(JProxyEngineChangeDetectorAndCompiler engine, Iterable<String> compilationOptions, JProxyDiagnosticsListener diagnosticsListener) {
         this.parent = engine;
         this.compilationOptions = compilationOptions;
         this.diagnosticsListener = diagnosticsListener;
-        this.compiler = ToolProvider.getSystemJavaCompiler();       
+        this.compiler = ToolProvider.getSystemJavaCompiler();
     }
-    
+
     @NotNull
-    public JProxyCompilerContext createJProxyCompilerContext()
-    {
+    public JProxyCompilerContext createJProxyCompilerContext() {
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
-        StandardJavaFileManager standardFileManager = compiler.getStandardFileManager(diagnostics, null, null);   
-        return new JProxyCompilerContext(standardFileManager,diagnostics,diagnosticsListener);
+        StandardJavaFileManager standardFileManager = compiler.getStandardFileManager(diagnostics, null, null);
+        return new JProxyCompilerContext(standardFileManager, diagnostics, diagnosticsListener);
     }
-    
-    public void compileSourceFile(@NotNull ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, ClassLoader currentClassLoader, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry)
-    {
+
+    public void compileSourceFile(@NotNull ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, ClassLoader currentClassLoader, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry) {
         //File sourceFile = sourceFileDesc.getSourceFile();
-        LinkedList<JavaFileObjectOutputClass> outClassList = compile(sourceFileDesc,context,currentClassLoader,sourceRegistry);
-        
-        if (outClassList == null) 
+        LinkedList<JavaFileObjectOutputClass> outClassList = compile(sourceFileDesc, context, currentClassLoader, sourceRegistry);
+
+        if (outClassList == null)
             throw new JProxyCompilationException(sourceFileDesc);
-        
-        String className = sourceFileDesc.getClassName();        
-        
+
+        String className = sourceFileDesc.getClassName();
+
         // Puede haber más de un resultado cuando hay inner classes y/o clase privada en el mismo archivo o bien simplemente clases dependientes
-        for(JavaFileObjectOutputClass outClass : outClassList)
-        {
+        for (JavaFileObjectOutputClass outClass : outClassList) {
             String currClassName = outClass.binaryName();
-            byte[] classBytes = outClass.getBytes();            
-            if (className.equals(currClassName))            
-            {
-                sourceFileDesc.setClassBytes(classBytes); 
-            }
-            else
-            {
-                ClassDescriptorInner innerClass = sourceFileDesc.getInnerClassDescriptor(currClassName,true);
-                if (innerClass != null)
-                {            
-                    innerClass.setClassBytes(classBytes);                       
-                }
-                else
-                {
+            byte[] classBytes = outClass.getBytes();
+            if (className.equals(currClassName)) {
+                sourceFileDesc.setClassBytes(classBytes);
+            } else {
+                ClassDescriptorInner innerClass = sourceFileDesc.getInnerClassDescriptor(currClassName, true);
+                if (innerClass != null) {
+                    innerClass.setClassBytes(classBytes);
+                } else {
                     // Lo mismo es un archivo dependiente e incluso una inner class pero de otra clase que está siendo usada en el archivo compilado
                     ClassDescriptor dependentClass = sourceRegistry.getClassDescriptor(currClassName);
-                    if (dependentClass != null)
-                    {
-                        dependentClass.setClassBytes(classBytes); 
-                    }
-                    else
-                    {
+                    if (dependentClass != null) {
+                        dependentClass.setClassBytes(classBytes);
+                    } else {
                         // Seguramente es debido a que el archivo java tiene una clase privada autónoma declarada en el mismo archivo .java (las que se ponen después de la clase principal pública normal), no permitimos estas clases porque sólo podemos
                         // detectarlas cuando cambiamos el código fuente, pero no si el código fuente no se ha tocado, por ejemplo no tenemos
                         // forma de conseguir que se recarguen de forma determinista y si posteriormente se cargara via ClassLoader al usarse no podemos reconocer que es una clase
                         // "hot reloadable" (quizás a través del package respecto a las demás clases hot pero no es muy determinista pues nada impide la mezcla de hot y no hot en el mismo package)
                         // Es una limitación mínima.
-                        
+
                         // También puede ser un caso de clase excluida por el listener de exclusión, no debería ocurrir, tengo un caso de test en donde ocurre a posta 
                         // (caso de JProxyExampleAuxIgnored cuando se cambia la JProxyExampleDocument que la usa) pero en programación normal no.
 
@@ -105,10 +90,9 @@ public class JProxyCompilerInMemory
                 }
             }
         }
-    }        
-    
-    private LinkedList<JavaFileObjectOutputClass> compile(ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, ClassLoader currentClassLoader, ClassDescriptorSourceFileRegistry sourceRegistry)
-    {
+    }
+
+    private LinkedList<JavaFileObjectOutputClass> compile(ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, ClassLoader currentClassLoader, ClassDescriptorSourceFileRegistry sourceRegistry) {
         // http://stackoverflow.com/questions/12173294/compiling-fully-in-memory-with-javax-tools-javacompiler
         // http://www.accordess.com/wpblog/an-overview-of-java-compilation-api-jsr-199/
         // http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/com/sun/tools/javac/util/JavacFileManager.java?av=h#JavacFileManager
@@ -123,66 +107,58 @@ public class JProxyCompilerInMemory
 
 
         StandardJavaFileManager standardFileManager = context.getStandardFileManager(); // recuerda que el StandardJavaFileManager puede reutilizarse entre varias compilaciones consecutivas mientras se cierre al final
-     
+
         Iterable<? extends JavaFileObject> compilationUnits;
 
-        if (sourceFileDesc instanceof ClassDescriptorSourceFileJava)
-        {
+        if (sourceFileDesc instanceof ClassDescriptorSourceFileJava) {
             List<File> sourceFileList = new ArrayList<File>();
-            sourceFileList.add(((ClassDescriptorSourceFileJava)sourceFileDesc).getSourceFile().getFile());            
+            sourceFileList.add(((ClassDescriptorSourceFileJava) sourceFileDesc).getSourceFile().getFile());
             compilationUnits = standardFileManager.getJavaFileObjectsFromFiles(sourceFileList);
-        }
-        else if (sourceFileDesc instanceof ClassDescriptorSourceScript)
-        {
-            ClassDescriptorSourceScript sourceFileDescScript = (ClassDescriptorSourceScript)sourceFileDesc;
-            LinkedList<JavaFileObject> compilationUnitsList = new LinkedList<JavaFileObject>();            
+        } else if (sourceFileDesc instanceof ClassDescriptorSourceScript) {
+            ClassDescriptorSourceScript sourceFileDescScript = (ClassDescriptorSourceScript) sourceFileDesc;
+            LinkedList<JavaFileObject> compilationUnitsList = new LinkedList<JavaFileObject>();
             String code = sourceFileDescScript.getSourceCode();
-            compilationUnitsList.add(new JavaFileObjectInputSourceInMemory(sourceFileDescScript.getClassName(),code,sourceFileDescScript.getEncoding(),sourceFileDescScript.getTimestamp()));            
-            compilationUnits = compilationUnitsList;                
-        }
-        else
-        {
+            compilationUnitsList.add(new JavaFileObjectInputSourceInMemory(sourceFileDescScript.getClassName(), code, sourceFileDescScript.getEncoding(), sourceFileDescScript.getTimestamp()));
+            compilationUnits = compilationUnitsList;
+        } else {
             throw new RelProxyException("Internal error");
         }
 
-        JavaFileManagerInMemory fileManagerInMemory = new JavaFileManagerInMemory(standardFileManager,currentClassLoader,sourceRegistry,parent.getRequiredExtraJarPaths());
+        JavaFileManagerInMemory fileManagerInMemory = new JavaFileManagerInMemory(standardFileManager, currentClassLoader, sourceRegistry, parent.getRequiredExtraJarPaths());
 
-        boolean success = compile(compilationUnits,fileManagerInMemory,context);
+        boolean success = compile(compilationUnits, fileManagerInMemory, context);
         if (!success) return null;
 
         LinkedList<JavaFileObjectOutputClass> classObj = fileManagerInMemory.getJavaFileObjectOutputClassList();
         return classObj;
     }
 
-    private boolean compile(Iterable<? extends JavaFileObject> compilationUnits, JavaFileManager fileManager, @NotNull JProxyCompilerContext context)
-    {
+    private boolean compile(Iterable<? extends JavaFileObject> compilationUnits, JavaFileManager fileManager, @NotNull JProxyCompilerContext context) {
         /*
         String systemClassPath = System.getProperty("java.class.path");
         */
 
         LinkedList<String> finalCompilationOptions = new LinkedList<String>();
-        if (compilationOptions != null)        
-            for(String option : compilationOptions) finalCompilationOptions.add(option);
-        
+        if (compilationOptions != null)
+            for (String option : compilationOptions) finalCompilationOptions.add(option);
+
         FileExt[] folderSourceList = parent.getFolderSourceList().getArray();
-        if (folderSourceList != null)
-        {
+        if (folderSourceList != null) {
             finalCompilationOptions.add("-classpath");
             StringBuilder classPath = new StringBuilder();
-            for(int i = 0; i < folderSourceList.length; i++)
-            {
+            for (int i = 0; i < folderSourceList.length; i++) {
                 FileExt folderSources = folderSourceList[i];
                 classPath.append(folderSources.getCanonicalPath());
                 if (i < folderSourceList.length - 1)
-                    classPath.append(File.pathSeparatorChar);       
+                    classPath.append(File.pathSeparatorChar);
             }
-            finalCompilationOptions.add(classPath.toString());               
+            finalCompilationOptions.add(classPath.toString());
         }
-        
+
         DiagnosticCollector<JavaFileObject> diagnostics = context.getDiagnosticCollector();
-        JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, finalCompilationOptions,null, compilationUnits);
+        JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, finalCompilationOptions, null, compilationUnits);
         boolean success = task.call();
-        
+
         return success;
     }
 

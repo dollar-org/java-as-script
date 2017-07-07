@@ -14,35 +14,29 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- *
  * @author jmarranz
  */
-public abstract class JProxyImpl extends GenericProxyImpl
-{
-    public static JProxyImpl SINGLETON;      
+public abstract class JProxyImpl extends GenericProxyImpl {
+    public static JProxyImpl SINGLETON;
     protected JProxyEngine engine;
 
-    
-    protected JProxyImpl()
-    {
+
+    protected JProxyImpl() {
     }
-    
-    public static ClassLoader getDefaultClassLoader()
-    {
+
+    public static ClassLoader getDefaultClassLoader() {
         return Thread.currentThread().getContextClassLoader();
     }
-    
+
     @Nullable
-    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config)
-    {    
-        return init(config,null,null);
-    }    
-    
+    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config) {
+        return init(config, null, null);
+    }
+
     @Nullable
-    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config, SourceScriptRoot scriptFile, ClassLoader classLoader)
-    {
+    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config, SourceScriptRoot scriptFile, ClassLoader classLoader) {
         super.init(config);
-        
+
         FolderSourceList folderSourceList = config.getFolderSourceList();
         FolderSourceList requiredExtraJarPaths = config.getRequiredExtraJarPaths();
         JProxyInputSourceFileExcludedListener excludedListener = config.getJProxyInputSourceFileExcludedListener();
@@ -52,45 +46,39 @@ public abstract class JProxyImpl extends GenericProxyImpl
         Iterable<String> compilationOptions = config.getCompilationOptions();
         JProxyDiagnosticsListener diagnosticsListener = config.getJProxyDiagnosticsListener();
         boolean enabled = config.isEnabled();
-        
-        classLoader = classLoader != null ? classLoader : getDefaultClassLoader();      
-        this.engine = new JProxyEngine(this,enabled,scriptFile,classLoader,folderSourceList,requiredExtraJarPaths,classFolder,scanPeriod,excludedListener,compilerListener,compilationOptions,diagnosticsListener);          
-        
+
+        classLoader = classLoader != null ? classLoader : getDefaultClassLoader();
+        this.engine = new JProxyEngine(this, enabled, scriptFile, classLoader, folderSourceList, requiredExtraJarPaths, classFolder, scanPeriod, excludedListener, compilerListener, compilationOptions, diagnosticsListener);
+
         return engine.init();
-    }    
-       
-    public JProxyEngine getJProxyEngine()
-    {
+    }
+
+    public JProxyEngine getJProxyEngine() {
         return engine;
     }
-    
-    public boolean isEnabled()
-    {
+
+    public boolean isEnabled() {
         return engine.isEnabled();
     }
-    
-    public boolean isRunning()
-    {       
+
+    public boolean isRunning() {
         return engine.isRunning();
-    }       
-    
-    public boolean stop()
-    {       
+    }
+
+    public boolean stop() {
         return engine.stop();
-    }                
-    
-    public boolean start()
-    {       
+    }
+
+    public boolean start() {
         return engine.start();
-    }     
-    
+    }
+
     @NotNull
     @Override
-    public GenericProxyInvocationHandler createGenericProxyInvocationHandler(@NotNull Object obj)
-    {
-        return new JProxyInvocationHandler(obj,this);
+    public GenericProxyInvocationHandler createGenericProxyInvocationHandler(@NotNull Object obj) {
+        return new JProxyInvocationHandler(obj, this);
     }
-    
+
     @Nullable
     public abstract Class getMainParamClass();
 }
