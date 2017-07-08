@@ -4,10 +4,10 @@ import com.sillelien.jas.RelProxy;
 import com.sillelien.jas.jproxy.JProxyScriptEngineFactory;
 import org.jetbrains.annotations.NotNull;
 
+import javax.script.ScriptEngine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.script.ScriptEngine;
 
 /**
  * Ideas: http://grepcode.com/file/repo1.maven.org/maven2/org.codehaus.groovy/groovy/1.6.0/org/codehaus/groovy/jsr223/GroovyScriptEngineFactory.java
@@ -88,11 +88,14 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory {
         return LANGUAGE_NAME;
     }
 
+    @SuppressWarnings("ConstantConditions")
+    @NotNull
     @Override
     public String getLanguageVersion() {
         return System.getProperty("java.version"); // Ej 1.6.0_18
     }
 
+    @NotNull
     @Override
     public Object getParameter(String key) {
         if (ScriptEngine.NAME.equals(key)) {

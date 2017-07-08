@@ -2,6 +2,9 @@
     <item name='java.lang.Class java.lang.String getName()'>
         <annotation name='org.jetbrains.annotations.NotNull'/>
     </item>
+    <item name='java.lang.ClassLoader java.lang.Class&lt;?&gt; defineClass(java.lang.String, byte[], int, int)'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
     <item name='java.lang.ClassLoader java.util.Enumeration&lt;java.net.URL&gt; getResources(java.lang.String)'>
         <annotation name='org.jetbrains.annotations.NotNull'/>
     </item>

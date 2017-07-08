@@ -17,15 +17,32 @@ import java.io.File;
  * @author jmarranz
  */
 public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JProxyConfig {
+    @Nullable
     protected File folderSources;
+
+    @Nullable
     protected FolderSourceList folderSourceList;
+
+    @Nullable
     protected FolderSourceList requiredExtraJarPaths;
+
+    @Nullable
     protected JProxyInputSourceFileExcludedListener excludedListener;
+
+    @Nullable
     protected JProxyCompilerListener compilerListener;
+
+    @Nullable
     protected String classFolder;
+
     protected long scanPeriod = -1;
+
+    @Nullable
     protected Iterable<String> compilationOptions;
+
+    @Nullable
     protected JProxyDiagnosticsListener diagnosticsListener;
+
     protected boolean test = false;
 
     @NotNull
@@ -45,7 +62,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
     @NotNull
     @Override
     public JProxyConfig setInputPath(@Nullable String inputPath) {
-        @NotNull String[] inputPaths = inputPath != null ? new String[]{inputPath} : null;
+        String[] inputPaths = inputPath != null ? new String[]{inputPath} : null;
         setInputPaths(inputPaths); // inputPath es null en el caso de shell interactive
         return this;
     }
@@ -107,22 +124,27 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         return this;
     }
 
+    @Nullable
     public FolderSourceList getFolderSourceList() {
         return folderSourceList;
     }
 
+    @Nullable
     public FolderSourceList getRequiredExtraJarPaths() {
         return requiredExtraJarPaths;
     }
 
+    @Nullable
     public JProxyInputSourceFileExcludedListener getJProxyInputSourceFileExcludedListener() {
         return excludedListener;
     }
 
+    @Nullable
     public JProxyCompilerListener getJProxyCompilerListener() {
         return compilerListener;
     }
 
+    @Nullable
     public String getClassFolder() {
         return classFolder;
     }
@@ -131,10 +153,12 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         return scanPeriod;
     }
 
+    @Nullable
     public Iterable<String> getCompilationOptions() {
         return compilationOptions;
     }
 
+    @Nullable
     public JProxyDiagnosticsListener getJProxyDiagnosticsListener() {
         return diagnosticsListener;
     }

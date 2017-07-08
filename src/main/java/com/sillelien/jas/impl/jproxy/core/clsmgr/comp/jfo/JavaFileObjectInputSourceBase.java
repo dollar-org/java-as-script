@@ -61,6 +61,7 @@ public abstract class JavaFileObjectInputSourceBase extends SimpleJavaFileObject
         throw new UnsupportedOperationException();
     }
 
+    @NotNull
     public String getBinaryName() {
         return binaryName;
     }

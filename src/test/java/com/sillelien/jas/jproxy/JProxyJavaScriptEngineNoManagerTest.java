@@ -120,7 +120,7 @@ public class JProxyJavaScriptEngineNoManagerTest
                 .setJProxyInputSourceFileExcludedListener(null)
                 .setJProxyCompilerListener(compilerListener)
                 .setScanPeriod(scanPeriod)
-                .setClassFolder(classFolder)
+//                .setClassFolder(classFolder)
                 .setCompilationOptions(compilationOptions)
                 .setJProxyDiagnosticsListener(diagnosticsListener);
 

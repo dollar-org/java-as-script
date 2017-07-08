@@ -111,7 +111,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    public JProxyConfig setClassFolder(String classFolder);
+    public JProxyConfig setClassFolder(@Nullable String classFolder);
 
     /**
      * Sets the delay between source code change checking.

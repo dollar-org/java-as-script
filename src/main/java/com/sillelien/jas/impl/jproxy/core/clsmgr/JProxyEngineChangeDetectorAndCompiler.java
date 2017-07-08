@@ -1,18 +1,18 @@
 package com.sillelien.jas.impl.jproxy.core.clsmgr;
 
-import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootInMemory;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceUnit;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootFile;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceFileJavaNormal;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileRegistry;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorInner;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
 import com.sillelien.jas.impl.jproxy.JProxyUtil;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorInner;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileRegistry;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.JProxyCompilerContext;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.JProxyCompilerInMemory;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceFileJavaNormal;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootFile;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootInMemory;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceUnit;
 import com.sillelien.jas.jproxy.JProxyCompilerListener;
 import com.sillelien.jas.jproxy.JProxyDiagnosticsListener;
 import com.sillelien.jas.jproxy.JProxyInputSourceFileExcludedListener;
@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Objects;
 
 /**
  * @author jmarranz
@@ -31,15 +32,15 @@ public class JProxyEngineChangeDetectorAndCompiler {
     protected final JProxyEngine engine;
     @NotNull
     protected final JProxyCompilerInMemory compiler;
-    @NotNull
+    @Nullable
     protected final FolderSourceList folderSourceList;
-    @NotNull
+    @Nullable
     protected final FolderSourceList requiredExtraJarPaths;
-    @NotNull
+    @Nullable
     protected final SourceScriptRoot scriptFile; // Puede ser nulo
     @Nullable
     protected final String folderClasses; // Puede ser nulo (es decir NO salvar como .class los cambios)
-    @NotNull
+    @Nullable
     protected final JProxyInputSourceFileExcludedListener excludedListener;
     @NotNull
     protected final JavaSourcesSearch sourcesSearch;
@@ -51,12 +52,12 @@ public class JProxyEngineChangeDetectorAndCompiler {
     protected volatile ClassDescriptorSourceFileRegistry sourceRegistry;
 
     public JProxyEngineChangeDetectorAndCompiler(@NotNull JProxyEngine engine,
-                                                 @NotNull SourceScriptRoot scriptFile,
-                                                 @NotNull FolderSourceList folderSourceList,
-                                                 @NotNull FolderSourceList requiredExtraJarPaths,
+                                                 @Nullable SourceScriptRoot scriptFile,
+                                                 @Nullable FolderSourceList folderSourceList,
+                                                 @Nullable FolderSourceList requiredExtraJarPaths,
                                                  @Nullable String folderClasses,
-                                                 @NotNull JProxyInputSourceFileExcludedListener excludedListener,
-                                                 @NotNull Iterable<String> compilationOptions,
+                                                 @Nullable JProxyInputSourceFileExcludedListener excludedListener,
+                                                 @Nullable Iterable<String> compilationOptions,
                                                  @Nullable JProxyDiagnosticsListener diagnosticsListener,
                                                  @Nullable JProxyCompilerListener compilerListener) {
         this.engine = engine;
@@ -75,17 +76,17 @@ public class JProxyEngineChangeDetectorAndCompiler {
         return engine;
     }
 
-    @NotNull
+    @Nullable
     public FolderSourceList getFolderSourceList() {
         return folderSourceList;
     }
 
-    @NotNull
+    @Nullable
     public FolderSourceList getRequiredExtraJarPaths() {
         return requiredExtraJarPaths;
     }
 
-    @NotNull
+    @Nullable
     public JProxyInputSourceFileExcludedListener getJProxyInputSourceFileExcludedListener() {
         return excludedListener;
     }
@@ -122,20 +123,24 @@ public class JProxyEngineChangeDetectorAndCompiler {
         if (sourceFile.getClassBytes() != null)
             return; // Ya ha sido compilado seguramente por dependencia de un archivo compilado inmediatamente antes, recuerda que el atributo classBytes se pone a null antes de compilar los archivos cambiados/nuevos
 
-        compiler.compileSourceFile(sourceFile, context, engine.getCurrentClassLoader(), sourceRegistry);
+        ClassLoader currentClassLoader = engine.getCurrentClassLoader();
+        assert currentClassLoader != null;
+        compiler.compileSourceFile(sourceFile, context, currentClassLoader, sourceRegistry);
     }
 
+    @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
     @Nullable
     public ClassDescriptorSourceScript detectChangesInSources() {
         Object monitor = getJProxyEngine().getMonitor();
 
         boolean firstTime;
 
+        ClassDescriptorSourceFileRegistry sourceRegistry = this.sourceRegistry;
         synchronized (monitor) {
-            if (this.sourceRegistry == null) // Es null la primera vez
-            {
+            if (sourceRegistry == null) /* Es null la primera vez*/ {
                 firstTime = true;
-                this.sourceRegistry = new ClassDescriptorSourceFileRegistry();
+                sourceRegistry= new ClassDescriptorSourceFileRegistry();
+                this.sourceRegistry= sourceRegistry;
             } else {
                 firstTime = false;
                 sourceRegistry.setAllClassDescriptorSourceFilesPendingToRemove(true); // A medida que los vamos encontrando ponemos a false, es mucho más rápido que recrear el registro si no ha cambiado nada (lo normal)
@@ -234,6 +239,7 @@ public class JProxyEngineChangeDetectorAndCompiler {
             boolean setPendingReload = true;
             if (sourceFilesToCompile.size() == 1) {
                 ClassDescriptorSourceUnit sourceFile = sourceFilesToCompile.get(0);
+                assert sourceFile != null;
                 SourceUnit sourceUnit = sourceFile.getSourceUnit();
                 if ((sourceUnit instanceof SourceScriptRootInMemory) && ((SourceScriptRootInMemory) sourceUnit).isEmptyCode()) {
                     // Leer notas en SourceScriptRootInMemory.isEmptyCode() de esta manera evitamos crear un ClassLoader nuevo inútilmente por culpa de una clase
@@ -254,8 +260,10 @@ public class JProxyEngineChangeDetectorAndCompiler {
     private void saveClasses(@NotNull ClassDescriptorSourceUnit sourceFile) {
         // Salvamos la clase principal
         {
-            File classFilePath = ClassDescriptor.getAbsoluteClassFilePathFromClassNameAndClassPath(sourceFile.getClassName(), folderClasses);
-            JProxyUtil.saveFile(classFilePath, sourceFile.getClassBytes());
+            assert folderClasses != null;
+            File classFilePath = ClassDescriptor.getAbsoluteClassFilePathFromClassNameAndClassPath(Objects.requireNonNull(sourceFile).getClassName(), folderClasses);
+            @Nullable byte[] classBytes = Objects.requireNonNull(sourceFile).getClassBytes();
+            JProxyUtil.saveFile(classFilePath, Objects.requireNonNull(classBytes));
         }
 
         // Salvamos las innerclasses si hay, no hay problema de clases inner no detectadas pues lo están todas pues sólo se salva tras una compilación
@@ -263,7 +271,7 @@ public class JProxyEngineChangeDetectorAndCompiler {
         if (innerClassDescList != null && !innerClassDescList.isEmpty()) {
             for (ClassDescriptorInner innerClassDesc : innerClassDescList) {
                 File classFilePath = ClassDescriptor.getAbsoluteClassFilePathFromClassNameAndClassPath(innerClassDesc.getClassName(), folderClasses);
-                JProxyUtil.saveFile(classFilePath, innerClassDesc.getClassBytes());
+                JProxyUtil.saveFile(classFilePath, Objects.requireNonNull(innerClassDesc.getClassBytes()));
             }
         }
     }
@@ -280,8 +288,11 @@ public class JProxyEngineChangeDetectorAndCompiler {
         // La solución sería en tiempo de carga forzar una carga de todas las clases y de ahí deducir todos los .class que deben existir (excepto las clases locales
         // que no podríamos detectarlas), pero el que haya .class sobrantes antiguos no es gran problema.
 
+        String folderClasses = this.folderClasses;
+        assert folderClasses != null;
         File classFilePath = ClassDescriptor.getAbsoluteClassFilePathFromClassNameAndClassPath(sourceFile.getClassName(), folderClasses);
         File parentDir = JProxyUtil.getParentDir(classFilePath);
+        assert parentDir != null;
         String[] fileNameList = parentDir.list(); // Es más ligero que listFiles() que crea File por cada resultado
         if (fileNameList != null) // Si es null es que el directorio no está creado
         {

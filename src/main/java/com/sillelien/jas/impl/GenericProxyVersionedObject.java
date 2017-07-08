@@ -44,10 +44,12 @@ public abstract class GenericProxyVersionedObject {
         }
     }
 
+    @NotNull
     public Object getCurrent() {
         return obj;
     }
 
+    @NotNull
     public Object getNewVersion() throws Throwable {
         Class<?> newClass = reloadClass();
         if (newClass == null)

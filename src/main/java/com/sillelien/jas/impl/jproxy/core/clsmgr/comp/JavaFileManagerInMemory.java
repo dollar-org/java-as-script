@@ -42,7 +42,7 @@ public class JavaFileManagerInMemory extends ForwardingJavaFileManager {
     @NotNull
     private final ClassDescriptorSourceFileRegistry sourceRegistry;
 
-    public JavaFileManagerInMemory(@NotNull StandardJavaFileManager standardFileManager, @NotNull ClassLoader classLoader, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry, @NotNull FolderSourceList requiredExtraJarPaths) {
+    public JavaFileManagerInMemory(@NotNull StandardJavaFileManager standardFileManager, @NotNull ClassLoader classLoader, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry, @Nullable FolderSourceList requiredExtraJarPaths) {
         super(standardFileManager);
         this.sourceRegistry = sourceRegistry;
         this.classFinder = new JavaFileObjectInputClassFinderByClassLoader(classLoader, requiredExtraJarPaths);
@@ -62,6 +62,7 @@ public class JavaFileManagerInMemory extends ForwardingJavaFileManager {
         return outClass;
     }
 
+    @NotNull
     @Override
     public Iterable list(Location location, @NotNull String packageName, @NotNull Set kinds, boolean recurse) throws IOException {
         if (location == StandardLocation.PLATFORM_CLASS_PATH) // let standard manager hanfle         

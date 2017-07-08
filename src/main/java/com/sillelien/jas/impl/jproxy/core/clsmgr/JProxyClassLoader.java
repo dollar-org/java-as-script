@@ -21,18 +21,21 @@ public class JProxyClassLoader extends ClassLoader {
         this.engine = engine;
     }
 
+    @NotNull
     public Class defineClass(@NotNull ClassDescriptor classDesc) {
         Object monitor = engine.getMonitor();
         synchronized (monitor) {
             String className = classDesc.getClassName();
             byte[] classBytes = classDesc.getClassBytes();
-            Class clasz = defineClass(className, classBytes, 0, classBytes.length);
+            assert classBytes != null;
+            @NotNull Class clasz = defineClass(className, classBytes, 0, classBytes.length);
             classDesc.setLastLoadedClass(clasz);
             return clasz;
         }
     }
 
     @Override
+    @NotNull
     protected Class<?> findClass(@NotNull String name) throws ClassNotFoundException {
         Object monitor = engine.getMonitor();
         synchronized (monitor) {
@@ -51,7 +54,7 @@ public class JProxyClassLoader extends ClassLoader {
         }
     }
 
-    @Nullable
+    @NotNull
     public Class loadClass(@NotNull ClassDescriptor classDesc, boolean resolve) {
         Object monitor = engine.getMonitor();
         synchronized (monitor) {
@@ -72,16 +75,27 @@ public class JProxyClassLoader extends ClassLoader {
             ClassDescriptor classDesc = parentDesc.getInnerClassDescriptor(innerClassName, false);
             if (classDesc == null || classDesc.getClassBytes() == null) {
                 byte[] classBytes = getClassBytesFromResource(innerClassName);
-                if (classBytes == null) return null;
-                if (classDesc == null) classDesc = parentDesc.addInnerClassDescriptor(innerClassName);
-                classDesc.setClassBytes(classBytes);
+                if (classBytes == null) {
+                    return null;
+                }
+                if (classDesc == null) {
+                    classDesc = parentDesc.addInnerClassDescriptor(innerClassName);
+                }
+                if (classDesc != null) {
+                    classDesc.setClassBytes(classBytes);
+                }
             }
 
-            return defineClass(classDesc);
+            if (classDesc != null) {
+                return defineClass(classDesc);
+            } else {
+                return null;
+            }
         }
     }
 
     @Override
+    @NotNull
     protected Class<?> loadClass(@NotNull String name, boolean resolve) throws ClassNotFoundException {
         // Inspiraciones en URLClassLoader.findClass y en el propio análisis de ClassLoader.loadClass
         // Lo redefinimos por si acaso porque el objetivo es recargar todas las clases hot-reloaded en este ClassLoader y no delegar en el parent 
@@ -115,7 +129,10 @@ public class JProxyClassLoader extends ClassLoader {
                 }
 
                 if (cls == null) {
-                    cls = getParent().loadClass(name); // Dará un ClassNotFoundException si no puede cargarla
+                    ClassLoader parent = getParent();
+                    if (parent != null) {
+                        cls = parent.loadClass(name); // Dará un ClassNotFoundException si no puede cargarla
+                    }
                 }
             }
 
@@ -128,10 +145,13 @@ public class JProxyClassLoader extends ClassLoader {
         }
     }
 
+    @Nullable
     private byte[] getClassBytesFromResource(@NotNull String className) {
         String relClassPath = ClassDescriptor.getRelativeClassFilePathFromClassName(className);
         URL urlClass = getResource(relClassPath);
-        if (urlClass == null) return null;
+        if (urlClass == null) {
+            return null;
+        }
         return JProxyUtil.readURL(urlClass);
     }
 }

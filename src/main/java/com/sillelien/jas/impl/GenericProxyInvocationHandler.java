@@ -20,13 +20,13 @@ public abstract class GenericProxyInvocationHandler implements InvocationHandler
         this.root = root;
     }
 
-    @Nullable
+    @NotNull
     private Object getCurrent() {
         assert verObj != null;
         return verObj.getCurrent();
     }
 
-    @Nullable
+    @NotNull
     private Object getNewVersion() throws Throwable {
         assert verObj != null;
         return verObj.getNewVersion();

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * @author jmarranz
  */
 public abstract class SourceScriptRootFile extends SourceScriptRoot {
-    protected FileExt sourceFile;
+    @NotNull protected FileExt sourceFile;
 
     public SourceScriptRootFile(@NotNull FileExt sourceFile, @NotNull FolderSourceList folderSourceList) {
         super(buildClassNameFromFile(sourceFile, folderSourceList));
@@ -29,6 +29,7 @@ public abstract class SourceScriptRootFile extends SourceScriptRoot {
         return sourceFile.getFile().lastModified();
     }
 
+    @NotNull
     public FileExt getFileExt() {
         return sourceFile;
     }

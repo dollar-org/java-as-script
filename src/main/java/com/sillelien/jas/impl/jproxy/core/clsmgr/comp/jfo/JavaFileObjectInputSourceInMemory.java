@@ -18,6 +18,7 @@ public class JavaFileObjectInputSourceInMemory extends JavaFileObjectInputSource
         this.timestamp = timestamp;
     }
 
+    @NotNull
     @Override
     protected String getSource() {
         return source;

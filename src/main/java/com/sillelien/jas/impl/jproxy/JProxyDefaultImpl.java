@@ -32,7 +32,7 @@ public class JProxyDefaultImpl extends JProxyImpl {
 
 
     @Nullable
-    public static <T> T createStatic(T obj, Class<T> clasz) {
+    public static <T> T createStatic(@NotNull T obj, @NotNull Class<T> clasz) {
         if (SINGLETON == null)
             return obj; // No se ha llamado al init o enabled = false
 
@@ -40,7 +40,7 @@ public class JProxyDefaultImpl extends JProxyImpl {
     }
 
     @Nullable
-    public static Object createStatic(Object obj, @NotNull Class<?>[] classes) {
+    public static Object createStatic(@NotNull Object obj, @NotNull Class<?>[] classes) {
         if (SINGLETON == null)
             return obj; // No se ha llamado al init o enabled = false
 

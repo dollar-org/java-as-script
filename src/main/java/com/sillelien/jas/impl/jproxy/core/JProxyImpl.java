@@ -18,12 +18,14 @@ import org.jetbrains.annotations.Nullable;
  */
 public abstract class JProxyImpl extends GenericProxyImpl {
     public static JProxyImpl SINGLETON;
+    @Nullable
     protected JProxyEngine engine;
 
 
     protected JProxyImpl() {
     }
 
+    @Nullable
     public static ClassLoader getDefaultClassLoader() {
         return Thread.currentThread().getContextClassLoader();
     }
@@ -34,7 +36,7 @@ public abstract class JProxyImpl extends GenericProxyImpl {
     }
 
     @Nullable
-    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config, @NotNull SourceScriptRoot scriptFile, ClassLoader classLoader) {
+    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config, @Nullable SourceScriptRoot scriptFile, @Nullable ClassLoader classLoader) {
         super.init(config);
 
         FolderSourceList folderSourceList = config.getFolderSourceList();

@@ -26,7 +26,7 @@ public class JProxyEngine {
     protected final JProxyImpl parent;
     @NotNull
     protected final JProxyEngineChangeDetectorAndCompiler delegateChangeDetector;
-    @NotNull
+    @Nullable
     protected final ClassLoader rootClassLoader;
     @Nullable
     protected JProxyClassLoader customClassLoader;
@@ -38,9 +38,9 @@ public class JProxyEngine {
     protected boolean pendingReload = false;
     protected final boolean enabled;
 
-    public JProxyEngine(@NotNull JProxyImpl parent, boolean enabled, @NotNull SourceScriptRoot scriptFile, @NotNull ClassLoader rootClassLoader, @NotNull FolderSourceList folderSourceList, @NotNull FolderSourceList requiredExtraJarPaths,
-                        String folderClasses, long scanPeriod, @NotNull JProxyInputSourceFileExcludedListener excludedListener,
-                        @NotNull JProxyCompilerListener compilerListener, @NotNull Iterable<String> compilationOptions, @NotNull JProxyDiagnosticsListener diagnosticsListener) {
+    public JProxyEngine(@NotNull JProxyImpl parent, boolean enabled, @Nullable SourceScriptRoot scriptFile, @Nullable ClassLoader rootClassLoader, @Nullable FolderSourceList folderSourceList, @Nullable FolderSourceList requiredExtraJarPaths,
+                        @Nullable String folderClasses, long scanPeriod, @Nullable JProxyInputSourceFileExcludedListener excludedListener,
+                        @Nullable JProxyCompilerListener compilerListener, @Nullable Iterable<String> compilationOptions, @Nullable JProxyDiagnosticsListener diagnosticsListener) {
         this.parent = parent;
         this.enabled = enabled;
         this.rootClassLoader = rootClassLoader;
@@ -83,10 +83,11 @@ public class JProxyEngine {
     }
     */
 
-    @NotNull
+    @Nullable
     public ClassLoader getCurrentClassLoader() {
-        if (customClassLoader != null)
+        if (customClassLoader != null) {
             return customClassLoader;
+        }
         return rootClassLoader;
     }
 
@@ -121,7 +122,7 @@ public class JProxyEngine {
     }
 
 
-    @NotNull
+    @Nullable
     public ClassLoader getRootClassLoader() {
         return rootClassLoader;
     }
@@ -172,10 +173,13 @@ public class JProxyEngine {
         // Si ya está cargada la devuelve, y si no se cargó por ningún JProxyClassLoader se intenta cargar por el parent ClassLoader, por lo que siempre devolverá distinto de null si la clase está en el classpath, que debería ser lo normal       
         synchronized (getMonitor()) {
             try {
-                if (customClassLoader != null)
+                if (customClassLoader != null) {
                     return customClassLoader.findClass(className);
-                else
+                } else {
+                    ClassLoader rootClassLoader = this.rootClassLoader;
+                    assert rootClassLoader != null;
                     return rootClassLoader.loadClass(className);
+                }
             } catch (ClassNotFoundException ex) {
                 return null;
             }
@@ -185,6 +189,7 @@ public class JProxyEngine {
     private void addNewClassLoader() {
         ClassDescriptorSourceFileRegistry sourceRegistry = delegateChangeDetector.getClassDescriptorSourceFileRegistry();
 
+        assert sourceRegistry != null;
         for (ClassDescriptorSourceUnit sourceFile : sourceRegistry.getClassDescriptorSourceFileColl()) {
             sourceFile.resetLastLoadedClass(); // resetea también las innerclasses
         }
@@ -193,7 +198,7 @@ public class JProxyEngine {
     }
 
 
-    @Nullable
+    @NotNull
     private Class reloadSource(@NotNull ClassDescriptorSourceUnit sourceFile) {
         assert customClassLoader != null;
         Class clasz = customClassLoader.loadClass(sourceFile, true);
@@ -207,6 +212,7 @@ public class JProxyEngine {
         if (innerClassDescList != null && !innerClassDescList.isEmpty()) {
             // En el caso de una clase que ha sido compilada, las inner classes se descubren todas
             for (ClassDescriptorInner innerClassDesc : innerClassDescList) {
+                assert customClassLoader != null;
                 customClassLoader.loadClass(innerClassDesc, true);
             }
         } else // Auto-Detección de innerclasses: puede ser un archivo fuente que posiblemente nunca se hayan tocado desde la carga inicial y por tanto quizás se desconocen las innerclasses
@@ -220,6 +226,7 @@ public class JProxyEngine {
             for (int i = 1; i < Integer.MAX_VALUE; i++) // No te asustes por el MAX_VALUE, se parará tras unos poquitos ciclos
             {
                 String anonClassName = sourceFile.getClassName() + "$" + i;
+                assert customClassLoader != null;
                 Class innerClasz = customClassLoader.loadInnerClass(sourceFile, anonClassName);
                 if (innerClasz == null) break; // No hay más o no hay ninguna (si i es 1)
             }
@@ -251,6 +258,7 @@ public class JProxyEngine {
 
                 ClassDescriptorSourceFileRegistry sourceRegistry = delegateChangeDetector.getClassDescriptorSourceFileRegistry();
 
+                assert sourceRegistry != null;
                 for (ClassDescriptorSourceUnit sourceFile : sourceRegistry.getClassDescriptorSourceFileColl())  // sourceRegistry NUNCA es nulo pues se ejecuta una primera vez en tiempo de inicialización
                 {
                     //    if (sourceFilesCompiled.contains(sourceFile))

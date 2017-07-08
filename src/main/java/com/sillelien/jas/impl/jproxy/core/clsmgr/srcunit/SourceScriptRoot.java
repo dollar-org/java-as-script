@@ -1,12 +1,13 @@
 package com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author jmarranz
  */
 public abstract class SourceScriptRoot extends SourceUnit {
-    public SourceScriptRoot(@NotNull String className) {
+    public SourceScriptRoot(@Nullable String className) {
         super(className);
     }
 

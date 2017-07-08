@@ -8,6 +8,7 @@ import com.sillelien.jas.impl.FileExt;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.FolderSourceList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,9 +38,10 @@ public class JavaFileObjectInputClassFinderByClassLoader {
 
     @NotNull
     private final ClassLoader classLoader;
+    @Nullable
     private final FolderSourceList requiredExtraJarPaths;
 
-    public JavaFileObjectInputClassFinderByClassLoader(@NotNull ClassLoader classLoader, FolderSourceList requiredExtraJarPaths) {
+    public JavaFileObjectInputClassFinderByClassLoader(@NotNull ClassLoader classLoader, @Nullable FolderSourceList requiredExtraJarPaths) {
         this.classLoader = classLoader;
         this.requiredExtraJarPaths = requiredExtraJarPaths;
     }

@@ -15,7 +15,7 @@ public class SourceScriptRootFileOtherExt extends SourceScriptRootFile {
 
     @NotNull
     @Override
-    public String getScriptCode(@NotNull String encoding, boolean[] hasHashBang) {
+    public String getScriptCode(@NotNull String encoding, @NotNull boolean[] hasHashBang) {
         String codeBody = JProxyUtil.readTextFile(sourceFile.getFile(), encoding);
         // Eliminamos la primera línea #!  (debe estar en la primera línea y sin espacios antes)
         if (codeBody.startsWith("#!")) {

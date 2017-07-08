@@ -27,7 +27,7 @@ public class JProxy {
      *
      * @param config the configuration
      */
-    public static void init(JProxyConfig config) {
+    public static void init(@NotNull JProxyConfig config) {
         JProxyDefaultImpl.initStatic((JProxyConfigImpl) config);
     }
 
@@ -43,7 +43,7 @@ public class JProxy {
      * @return the <code>java.lang.reflect.Proxy</code> object associated or the  original object when <code>GProxy</code> is disabled.
      */
     @Nullable
-    public static <T> T create(T obj, Class<T> clasz) {
+    public static <T> T create(@NotNull T obj, @NotNull  Class<T> clasz) {
         return JProxyDefaultImpl.createStatic(obj, clasz);
     }
 
@@ -62,7 +62,7 @@ public class JProxy {
      * @return the <code>java.lang.reflect.Proxy</code> object associated or the original object when <code>JProxy</code> is disabled.
      */
     @Nullable
-    public static Object create(Object obj, @NotNull Class<?>[] classes) {
+    public static Object create(@NotNull Object obj, @NotNull Class<?>[] classes) {
         return JProxyDefaultImpl.createStatic(obj, classes);
     }
 

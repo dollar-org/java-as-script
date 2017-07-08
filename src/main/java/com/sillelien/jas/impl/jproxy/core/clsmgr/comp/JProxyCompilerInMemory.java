@@ -1,30 +1,31 @@
 package com.sillelien.jas.impl.jproxy.core.clsmgr.comp;
 
-import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectInputSourceInMemory;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectOutputClass;
 import com.sillelien.jas.RelProxyException;
 import com.sillelien.jas.impl.FileExt;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.FolderSourceList;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.JProxyEngineChangeDetectorAndCompiler;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorInner;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileJava;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileRegistry;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.JProxyEngineChangeDetectorAndCompiler;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectInputSourceInMemory;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectOutputClass;
 import com.sillelien.jas.jproxy.JProxyDiagnosticsListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author jmarranz
@@ -42,7 +43,7 @@ public class JProxyCompilerInMemory {
     @Nullable
     protected JProxyDiagnosticsListener diagnosticsListener;
 
-    public JProxyCompilerInMemory(@NotNull JProxyEngineChangeDetectorAndCompiler engine, Iterable<String> compilationOptions, @Nullable JProxyDiagnosticsListener diagnosticsListener) {
+    public JProxyCompilerInMemory(@NotNull JProxyEngineChangeDetectorAndCompiler engine, @Nullable Iterable<String> compilationOptions, @Nullable JProxyDiagnosticsListener diagnosticsListener) {
         this.parent = engine;
         this.compilationOptions = compilationOptions;
         this.diagnosticsListener = diagnosticsListener;
@@ -104,6 +105,7 @@ public class JProxyCompilerInMemory {
         }
     }
 
+    @Nullable
     private LinkedList<JavaFileObjectOutputClass> compile(ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, @NotNull ClassLoader currentClassLoader, @Nullable ClassDescriptorSourceFileRegistry sourceRegistry) {
         // http://stackoverflow.com/questions/12173294/compiling-fully-in-memory-with-javax-tools-javacompiler
         // http://www.accordess.com/wpblog/an-overview-of-java-compilation-api-jsr-199/
@@ -136,10 +138,14 @@ public class JProxyCompilerInMemory {
             throw new RelProxyException("Internal error");
         }
 
+        assert sourceRegistry != null;
         JavaFileManagerInMemory fileManagerInMemory = new JavaFileManagerInMemory(standardFileManager, currentClassLoader, sourceRegistry, parent.getRequiredExtraJarPaths());
 
+        assert compilationUnits != null;
         boolean success = compile(compilationUnits, fileManagerInMemory, context);
-        if (!success) return null;
+        if (!success) {
+            return null;
+        }
 
         LinkedList<JavaFileObjectOutputClass> classObj = fileManagerInMemory.getJavaFileObjectOutputClassList();
         return classObj;
@@ -154,7 +160,9 @@ public class JProxyCompilerInMemory {
         if (compilationOptions != null)
             for (String option : compilationOptions) finalCompilationOptions.add(option);
 
-        FileExt[] folderSourceList = parent.getFolderSourceList().getArray();
+        FolderSourceList folderSourceList1 = parent.getFolderSourceList();
+        assert folderSourceList1 != null;
+        FileExt[] folderSourceList = folderSourceList1.getArray();
         if (folderSourceList != null) {
             finalCompilationOptions.add("-classpath");
             StringBuilder classPath = new StringBuilder();

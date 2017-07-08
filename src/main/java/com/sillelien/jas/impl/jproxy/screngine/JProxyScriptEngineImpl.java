@@ -9,12 +9,12 @@ import com.sillelien.jas.jproxy.JProxyScriptEngine;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.Reader;
 import javax.script.AbstractScriptEngine;
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptException;
+import java.io.Reader;
 
 /**
  * Methods of this class are similar to JProxyDefaultImpl
@@ -32,7 +32,8 @@ public class JProxyScriptEngineImpl extends AbstractScriptEngine implements JPro
     @Override
     public void init(JProxyConfig config) {
         JProxyConfigImpl configImpl = (JProxyConfigImpl) config;
-        if (!configImpl.isEnabled()) return; // jproxy quedará null       
+        assert configImpl != null;
+        if (!configImpl.isEnabled()) return; // jproxy quedará null
 
         GenericProxyImpl.checkSingletonNull(jproxy);
         this.jproxy = new JProxyScriptEngineDelegateImpl(this);
@@ -42,7 +43,7 @@ public class JProxyScriptEngineImpl extends AbstractScriptEngine implements JPro
 
     @Nullable
     @Override
-    public Object eval(String script, @NotNull ScriptContext context) throws ScriptException {
+    public Object eval(@NotNull String script, @NotNull ScriptContext context) throws ScriptException {
         if (jproxy == null)
             throw new RelProxyException("Engine is disabled");
 
@@ -62,6 +63,7 @@ public class JProxyScriptEngineImpl extends AbstractScriptEngine implements JPro
         return new BindingsImpl();
     }
 
+    @Nullable
     @Override
     public ScriptEngineFactory getFactory() {
         return factory;
@@ -69,9 +71,10 @@ public class JProxyScriptEngineImpl extends AbstractScriptEngine implements JPro
 
     @Nullable
     @Override
-    public <T> T create(T obj, Class<T> clasz) {
-        if (jproxy == null)
+    public <T> T create(T obj, @NotNull Class<T> clasz) {
+        if (jproxy == null) {
             return obj; // No se ha llamado al init o enabled = false
+        }
         return jproxy.create(obj, clasz);
     }
 

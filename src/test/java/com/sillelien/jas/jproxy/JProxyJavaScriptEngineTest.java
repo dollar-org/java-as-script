@@ -1,12 +1,14 @@
 package com.sillelien.jas.jproxy;
 
 import com.sillelien.jas.RelProxyOnReloadListener;
+import com.sillelien.jas.jproxy.util.JProxyTestUtil;
+import org.jetbrains.annotations.NotNull;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -14,17 +16,12 @@ import javax.script.ScriptException;
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaFileObject;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
-import com.sillelien.jas.jproxy.util.JProxyTestUtil;
-import org.jetbrains.annotations.NotNull;
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -124,7 +121,7 @@ public class JProxyJavaScriptEngineTest
                 .setJProxyInputSourceFileExcludedListener(null)
                 .setJProxyCompilerListener(compilerListener)
                 .setScanPeriod(scanPeriod)
-                .setClassFolder(classFolder)
+//                .setClassFolder(classFolder)
                 .setCompilationOptions(compilationOptions)
                 .setJProxyDiagnosticsListener(diagnosticsListener);
 
@@ -137,7 +134,9 @@ public class JProxyJavaScriptEngineTest
 
         ScriptEngine engine = manager.getEngineByName("Java");
 
-        ((JProxyScriptEngine)engine).init(jpConfig);
+         assert engine != null;
+
+         ((JProxyScriptEngine)engine).init(jpConfig);
         
         assertNotNull(engine);
 

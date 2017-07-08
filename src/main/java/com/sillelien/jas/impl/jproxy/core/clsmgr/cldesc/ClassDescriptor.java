@@ -93,6 +93,7 @@ public abstract class ClassDescriptor {
         return packageName.substring(0, pos);
     }
 
+    @NotNull
     public static File getAbsoluteClassFilePathFromClassNameAndClassPath(@NotNull String className, @NotNull String classPath) {
         String relativePath = getRelativeClassFilePathFromClassName(className);
         assert classPath != null;

@@ -2,6 +2,7 @@ package com.sillelien.jas.impl.jproxy;
 
 import com.sillelien.jas.RelProxyException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -36,10 +37,12 @@ public class JProxyUtil {
         return "";
     }
 
+    @Nullable
     public static File getParentDir(@NotNull File file) {
         return file.getParentFile();
     }
 
+    @NotNull
     public static byte[] readURL(@NotNull URL url) {
         URLConnection urlCon;
         try {
@@ -61,10 +64,12 @@ public class JProxyUtil {
         return readInputStream(fis);
     }
 
+    @NotNull
     public static byte[] readInputStream(@NotNull InputStream is) {
         return readInputStream(is, 50); // 50Kb => unas 100 lecturas 5 Mb
     }
 
+    @NotNull
     public static byte[] readInputStream(@NotNull InputStream is, int bufferSizeKb) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {

@@ -22,6 +22,7 @@ public class JavaFileObjectInputSourceInFile extends JavaFileObjectInputSourceBa
         this.file = file;
     }
 
+    @NotNull
     @Override
     protected String getSource() {
         if (source != null)

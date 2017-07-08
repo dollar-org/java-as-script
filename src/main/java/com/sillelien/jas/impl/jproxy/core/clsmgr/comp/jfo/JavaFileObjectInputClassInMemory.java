@@ -51,6 +51,7 @@ public class JavaFileObjectInputClassInMemory extends SimpleJavaFileObject imple
         throw new UnsupportedOperationException();
     }
 
+    @NotNull
     @Override
     public String getBinaryName() {
         return binaryName;

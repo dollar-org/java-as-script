@@ -17,6 +17,7 @@ import java.util.LinkedList;
  * @author jmarranz
  */
 public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
+    @NotNull
     protected String source;
 
     public ClassDescriptorSourceScript(@NotNull JProxyEngine engine, @NotNull String className, @NotNull SourceScriptRoot sourceFile, long timestamp) {
@@ -119,12 +120,13 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
     @Override
     public void updateTimestamp(long timestamp) {
         long oldTimestamp = this.timestamp;
-        if (oldTimestamp != timestamp)
+        if (oldTimestamp != timestamp) {
             generateSourceCode();
+        }
         super.updateTimestamp(timestamp);
     }
 
-    @Nullable
+    @NotNull
     public String getSourceCode() {
         return source;
     }

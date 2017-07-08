@@ -21,7 +21,7 @@ public class JProxyVersionedObject extends GenericProxyVersionedObject {
         this.className = aClass.getName();
     }
 
-    @NotNull
+    @Nullable
     public JProxyInvocationHandler getJProxyInvocationHandler() {
         return (JProxyInvocationHandler) parent;
     }
@@ -29,9 +29,12 @@ public class JProxyVersionedObject extends GenericProxyVersionedObject {
     @Nullable
     @Override
     protected Class<?> reloadClass() {
-        JProxyEngine engine = getJProxyInvocationHandler().getJProxyImpl().getJProxyEngine();
+        JProxyInvocationHandler jProxyInvocationHandler = getJProxyInvocationHandler();
+        assert jProxyInvocationHandler != null;
+        JProxyEngine engine = jProxyInvocationHandler.getJProxyImpl().getJProxyEngine();
+        assert engine != null;
         engine.reloadWhenChanged();
-        return (Class<?>) engine.findClass(className);
+        return engine.findClass(className);
     }
 
     @Override

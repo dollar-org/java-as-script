@@ -31,14 +31,15 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor {
         this.timestamp = timestamp;
     }
 
-    @Nullable
+    @NotNull
     public static ClassDescriptorSourceUnit create(boolean script, @NotNull JProxyEngine engine, @NotNull String className, @NotNull SourceUnit sourceFile, long timestamp) {
-        if (sourceFile instanceof SourceScriptRoot)
+        if (sourceFile instanceof SourceScriptRoot) {
             return new ClassDescriptorSourceScript(engine, className, (SourceScriptRoot) sourceFile, timestamp);
-        else if (sourceFile instanceof SourceFileJavaNormal)
+        } else if (sourceFile instanceof SourceFileJavaNormal) {
             return new ClassDescriptorSourceFileJava(engine, className, (SourceFileJavaNormal) sourceFile, timestamp);
-        else
-            return null; // WTF!!
+        } else {
+            throw new IllegalStateException("WTF!");
+        }
     }
 
     @NotNull

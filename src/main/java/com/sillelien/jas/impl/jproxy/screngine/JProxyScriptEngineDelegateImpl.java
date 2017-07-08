@@ -37,8 +37,10 @@ public class JProxyScriptEngineDelegateImpl extends JProxyImpl {
 
         JProxyShellClassLoader classLoader = null;
         String classFolder = config.getClassFolder();
-        if (classFolder != null)
-            classLoader = new JProxyShellClassLoader(getDefaultClassLoader(), new File(classFolder));
+        if (classFolder != null) {
+            ClassLoader defaultClassLoader = getDefaultClassLoader();
+            classLoader = new JProxyShellClassLoader(defaultClassLoader, new File(classFolder));
+        }
 
         this.classDescSourceScript = init(config, sourceFileScript, classLoader);
         return classDescSourceScript;
@@ -52,16 +54,20 @@ public class JProxyScriptEngineDelegateImpl extends JProxyImpl {
 
     @NotNull
     private SourceScriptRootInMemory getSourceScriptInMemory() {
+        ClassDescriptorSourceScript classDescSourceScript = this.classDescSourceScript;
+        assert classDescSourceScript != null;
         return (SourceScriptRootInMemory) classDescSourceScript.getSourceScript();
     }
 
     @Nullable
-    public Object execute(String code, @NotNull ScriptContext context) throws ScriptException {
+    public Object execute(@NotNull String code, @NotNull ScriptContext context) throws ScriptException {
         Class scriptClass;
         JProxyEngine jproxyEngine = getJProxyEngine();
+        assert jproxyEngine != null;
         Object monitor = jproxyEngine.getMonitor();
         synchronized (monitor) {
-            if (!getSourceScriptInMemory().getScriptCode().equals(code)) {
+            ClassDescriptorSourceScript classDescSourceScript = this.classDescSourceScript;
+            if (!code.equals(getSourceScriptInMemory().getScriptCode())) {
                 this.codeBufferModTimestamp = System.currentTimeMillis();
 
                 getSourceScriptInMemory().setScriptCode(code, codeBufferModTimestamp);
@@ -89,10 +95,14 @@ public class JProxyScriptEngineDelegateImpl extends JProxyImpl {
                 }
             }
 
+            assert classDescSourceScript != null;
             scriptClass = classDescSourceScript.getLastLoadedClass();
+            assert scriptClass != null;
         }
 
         try {
+            JProxyScriptEngineImpl parent = this.parent;
+            assert parent != null;
             return ClassDescriptorSourceScript.callMainMethod(scriptClass, parent, context);
         } catch (Throwable ex) {
             Exception ex2 = (ex instanceof Exception) ? (Exception) ex : new RelProxyException(ex);
