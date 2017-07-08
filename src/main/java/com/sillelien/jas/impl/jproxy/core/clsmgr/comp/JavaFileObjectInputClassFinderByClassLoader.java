@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.JarURLConnection;
 import java.net.MalformedURLException;
@@ -22,6 +23,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -33,10 +35,11 @@ import java.util.zip.ZipInputStream;
 public class JavaFileObjectInputClassFinderByClassLoader {
     private static final String CLASS_FILE_EXTENSION = ".class";
 
+    @NotNull
     private final ClassLoader classLoader;
     private final FolderSourceList requiredExtraJarPaths;
 
-    public JavaFileObjectInputClassFinderByClassLoader(ClassLoader classLoader, FolderSourceList requiredExtraJarPaths) {
+    public JavaFileObjectInputClassFinderByClassLoader(@NotNull ClassLoader classLoader, FolderSourceList requiredExtraJarPaths) {
         this.classLoader = classLoader;
         this.requiredExtraJarPaths = requiredExtraJarPaths;
     }
@@ -80,7 +83,7 @@ public class JavaFileObjectInputClassFinderByClassLoader {
     }
 
 
-    private void listUnder(String packageName, @NotNull URL packageFolderURL, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result) {
+    private void listUnder(@NotNull String packageName, @NotNull URL packageFolderURL, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result) {
         String pkgPath = packageFolderURL.toExternalForm(); //packageFolderURL.getFile(); El problema de getFile es que tambiÃ©n estÃ¡ URL-encoded (un espacio es %20) lo cual no es compatible con File
 
         if (pkgPath.startsWith("file:")) {
@@ -90,7 +93,7 @@ public class JavaFileObjectInputClassFinderByClassLoader {
         } // maybe there can be something else for more involved class loaders
     }
 
-    private void listUnderDir(String packageName, String pkgPath, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result) {
+    private void listUnderDir(@NotNull String packageName, @NotNull String pkgPath, @NotNull Collection<JavaFileObjectInputClassInFileSystem> result) {
         pkgPath = pkgPath.substring("file:".length());
 
         try {
@@ -107,6 +110,7 @@ public class JavaFileObjectInputClassFinderByClassLoader {
         // browse local .class files - useful for local execution
 
         File[] childFiles = directory.listFiles();
+        assert childFiles != null;
         for (File childFile : childFiles) {
             if (!childFile.isFile()) continue;
 
@@ -125,13 +129,17 @@ public class JavaFileObjectInputClassFinderByClassLoader {
 
             JarURLConnection jarConn = (JarURLConnection) packageFolderURL.openConnection();
             String rootEntryName = jarConn.getEntryName();
+            assert rootEntryName != null;
             int rootEnd = rootEntryName.length() + 1;
 
-            Enumeration<JarEntry> entryEnum = jarConn.getJarFile().entries();
+            JarFile jarFile = jarConn.getJarFile();
+            assert jarFile != null;
+            Enumeration<JarEntry> entryEnum = jarFile.entries();
             while (entryEnum.hasMoreElements()) {
                 JarEntry jarEntry = entryEnum.nextElement();
                 String name = jarEntry.getName();
                 // Empieza por packagePath y no hay más folders siguientes, terminando en un .class (una clase concreta)                                
+                assert name != null;
                 if (name.startsWith(rootEntryName) && name.indexOf('/', rootEnd) == -1 && name.endsWith(CLASS_FILE_EXTENSION)) {
                     URI uri = URI.create(jarUri + "!/" + name);
                     String binaryName = ClassDescriptor.getClassNameFromRelativeClassFilePath(name);
@@ -169,11 +177,14 @@ public class JavaFileObjectInputClassFinderByClassLoader {
         ZipInputStream zip = null;
 
         try {
-            zip = new ZipInputStream(packageFolderURL.openStream());
+            InputStream in = packageFolderURL.openStream();
+            assert in != null;
+            zip = new ZipInputStream(in);
             ZipEntry zipEntry = zip.getNextEntry();
             while (zipEntry != null) {
                 String name = zipEntry.getName();
                 // Empieza por packagePath y no hay más folders siguientes, terminando en un .class (una clase concreta)
+                assert name != null;
                 if (name.startsWith(packagePath) && name.indexOf('/', posEnd) == -1 && name.endsWith(CLASS_FILE_EXTENSION)) {
                     URI uri = URI.create(jarUri + "!/" + name);
                     String binaryName = ClassDescriptor.getClassNameFromRelativeClassFilePath(name);

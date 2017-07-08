@@ -3,18 +3,18 @@ package com.sillelien.jas.impl.jproxy.screngine;
 import com.sillelien.jas.RelProxyException;
 import com.sillelien.jas.impl.jproxy.JProxyConfigImpl;
 import com.sillelien.jas.impl.jproxy.core.JProxyImpl;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.JProxyEngine;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.JProxyCompilationException;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootInMemory;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.JProxyCompilationException;
 import com.sillelien.jas.impl.jproxy.shell.JProxyShellClassLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import javax.script.ScriptContext;
 import javax.script.ScriptException;
+import java.io.File;
 
 /**
  * @author jmarranz
@@ -55,7 +55,8 @@ public class JProxyScriptEngineDelegateImpl extends JProxyImpl {
         return (SourceScriptRootInMemory) classDescSourceScript.getSourceScript();
     }
 
-    public Object execute(String code, ScriptContext context) throws ScriptException {
+    @Nullable
+    public Object execute(String code, @NotNull ScriptContext context) throws ScriptException {
         Class scriptClass;
         JProxyEngine jproxyEngine = getJProxyEngine();
         Object monitor = jproxyEngine.getMonitor();

@@ -1,5 +1,7 @@
 package com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author jmarranz
  */
@@ -9,7 +11,7 @@ public class SourceScriptRootInMemory extends SourceScriptRoot {
     protected String code;
     protected long timestamp;
 
-    private SourceScriptRootInMemory(String className, String code) {
+    private SourceScriptRootInMemory(@NotNull String className, String code) {
         super(className);
         setScriptCode(code, System.currentTimeMillis());
     }
@@ -23,6 +25,7 @@ public class SourceScriptRootInMemory extends SourceScriptRoot {
         return timestamp; // Siempre ha sido modificado
     }
 
+    @NotNull
     @Override
     public String getScriptCode(String encoding, boolean[] hasHashBang) {
         hasHashBang[0] = false;

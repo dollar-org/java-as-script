@@ -3,6 +3,7 @@ package com.sillelien.jas.jproxy;
 
 import com.sillelien.jas.RelProxyOnReloadListener;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Interface implemented by the configuration object needed to initialize <code>JProxy</code> and {@link JProxyScriptEngineFactory}.
@@ -87,7 +88,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    public JProxyConfig setJProxyInputSourceFileExcludedListener(JProxyInputSourceFileExcludedListener listener);
+    public JProxyConfig setJProxyInputSourceFileExcludedListener(@Nullable JProxyInputSourceFileExcludedListener listener);
 
     /**
      * Registers the listener for monitoring files being compiled.

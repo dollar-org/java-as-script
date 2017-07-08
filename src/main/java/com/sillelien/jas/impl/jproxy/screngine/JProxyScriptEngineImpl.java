@@ -40,16 +40,18 @@ public class JProxyScriptEngineImpl extends AbstractScriptEngine implements JPro
     }
 
 
+    @Nullable
     @Override
-    public Object eval(String script, ScriptContext context) throws ScriptException {
+    public Object eval(String script, @NotNull ScriptContext context) throws ScriptException {
         if (jproxy == null)
             throw new RelProxyException("Engine is disabled");
 
         return jproxy.execute(script, context);
     }
 
+    @Nullable
     @Override
-    public Object eval(@NotNull Reader reader, ScriptContext context) throws ScriptException {
+    public Object eval(@NotNull Reader reader, @NotNull ScriptContext context) throws ScriptException {
         String script = JProxyUtil.readTextFile(reader);
         return eval(script, context);
     }

@@ -2,12 +2,13 @@ package com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo;
 
 import com.sillelien.jas.RelProxyException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.tools.SimpleJavaFileObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import javax.tools.SimpleJavaFileObject;
 
 /**
  * http://www.javablogging.com/dynamic-in-memory-compilation/
@@ -22,7 +23,10 @@ public class JavaFileObjectOutputClass extends SimpleJavaFileObject {
      * byte array out of it
      * and put it in the memory as an instance of our class.
      */
+    @NotNull
     protected final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+    @NotNull
     protected String binaryName;
 
     /**
@@ -39,10 +43,12 @@ public class JavaFileObjectOutputClass extends SimpleJavaFileObject {
         this.binaryName = name;
     }
 
+    @NotNull
     public String binaryName() {
         return binaryName;
     }
 
+    @Nullable
     public byte[] getBytes() {
         return bos.toByteArray();
     }

@@ -32,10 +32,12 @@ public class ClassDescriptorSourceFileRegistry {
         return sourceUnitMapByClassName.values();
     }
 
+    @Nullable
     public ClassDescriptorSourceUnit getClassDescriptorSourceUnit(String className) {
         return sourceUnitMapByClassName.get(className);
     }
 
+    @Nullable
     public ClassDescriptorSourceUnit removeClassDescriptorSourceUnit(String className) {
         return sourceUnitMapByClassName.remove(className);
     }
@@ -45,14 +47,18 @@ public class ClassDescriptorSourceFileRegistry {
     }
 
     public void setAllClassDescriptorSourceFilesPendingToRemove(boolean pending) {
-        for (Map.Entry<String, ClassDescriptorSourceUnit> entries : sourceUnitMapByClassName.entrySet())
-            entries.getValue().setPendingToRemove(pending);
+        for (Map.Entry<String, ClassDescriptorSourceUnit> entries : sourceUnitMapByClassName.entrySet()) {
+            ClassDescriptorSourceUnit classDescriptorSourceUnit = entries.getValue();
+            assert classDescriptorSourceUnit != null;
+            classDescriptorSourceUnit.setPendingToRemove(pending);
+        }
     }
 
     @NotNull
     public LinkedList<ClassDescriptorSourceUnit> getAllClassDescriptorSourceFilesPendingToRemove(@NotNull LinkedList<ClassDescriptorSourceUnit> deletedSourceFiles) {
         for (Map.Entry<String, ClassDescriptorSourceUnit> entries : sourceUnitMapByClassName.entrySet()) {
             ClassDescriptorSourceUnit classDesc = entries.getValue();
+            assert classDesc != null;
             boolean pending = classDesc.isPendingToRemove();
             if (pending)
                 deletedSourceFiles.add(classDesc);

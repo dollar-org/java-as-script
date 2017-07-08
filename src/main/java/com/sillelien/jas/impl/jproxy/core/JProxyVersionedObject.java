@@ -11,11 +11,14 @@ import java.lang.reflect.Field;
  * @author jmarranz
  */
 public class JProxyVersionedObject extends GenericProxyVersionedObject {
+    @NotNull
     protected String className;
 
-    public JProxyVersionedObject(@NotNull Object obj, JProxyInvocationHandler parent) {
+    public JProxyVersionedObject(@NotNull Object obj,  @NotNull JProxyInvocationHandler parent) {
         super(obj, parent);
-        this.className = obj.getClass().getName();
+        Class<?> aClass = obj.getClass();
+        assert aClass != null;
+        this.className = aClass.getName();
     }
 
     @NotNull

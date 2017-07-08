@@ -22,9 +22,11 @@ import java.util.TimerTask;
  */
 public class JProxyEngine {
     protected final Object monitor = new Object(); // Podríamos usar este objeto JProxyEngine directamente pero el monitor es mejor para análisis de dependencias
+    @NotNull
     protected final JProxyImpl parent;
     @NotNull
     protected final JProxyEngineChangeDetectorAndCompiler delegateChangeDetector;
+    @NotNull
     protected final ClassLoader rootClassLoader;
     @Nullable
     protected JProxyClassLoader customClassLoader;
@@ -36,9 +38,9 @@ public class JProxyEngine {
     protected boolean pendingReload = false;
     protected final boolean enabled;
 
-    public JProxyEngine(JProxyImpl parent, boolean enabled, SourceScriptRoot scriptFile, ClassLoader rootClassLoader, FolderSourceList folderSourceList, FolderSourceList requiredExtraJarPaths,
-                        String folderClasses, long scanPeriod, JProxyInputSourceFileExcludedListener excludedListener,
-                        JProxyCompilerListener compilerListener, Iterable<String> compilationOptions, JProxyDiagnosticsListener diagnosticsListener) {
+    public JProxyEngine(@NotNull JProxyImpl parent, boolean enabled, @NotNull SourceScriptRoot scriptFile, @NotNull ClassLoader rootClassLoader, @NotNull FolderSourceList folderSourceList, @NotNull FolderSourceList requiredExtraJarPaths,
+                        String folderClasses, long scanPeriod, @NotNull JProxyInputSourceFileExcludedListener excludedListener,
+                        @NotNull JProxyCompilerListener compilerListener, @NotNull Iterable<String> compilationOptions, @NotNull JProxyDiagnosticsListener diagnosticsListener) {
         this.parent = parent;
         this.enabled = enabled;
         this.rootClassLoader = rootClassLoader;
@@ -52,6 +54,7 @@ public class JProxyEngine {
         return monitor;
     }
 
+    @NotNull
     public JProxyImpl getJProxy() {
         return parent;
     }
@@ -80,7 +83,7 @@ public class JProxyEngine {
     }
     */
 
-    @Nullable
+    @NotNull
     public ClassLoader getCurrentClassLoader() {
         if (customClassLoader != null)
             return customClassLoader;
@@ -118,6 +121,7 @@ public class JProxyEngine {
     }
 
 
+    @NotNull
     public ClassLoader getRootClassLoader() {
         return rootClassLoader;
     }
@@ -189,7 +193,9 @@ public class JProxyEngine {
     }
 
 
+    @Nullable
     private Class reloadSource(@NotNull ClassDescriptorSourceUnit sourceFile) {
+        assert customClassLoader != null;
         Class clasz = customClassLoader.loadClass(sourceFile, true);
         reloadInnerClassesOnly(sourceFile, clasz);
         return clasz;

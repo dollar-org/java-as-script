@@ -1,0 +1,14 @@
+<root>
+    <item name='java.lang.Class java.lang.String getName()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='java.lang.ClassLoader java.util.Enumeration&lt;java.net.URL&gt; getResources(java.lang.String)'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='java.lang.Object java.lang.Class&lt;?&gt; getClass()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='java.lang.String java.lang.String replaceAll(java.lang.String, java.lang.String)'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+</root>

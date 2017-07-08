@@ -1,12 +1,15 @@
 package com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author jmarranz
  */
 public abstract class SourceScriptRoot extends SourceUnit {
-    public SourceScriptRoot(String className) {
+    public SourceScriptRoot(@NotNull String className) {
         super(className);
     }
 
-    public abstract String getScriptCode(String encoding, boolean[] hasHashBang);
+    @NotNull
+    public abstract String getScriptCode(@NotNull  String encoding, @NotNull boolean[] hasHashBang);
 }

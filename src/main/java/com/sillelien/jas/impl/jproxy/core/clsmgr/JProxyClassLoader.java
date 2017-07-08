@@ -51,6 +51,7 @@ public class JProxyClassLoader extends ClassLoader {
         }
     }
 
+    @Nullable
     public Class loadClass(@NotNull ClassDescriptor classDesc, boolean resolve) {
         Object monitor = engine.getMonitor();
         synchronized (monitor) {

@@ -1,6 +1,7 @@
 package com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
@@ -14,7 +15,9 @@ public abstract class ClassDescriptor {
     protected final String simpleClassName; // className sin el package
     @NotNull
     protected final String packageName; // El package pero acabado en un "." o bien "" si no hay package, el motivo de acabar en un punto es simplemente para poder concatenar ciegamente el package y el simpleClassName
+    @Nullable
     protected byte[] classBytes;
+    @Nullable
     protected Class clasz;
 
     public ClassDescriptor(@NotNull String className) {
@@ -41,19 +44,21 @@ public abstract class ClassDescriptor {
         return packageName;
     }
 
+    @Nullable
     public byte[] getClassBytes() {
         return classBytes;
     }
 
-    public void setClassBytes(byte[] classBytes) {
+    public void setClassBytes(@Nullable byte[] classBytes) {
         this.classBytes = classBytes;
     }
 
+    @Nullable
     public Class getLastLoadedClass() {
         return clasz;
     }
 
-    public void setLastLoadedClass(Class clasz) {
+    public void setLastLoadedClass(@Nullable Class clasz) {
         this.clasz = clasz;
     }
 
@@ -75,6 +80,7 @@ public abstract class ClassDescriptor {
         return className + ".class";
     }
 
+    @NotNull
     public static String getRelativeClassFilePathFromClassName(@NotNull String className) {
         return className.replace('.', '/') + ".class";    // alternativa: className.replaceAll("\\.", "/") + ".class"
     }
@@ -87,8 +93,9 @@ public abstract class ClassDescriptor {
         return packageName.substring(0, pos);
     }
 
-    public static File getAbsoluteClassFilePathFromClassNameAndClassPath(@NotNull String className, String classPath) {
+    public static File getAbsoluteClassFilePathFromClassNameAndClassPath(@NotNull String className, @NotNull String classPath) {
         String relativePath = getRelativeClassFilePathFromClassName(className);
+        assert classPath != null;
         classPath = classPath.trim();
         if (!classPath.endsWith("/") && !classPath.endsWith("\\")) classPath += File.separatorChar;
         return new File(classPath + relativePath);
@@ -97,7 +104,8 @@ public abstract class ClassDescriptor {
     public static String getClassNameFromRelativeClassFilePath(@NotNull String path) {
         // Ej. org/w3c/dom/Element.class => org.w3c.dom.Element
         String binaryName = path.replaceAll("/", ".");
-        return binaryName.replaceAll(".class$", "");    // El $ indica "el .class del final" 
+        assert binaryName != null;
+        return binaryName.replaceAll(".class$", "");    // El $ indica "el .class del final"
     }
 
     public static String getClassNameFromPackageAndClassFileName(String packageName, String fileName) {

@@ -16,6 +16,7 @@ import javax.tools.DiagnosticCollector;
 import javax.tools.JavaFileObject;
 
 import com.sillelien.jas.jproxy.util.JProxyTestUtil;
+import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
@@ -95,7 +96,7 @@ public class JProxyJavaScriptEngineTest
         JProxyDiagnosticsListener diagnosticsListener = new JProxyDiagnosticsListener()
         {
             @Override
-            public void onDiagnostics(DiagnosticCollector<JavaFileObject> diagnostics)
+            public void onDiagnostics(@NotNull DiagnosticCollector<JavaFileObject> diagnostics)
             {
                 List<Diagnostic<? extends JavaFileObject>> diagList = diagnostics.getDiagnostics();
                 int i = 1;

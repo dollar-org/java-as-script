@@ -2,6 +2,8 @@ package com.sillelien.jas.impl.jproxy.core.clsmgr.comp;
 
 import com.sillelien.jas.RelProxyException;
 import com.sillelien.jas.jproxy.JProxyDiagnosticsListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,17 +16,19 @@ import javax.tools.StandardJavaFileManager;
  * @author jmarranz
  */
 public class JProxyCompilerContext {
+    @NotNull
     protected StandardJavaFileManager standardFileManager;
     protected DiagnosticCollector<JavaFileObject> diagnostics;
+    @Nullable
     protected JProxyDiagnosticsListener diagnosticsListener;
 
-    public JProxyCompilerContext(StandardJavaFileManager standardFileManager, DiagnosticCollector<JavaFileObject> diagnostics, JProxyDiagnosticsListener diagnosticsListener) {
+    public JProxyCompilerContext(@NotNull StandardJavaFileManager standardFileManager, DiagnosticCollector<JavaFileObject> diagnostics, @Nullable JProxyDiagnosticsListener diagnosticsListener) {
         this.standardFileManager = standardFileManager;
         this.diagnostics = diagnostics;
         this.diagnosticsListener = diagnosticsListener;
     }
 
-    public StandardJavaFileManager getStandardFileManager() {
+    public @NotNull StandardJavaFileManager getStandardFileManager() {
         return standardFileManager;
     }
 

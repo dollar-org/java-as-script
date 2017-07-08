@@ -12,6 +12,7 @@ import java.lang.reflect.Proxy;
  * @author jmarranz
  */
 public abstract class GenericProxyImpl {
+    @Nullable
     protected RelProxyOnReloadListener reloadListener;
 
     public GenericProxyImpl() {
@@ -31,6 +32,7 @@ public abstract class GenericProxyImpl {
         this.reloadListener = config.getRelProxyOnReloadListener();
     }
 
+    @Nullable
     public RelProxyOnReloadListener getRelProxyOnReloadListener() {
         return reloadListener;
     }
@@ -48,7 +50,9 @@ public abstract class GenericProxyImpl {
 
         InvocationHandler handler = createGenericProxyInvocationHandler(obj);
 
-        Object proxy = Proxy.newProxyInstance(obj.getClass().getClassLoader(), classes, handler);
+        Class<?> aClass = obj.getClass();
+        assert aClass != null;
+        Object proxy = Proxy.newProxyInstance(aClass.getClassLoader(), classes, handler);
         return proxy;
     }
 

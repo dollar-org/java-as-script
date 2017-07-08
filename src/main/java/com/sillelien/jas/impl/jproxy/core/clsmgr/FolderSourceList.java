@@ -11,15 +11,18 @@ import java.io.File;
  * @author jmarranz
  */
 public class FolderSourceList {
+    @Nullable
     protected FileExt[] sourceList;
 
-    public FolderSourceList(@Nullable String[] sourcePathList, boolean expectedDirectory) {
+    public FolderSourceList(@Nullable final String[] sourcePathList, boolean expectedDirectory) {
         if (sourcePathList != null) // En el caso de shell interactivo es null
         {
             // El convertir siempre a File los paths es para normalizar paths
             this.sourceList = new FileExt[sourcePathList.length];
             for (int i = 0; i < sourcePathList.length; i++) {
-                File folder = new File(sourcePathList[i]);
+                String pathname = sourcePathList[i];
+                assert pathname != null;
+                File folder = new File(pathname);
                 if (!folder.exists())
                     throw new RelProxyException("Source folder does not exist: " + folder.getAbsolutePath());
                 boolean isDirectory = folder.isDirectory();
@@ -35,13 +38,16 @@ public class FolderSourceList {
         }
     }
 
+    @Nullable
     public FileExt[] getArray() {
         return sourceList;
     }
 
     @Nullable
     public String buildClassNameFromFile(@NotNull FileExt sourceFile) {
+        assert sourceList != null;
         for (FileExt rootFolderOfSources : sourceList) {
+            assert rootFolderOfSources != null;
             String className = buildClassNameFromFile(sourceFile, rootFolderOfSources);
             if (className != null)
                 return className;
@@ -49,6 +55,7 @@ public class FolderSourceList {
         throw new RelProxyException("File not found in source folders: " + sourceFile.getFile().getAbsolutePath());
     }
 
+    @Nullable
     public static String buildClassNameFromFile(@NotNull FileExt sourceFile, @NotNull FileExt rootFolderOfSources) {
         String path = sourceFile.getCanonicalPath();
 

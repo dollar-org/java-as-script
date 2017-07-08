@@ -14,15 +14,16 @@ import java.util.ArrayList;
  * @author jmarranz
  */
 public abstract class GenericProxyVersionedObject {
+    @NotNull
     protected Object obj;
     protected GenericProxyInvocationHandler parent;
 
-    public GenericProxyVersionedObject(Object obj, GenericProxyInvocationHandler parent) {
+    public GenericProxyVersionedObject(@NotNull Object obj, GenericProxyInvocationHandler parent) {
         this.obj = obj;
         this.parent = parent;
     }
 
-    protected static void getTreeFields(@NotNull Class clasz, Object obj, @NotNull ArrayList<Field> fieldList, ArrayList<Object> valueList) throws IllegalAccessException {
+    protected static void getTreeFields(@NotNull Class clasz,  @NotNull Object obj, @NotNull ArrayList<Field> fieldList,  @Nullable ArrayList<Object> valueList) throws IllegalAccessException {
         getFields(clasz, obj, fieldList, valueList);
         Class superClass = clasz.getSuperclass();
         if (superClass != null)
@@ -31,6 +32,7 @@ public abstract class GenericProxyVersionedObject {
 
     protected static void getFields(@NotNull Class clasz, Object obj, @NotNull ArrayList<Field> fieldList, @Nullable ArrayList<Object> valueList) throws IllegalAccessException {
         Field[] fieldListClass = clasz.getDeclaredFields();
+        assert fieldListClass != null;
         for (int i = 0; i < fieldListClass.length; i++) {
             Field field = fieldListClass[i];
             fieldList.add(field);
@@ -59,7 +61,8 @@ public abstract class GenericProxyVersionedObject {
         return obj;
     }
 
-    private Object copy(@NotNull Class oldClass, Object oldObj, @NotNull Class newClass) throws IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException {
+    @NotNull
+    private Object copy(@NotNull Class oldClass, @NotNull Object oldObj, @NotNull Class newClass) throws IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException {
         Object newObj;
 
         ArrayList<Field> fieldListOld = new ArrayList<Field>();
@@ -75,6 +78,7 @@ public abstract class GenericProxyVersionedObject {
             } catch (NoSuchMethodException ex) {
                 throw new RelProxyException("Cannot reload " + newClass.getName() + " a default empty of params constructor is required", ex);
             }
+            assert construc != null;
             newObj = construc.newInstance();
         } else {
             // En el caso de inner class o anonymous inner class el constructor por defecto se obtiene de forma diferente, útil para los EventListener de ItsNat
@@ -85,6 +89,7 @@ public abstract class GenericProxyVersionedObject {
             {
                 throw new RelProxyException("Cannot reload " + newClass.getName() + " a default empty of params constructor is required", ex);
             }
+            assert construc != null;
             construc.setAccessible(true);  // Necesario
 
             // http://stackoverflow.com/questions/1816458/getting-hold-of-the-outer-class-object-from-the-inner-class-object    
@@ -96,8 +101,10 @@ public abstract class GenericProxyVersionedObject {
             } catch (NoSuchFieldException ex) {
                 throw new RelProxyException(ex);
             }
+            assert enclosingFieldOld != null;
             enclosingFieldOld.setAccessible(true);
             Object enclosingObjectOld = enclosingFieldOld.get(oldObj);
+            assert enclosingObjectOld != null;
             Object enclosingObjectNew = copy(enclosingObjectOld.getClass(), enclosingObjectOld, enclosingClassNew);
 
             newObj = construc.newInstance(enclosingObjectNew);
@@ -114,11 +121,20 @@ public abstract class GenericProxyVersionedObject {
         for (int i = 0; i < fieldListOld.size(); i++) {
             Field fieldOld = fieldListOld.get(i);
             Field fieldNew = fieldListNew.get(i);
-            if (enclosingClassNew != null && fieldOld.getName().equals("this$0") && fieldNew.getName().equals("this$0"))
+            assert fieldOld != null;
+            assert fieldNew != null;
+
+            if (enclosingClassNew != null && "this$0".equals(fieldOld.getName()) && "this$0".equals(fieldNew.getName()))
                 continue; // Ya están correctamente definidos
 
+
+            Class<?> type = fieldOld.getType();
+            assert type != null;
+
+            Class<?> fieldNewType = fieldNew.getType();
+
             if ((!ignoreField(fieldOld) && !fieldOld.getName().equals(fieldNew.getName())) ||
-                    !fieldOld.getType().equals(fieldNew.getType()))
+                    !type.equals(fieldNewType))
                 throw new RelProxyException("Cannot reload " + newClass.getName() + " fields have changed, redeploy");
 
             Object fieldObj = valueListOld.get(i);
@@ -133,6 +149,7 @@ public abstract class GenericProxyVersionedObject {
                 } catch (NoSuchFieldException ex) {
                     throw new RelProxyException(ex);
                 }
+                assert modifiersField != null;
                 modifiersField.setAccessible(true);
                 modifiersField.setInt(fieldNew, fieldNew.getModifiers() & ~Modifier.FINAL);  // Quitamos el modifier final
             }

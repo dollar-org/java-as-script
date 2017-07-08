@@ -15,7 +15,7 @@ public class SourceScriptRootFileJavaExt extends SourceScriptRootFile {
 
     @NotNull
     @Override
-    public String getScriptCode(@NotNull String encoding, boolean[] hasHashBang) {
+    public String getScriptCode(@NotNull String encoding, @NotNull boolean[] hasHashBang) {
         hasHashBang[0] = false;
         return JProxyUtil.readTextFile(sourceFile.getFile(), encoding);
     }

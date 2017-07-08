@@ -13,9 +13,10 @@ import java.net.URI;
  * @author jmarranz
  */
 public class JavaFileObjectInputClassInFile extends JavaFileObjectInputClassInFileSystem {
+    @NotNull
     protected File file;
 
-    public JavaFileObjectInputClassInFile(File file, String binaryName, @NotNull URI uri) {
+    public JavaFileObjectInputClassInFile(@NotNull File file, @NotNull String binaryName, @NotNull URI uri) {
         super(binaryName, uri, uri.getPath());
         this.file = file;
     }

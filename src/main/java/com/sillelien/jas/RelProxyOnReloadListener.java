@@ -1,6 +1,7 @@
 package com.sillelien.jas;
 
 import com.sillelien.jas.jproxy.JProxyConfig;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 
@@ -25,5 +26,5 @@ public interface RelProxyOnReloadListener {
      * @param method the method being called through the proxy object.
      * @param args   the parameters being used in the method call.
      */
-    public void onReload(Object objOld, Object objNew, Object proxy, Method method, Object[] args);
+    public void onReload(@Nullable Object objOld, @Nullable Object objNew, @Nullable Object proxy, Method method, @Nullable Object[] args);
 }

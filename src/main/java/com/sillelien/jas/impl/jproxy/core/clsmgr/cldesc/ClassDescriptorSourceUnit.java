@@ -13,13 +13,18 @@ import java.util.LinkedList;
  * @author jmarranz
  */
 public abstract class ClassDescriptorSourceUnit extends ClassDescriptor {
+    @NotNull
     protected final JProxyEngine engine;
     protected volatile long timestamp;
+
+    @NotNull
     protected final SourceUnit sourceUnit;
+
     protected LinkedList<ClassDescriptorInner> innerClasses;
+
     protected boolean pendingToRemove = false; // Se usa como monohilo, no hay problemas de sincronización
 
-    public ClassDescriptorSourceUnit(JProxyEngine engine, @NotNull String className, SourceUnit sourceFile, long timestamp) {
+    public ClassDescriptorSourceUnit(@NotNull JProxyEngine engine, @NotNull String className, @NotNull  SourceUnit sourceFile, long timestamp) {
         super(className);
         this.engine = engine;
         this.sourceUnit = sourceFile;
@@ -27,7 +32,7 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor {
     }
 
     @Nullable
-    public static ClassDescriptorSourceUnit create(boolean script, JProxyEngine engine, @NotNull String className, SourceUnit sourceFile, long timestamp) {
+    public static ClassDescriptorSourceUnit create(boolean script, @NotNull JProxyEngine engine, @NotNull String className, @NotNull SourceUnit sourceFile, long timestamp) {
         if (sourceFile instanceof SourceScriptRoot)
             return new ClassDescriptorSourceScript(engine, className, (SourceScriptRoot) sourceFile, timestamp);
         else if (sourceFile instanceof SourceFileJavaNormal)
@@ -36,6 +41,7 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor {
             return null; // WTF!!
     }
 
+    @NotNull
     public SourceUnit getSourceUnit() {
         return sourceUnit;
     }
@@ -82,6 +88,7 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor {
         return this.className.equals(baseClassName); // Si es false es que es una innerclass pero de otra clase
     }
 
+    @Nullable
     public LinkedList<ClassDescriptorInner> getInnerClassDescriptors() {
         return innerClasses;
     }

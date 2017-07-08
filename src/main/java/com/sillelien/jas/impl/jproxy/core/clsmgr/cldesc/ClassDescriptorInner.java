@@ -6,9 +6,10 @@ import org.jetbrains.annotations.NotNull;
  * @author jmarranz
  */
 public class ClassDescriptorInner extends ClassDescriptor {
+    @NotNull
     protected final ClassDescriptorSourceUnit parent;
 
-    public ClassDescriptorInner(@NotNull String className, ClassDescriptorSourceUnit parent) {
+    public ClassDescriptorInner(@NotNull String className, @NotNull ClassDescriptorSourceUnit parent) {
         super(className);
         this.parent = parent;
     }
@@ -18,6 +19,7 @@ public class ClassDescriptorInner extends ClassDescriptor {
         return true;
     }
 
+    @NotNull
     public ClassDescriptorSourceUnit getClassDescriptorSourceUnit() {
         return parent;
     }

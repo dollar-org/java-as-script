@@ -34,7 +34,7 @@ public abstract class JProxyImpl extends GenericProxyImpl {
     }
 
     @Nullable
-    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config, SourceScriptRoot scriptFile, ClassLoader classLoader) {
+    public ClassDescriptorSourceScript init(@NotNull JProxyConfigImpl config, @NotNull SourceScriptRoot scriptFile, ClassLoader classLoader) {
         super.init(config);
 
         FolderSourceList folderSourceList = config.getFolderSourceList();
@@ -53,23 +53,28 @@ public abstract class JProxyImpl extends GenericProxyImpl {
         return engine.init();
     }
 
+    @Nullable
     public JProxyEngine getJProxyEngine() {
         return engine;
     }
 
     public boolean isEnabled() {
+        assert engine != null;
         return engine.isEnabled();
     }
 
     public boolean isRunning() {
+        assert engine != null;
         return engine.isRunning();
     }
 
     public boolean stop() {
+        assert engine != null;
         return engine.stop();
     }
 
     public boolean start() {
+        assert engine != null;
         return engine.start();
     }
 

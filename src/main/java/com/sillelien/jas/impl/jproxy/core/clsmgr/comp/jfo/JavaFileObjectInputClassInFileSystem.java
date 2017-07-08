@@ -19,7 +19,7 @@ public abstract class JavaFileObjectInputClassInFileSystem implements JavaFileOb
     protected final URI uri;
     protected final String name;
 
-    public JavaFileObjectInputClassInFileSystem(String binaryName, URI uri, String name) {
+    public JavaFileObjectInputClassInFileSystem(@NotNull String binaryName, @NotNull URI uri, @NotNull String name) {
         this.uri = uri;
         this.binaryName = binaryName;
         this.name = name;

@@ -27,22 +27,38 @@ import java.util.LinkedList;
  * @author jmarranz
  */
 public class JProxyEngineChangeDetectorAndCompiler {
+    @NotNull
     protected final JProxyEngine engine;
     @NotNull
     protected final JProxyCompilerInMemory compiler;
+    @NotNull
     protected final FolderSourceList folderSourceList;
+    @NotNull
     protected final FolderSourceList requiredExtraJarPaths;
+    @NotNull
     protected final SourceScriptRoot scriptFile; // Puede ser nulo
-    protected final String folderClasses; // Puede ser nulo (es decir NO salvar como .class los cambios)    
+    @Nullable
+    protected final String folderClasses; // Puede ser nulo (es decir NO salvar como .class los cambios)
+    @NotNull
     protected final JProxyInputSourceFileExcludedListener excludedListener;
     @NotNull
     protected final JavaSourcesSearch sourcesSearch;
+
+    @Nullable
     protected final JProxyCompilerListener compilerListener;
+
+    @Nullable
     protected volatile ClassDescriptorSourceFileRegistry sourceRegistry;
 
-    public JProxyEngineChangeDetectorAndCompiler(JProxyEngine engine, SourceScriptRoot scriptFile, FolderSourceList folderSourceList, FolderSourceList requiredExtraJarPaths,
-                                                 String folderClasses, JProxyInputSourceFileExcludedListener excludedListener, Iterable<String> compilationOptions, JProxyDiagnosticsListener diagnosticsListener,
-                                                 JProxyCompilerListener compilerListener) {
+    public JProxyEngineChangeDetectorAndCompiler(@NotNull JProxyEngine engine,
+                                                 @NotNull SourceScriptRoot scriptFile,
+                                                 @NotNull FolderSourceList folderSourceList,
+                                                 @NotNull FolderSourceList requiredExtraJarPaths,
+                                                 @Nullable String folderClasses,
+                                                 @NotNull JProxyInputSourceFileExcludedListener excludedListener,
+                                                 @NotNull Iterable<String> compilationOptions,
+                                                 @Nullable JProxyDiagnosticsListener diagnosticsListener,
+                                                 @Nullable JProxyCompilerListener compilerListener) {
         this.engine = engine;
         this.scriptFile = scriptFile;
         this.folderSourceList = folderSourceList;
@@ -54,28 +70,35 @@ public class JProxyEngineChangeDetectorAndCompiler {
         this.compilerListener = compilerListener;
     }
 
+    @NotNull
     public JProxyEngine getJProxyEngine() {
         return engine;
     }
 
+    @NotNull
     public FolderSourceList getFolderSourceList() {
         return folderSourceList;
     }
 
+    @NotNull
     public FolderSourceList getRequiredExtraJarPaths() {
         return requiredExtraJarPaths;
     }
 
+    @NotNull
     public JProxyInputSourceFileExcludedListener getJProxyInputSourceFileExcludedListener() {
         return excludedListener;
     }
 
+    @Nullable
     public ClassDescriptorSourceFileRegistry getClassDescriptorSourceFileRegistry() {
         return sourceRegistry;
     }
 
     @Nullable
     public ClassDescriptor getClassDescriptor(@NotNull String className) {
+        ClassDescriptorSourceFileRegistry sourceRegistry = this.sourceRegistry;
+        assert sourceRegistry != null;
         return sourceRegistry.getClassDescriptor(className);
     }
 
@@ -83,6 +106,7 @@ public class JProxyEngineChangeDetectorAndCompiler {
         return (folderClasses != null);
     }
 
+    @Nullable
     private JProxyCompilerListener getJProxyCompilerListener() {
         return compilerListener;
     }

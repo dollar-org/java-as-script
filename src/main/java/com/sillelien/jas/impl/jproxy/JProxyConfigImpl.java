@@ -37,7 +37,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
 
     @NotNull
     @Override
-    public JProxyConfig setRelProxyOnReloadListener(RelProxyOnReloadListener relListener) {
+    public JProxyConfig setRelProxyOnReloadListener(@NotNull RelProxyOnReloadListener relListener) {
         this.relListener = relListener;
         return this;
     }
@@ -45,13 +45,14 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
     @NotNull
     @Override
     public JProxyConfig setInputPath(@Nullable String inputPath) {
-        setInputPaths(inputPath != null ? new String[]{inputPath} : null); // inputPath es null en el caso de shell interactive
+        @NotNull String[] inputPaths = inputPath != null ? new String[]{inputPath} : null;
+        setInputPaths(inputPaths); // inputPath es null en el caso de shell interactive
         return this;
     }
 
     @NotNull
     @Override
-    public JProxyConfig setInputPaths(String[] inputPaths) {
+    public JProxyConfig setInputPaths(@Nullable String[] inputPaths) {
         this.folderSourceList = new FolderSourceList(inputPaths, true); // inputPaths es null en el caso de shell interactive
         return this;
     }

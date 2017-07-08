@@ -13,6 +13,7 @@ import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScr
 import com.sillelien.jas.impl.jproxy.core.clsmgr.JProxyEngineChangeDetectorAndCompiler;
 import com.sillelien.jas.jproxy.JProxyDiagnosticsListener;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,12 +30,19 @@ import javax.tools.ToolProvider;
  * @author jmarranz
  */
 public class JProxyCompilerInMemory {
+    @NotNull
     protected JProxyEngineChangeDetectorAndCompiler parent;
-    protected JavaCompiler compiler;
-    protected Iterable<String> compilationOptions; // puede ser null
-    protected JProxyDiagnosticsListener diagnosticsListener; // puede ser null
 
-    public JProxyCompilerInMemory(JProxyEngineChangeDetectorAndCompiler engine, Iterable<String> compilationOptions, JProxyDiagnosticsListener diagnosticsListener) {
+    @NotNull
+    protected JavaCompiler compiler;
+
+    @Nullable
+    protected Iterable<String> compilationOptions;
+
+    @Nullable
+    protected JProxyDiagnosticsListener diagnosticsListener;
+
+    public JProxyCompilerInMemory(@NotNull JProxyEngineChangeDetectorAndCompiler engine, Iterable<String> compilationOptions, @Nullable JProxyDiagnosticsListener diagnosticsListener) {
         this.parent = engine;
         this.compilationOptions = compilationOptions;
         this.diagnosticsListener = diagnosticsListener;
@@ -45,10 +53,11 @@ public class JProxyCompilerInMemory {
     public JProxyCompilerContext createJProxyCompilerContext() {
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
         StandardJavaFileManager standardFileManager = compiler.getStandardFileManager(diagnostics, null, null);
+        assert standardFileManager != null;
         return new JProxyCompilerContext(standardFileManager, diagnostics, diagnosticsListener);
     }
 
-    public void compileSourceFile(@NotNull ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, ClassLoader currentClassLoader, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry) {
+    public void compileSourceFile(@NotNull ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, @NotNull ClassLoader currentClassLoader, @Nullable ClassDescriptorSourceFileRegistry sourceRegistry) {
         //File sourceFile = sourceFileDesc.getSourceFile();
         LinkedList<JavaFileObjectOutputClass> outClassList = compile(sourceFileDesc, context, currentClassLoader, sourceRegistry);
 
@@ -61,6 +70,8 @@ public class JProxyCompilerInMemory {
         for (JavaFileObjectOutputClass outClass : outClassList) {
             String currClassName = outClass.binaryName();
             byte[] classBytes = outClass.getBytes();
+            assert classBytes != null;
+
             if (className.equals(currClassName)) {
                 sourceFileDesc.setClassBytes(classBytes);
             } else {
@@ -69,6 +80,7 @@ public class JProxyCompilerInMemory {
                     innerClass.setClassBytes(classBytes);
                 } else {
                     // Lo mismo es un archivo dependiente e incluso una inner class pero de otra clase que está siendo usada en el archivo compilado
+                    assert sourceRegistry != null;
                     ClassDescriptor dependentClass = sourceRegistry.getClassDescriptor(currClassName);
                     if (dependentClass != null) {
                         dependentClass.setClassBytes(classBytes);
@@ -92,7 +104,7 @@ public class JProxyCompilerInMemory {
         }
     }
 
-    private LinkedList<JavaFileObjectOutputClass> compile(ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, ClassLoader currentClassLoader, ClassDescriptorSourceFileRegistry sourceRegistry) {
+    private LinkedList<JavaFileObjectOutputClass> compile(ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, @NotNull ClassLoader currentClassLoader, @Nullable ClassDescriptorSourceFileRegistry sourceRegistry) {
         // http://stackoverflow.com/questions/12173294/compiling-fully-in-memory-with-javax-tools-javacompiler
         // http://www.accordess.com/wpblog/an-overview-of-java-compilation-api-jsr-199/
         // http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/com/sun/tools/javac/util/JavacFileManager.java?av=h#JavacFileManager

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * @author jmarranz
  */
 public class ClassDescriptorSourceFileJava extends ClassDescriptorSourceUnit {
-    public ClassDescriptorSourceFileJava(JProxyEngine engine, @NotNull String className, SourceFileJavaNormal sourceFile, long timestamp) {
+    public ClassDescriptorSourceFileJava(@NotNull JProxyEngine engine, @NotNull String className, @NotNull SourceFileJavaNormal sourceFile, long timestamp) {
         super(engine, className, sourceFile, timestamp);
     }
 
@@ -18,6 +18,7 @@ public class ClassDescriptorSourceFileJava extends ClassDescriptorSourceUnit {
         return (SourceFileJavaNormal) sourceUnit;
     }
 
+    @NotNull
     public FileExt getSourceFile() {
         return getSourceFileJavaNormal().getFileExt();
     }

@@ -5,12 +5,13 @@ import com.sillelien.jas.impl.jproxy.core.JProxyImpl;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.JProxyEngine;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
 
 /**
  * @author jmarranz
@@ -18,7 +19,7 @@ import javax.script.ScriptEngine;
 public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
     protected String source;
 
-    public ClassDescriptorSourceScript(JProxyEngine engine, @NotNull String className, SourceScriptRoot sourceFile, long timestamp) {
+    public ClassDescriptorSourceScript(@NotNull JProxyEngine engine, @NotNull String className, @NotNull SourceScriptRoot sourceFile, long timestamp) {
         super(engine, className, sourceFile, timestamp);
 
         generateSourceCode();
@@ -48,10 +49,10 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
             String mainReturnType = null;
 
             Class mainParamClass = jproxy.getMainParamClass();
-            if (mainParamClass.equals(String[].class)) {
+            if (String[].class.equals(mainParamClass)) {
                 mainParamsDec = "String[] args";
                 mainReturnType = "void";
-            } else if (mainParamClass.equals(ScriptContext.class)) {
+            } else if (ScriptContext.class.equals(mainParamClass)) {
                 mainParamsDec = ScriptEngine.class.getName() + " engine," + ScriptContext.class.getName() + " context";
                 mainReturnType = "Object";
 
@@ -123,47 +124,50 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
         super.updateTimestamp(timestamp);
     }
 
+    @Nullable
     public String getSourceCode() {
         return source;
     }
 
-    public void callMainMethod(@NotNull LinkedList<String> argsToScript) throws Throwable {
+    public void callMainMethod(@NotNull LinkedList<String> argsToScript) throws Throwable, NoSuchMethodException {
         try {
             Class scriptClass = getLastLoadedClass();
+            assert scriptClass != null;
             Method method = scriptClass.getDeclaredMethod("main", new Class[]{String[].class});
             String[] argsToScriptArr = argsToScript.size() > 0 ? argsToScript.toArray(new String[argsToScript.size()]) : new String[0];
-            method.invoke(null, new Object[]{argsToScriptArr});
-        } catch (IllegalAccessException ex) {
+            if (method != null) {
+                method.invoke(null, new Object[]{argsToScriptArr});
+            } else {
+                throw new IllegalAccessException("No main method could be found");
+            }
+        } catch (@NotNull IllegalAccessException | IllegalArgumentException | SecurityException ex) {
             throw new RelProxyException(ex);
-        } catch (NoSuchMethodException ex) {
-            throw new RelProxyException(ex);
-        } catch (SecurityException ex) {
-            throw new RelProxyException(ex);
-        } catch (IllegalArgumentException ex) {
-            throw new RelProxyException(ex);
-        } catch (InvocationTargetException ex) {
+        } catch (@NotNull InvocationTargetException ex) {
+            //noinspection ConstantConditions
             throw ex.getCause();
         } // Los errores de ejecución se envuelven en un InvocationTargetException
     }
 
-    public Object callMainMethod(ScriptEngine engine, ScriptContext context) throws Throwable {
+    @Nullable
+    public Object callMainMethod(@NotNull ScriptEngine engine, @NotNull ScriptContext context) throws Throwable {
         Class scriptClass = getLastLoadedClass();
+        assert scriptClass != null;
         return callMainMethod(scriptClass, engine, context);
     }
 
-    public static Object callMainMethod(@NotNull Class scriptClass, ScriptEngine engine, ScriptContext context) throws Throwable {
+    @Nullable
+    public static Object callMainMethod(@NotNull Class scriptClass, @NotNull ScriptEngine engine, @NotNull  ScriptContext context) throws Throwable {
         try {
             Method method = scriptClass.getDeclaredMethod("main", new Class[]{ScriptEngine.class, ScriptContext.class});
-            return method.invoke(null, new Object[]{engine, context});
-        } catch (IllegalAccessException ex) {
+            if (method != null) {
+                return method.invoke(null, new Object[]{engine, context});
+            } else {
+                throw new IllegalAccessException("No main method could be found");
+            }
+        } catch (@NotNull IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException ex) {
             throw new RelProxyException(ex);
-        } catch (NoSuchMethodException ex) {
-            throw new RelProxyException(ex);
-        } catch (SecurityException ex) {
-            throw new RelProxyException(ex);
-        } catch (IllegalArgumentException ex) {
-            throw new RelProxyException(ex);
-        } catch (InvocationTargetException ex) {
+        } catch (@NotNull InvocationTargetException ex) {
+            //noinspection ConstantConditions
             throw ex.getCause();
         } // Los errores de ejecución se envuelven en un InvocationTargetException
     }
