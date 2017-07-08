@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/relproxy_test_itsnat/src/main/webapp/WEB-INF/groovyex/groovyex.iml" filepath="$PROJECT_DIR$/relproxy_test_itsnat/src/main/webapp/WEB-INF/groovyex/groovyex.iml" />
-      <module fileurl="file://$PROJECT_DIR$/relproxy_test_itsnat/src/main/webapp/WEB-INF/javaex/javaex.iml" filepath="$PROJECT_DIR$/relproxy_test_itsnat/src/main/webapp/WEB-INF/javaex/javaex.iml" />
-      <module fileurl="file://$PROJECT_DIR$/relproxy/src/main/main.iml" filepath="$PROJECT_DIR$/relproxy/src/main/main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/relproxy_test_itsnat/src/main/main1.iml" filepath="$PROJECT_DIR$/relproxy_test_itsnat/src/main/main1.iml" />
       <module fileurl="file://$PROJECT_DIR$/relproxy.iml" filepath="$PROJECT_DIR$/relproxy.iml" />
-      <module fileurl="file://$PROJECT_DIR$/relproxy/src/test/test.iml" filepath="$PROJECT_DIR$/relproxy/src/test/test.iml" />
     </modules>
   </component>
 </project>

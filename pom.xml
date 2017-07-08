@@ -14,6 +14,11 @@
         original project is https://github.com/jmarranz/relproxy
     </description>
 
+    <prerequisites>
+        <maven>3.3.9</maven>
+    </prerequisites>
+
+
     <url>https://github.com/sillelien/java-as-script</url>
     <licenses>
         <license>
@@ -64,12 +69,12 @@
     <properties>
         <annotations.version>13.0</annotations.version>
         <bcel.version>2.0.2</bcel.version>
-        <findbugs-maven-plugin.version>3.0.2</findbugs-maven-plugin.version>
+        <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
         <jdk.version>1.8</jdk.version>
-        <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
-        <maven-project-info-reports-plugin.version>2.8</maven-project-info-reports-plugin.version>
-        <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
-        <maven-site-plugin.version>3.4</maven-site-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+        <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
+        <maven-resources-plugin.version>3.0.1</maven-resources-plugin.version>
+        <maven-site-plugin.version>3.5.1</maven-site-plugin.version>
         <maven.version>3.3.9</maven.version>
     </properties>
 
@@ -95,7 +100,7 @@
                 <plugin>
                     <groupId>org.apache.rat</groupId>
                     <artifactId>apache-rat-plugin</artifactId>
-                    <version>0.11</version>
+                    <version>0.12</version>
                     <configuration>
                         <ignoreErrors>true</ignoreErrors>
                         <useIdeaDefaultExcludes>true</useIdeaDefaultExcludes>
@@ -178,171 +183,245 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+                <plugin>
+                    <groupId>com.versioneye</groupId>
+                    <artifactId>versioneye-maven-plugin</artifactId>
+                    <version>3.11.4</version>
+                    <configuration>
+                        <apiKey>0c797be864338a3649f0</apiKey>
+                        <organisation>sillelien</organisation>
+                        <team>Owners</team>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.complykit</groupId>
+                    <artifactId>license-check-maven-plugin</artifactId>
+                    <version>0.5.3</version>
 
+                    <configuration>
+                        <excludes>
+                            <!--<param>commons-logging:commons-logging:${commons-logging.version}</param>-->
+                            <!--<param>com.fasterxml.jackson.core:jackson-core:${jackson.version}</param>-->
+                            <!--<param>com.fasterxml.jackson.core:jackson-databind:${jackson.version}</param>-->
+                            <!--<param>com.jayway.restassured:rest-assured:${rest-assured.version}</param>-->
+                            <!--<param>commons-io:commons-io:${commons-io.version}</param>-->
+                            <!--<param>commons-lang:commons-lang:${commons-lang.version}</param>-->
+                            <!--<param>com.sillelien:dollar-core:${project.version}</param>-->
+                            <!--<param>org.apache.httpcomponents:httpclient:${httpclient.version}</param>-->
+                            <!--<param>org.apache.httpcomponents:httpmime:${httpclient.version}</param>-->
+                            <!--<param>org.apache.maven:maven-core:${maven.version}</param>-->
+                            <!--<param>org.json:json:${json.version}</param>-->
+                            <!--<param>org.slf4j:slf4j-api:${slf4j.version}</param>-->
+                        </excludes>
+                        <blacklist>
+                            <param>agpl-3.0</param>
+                            <!--exclude affero-->
+                            <param>gpl-2.0</param>
+                            <!--exclude gpl 2-->
+                            <param>gpl-3.0</param>
+                            <!--exclude gpl 3-->
+                        </blacklist>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>1.4.1</version>
+                    <executions>
+                        <execution>
+                            <id>enforce-versions</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <dependencyConvergence/>
+                                    <!--<requireReleaseDeps>-->
+                                    <!--<message>No Snapshots Allowed!</message>-->
+                                    <!--</requireReleaseDeps>-->
+                                    <requireMavenVersion>
+                                        <version>[${maven.version},]</version>
+                                    </requireMavenVersion>
+                                    <requireJavaVersion>
+                                        <version>${jdk.version}</version>
+                                    </requireJavaVersion>
+                                    <requireOS>
+                                        <family>unix</family>
+                                    </requireOS>
+                                    <requirePluginVersions>
+                                        <message>Best Practice is to always define plugin versions!</message>
+                                        <banLatest>true</banLatest>
+                                        <banRelease>true</banRelease>
+                                        <banSnapshots>true</banSnapshots>
+                                        <phases>clean,deploy,site</phases>
+                                    </requirePluginVersions>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.5.1</version>
+                    <configuration>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.19.1</version>
+                    <configuration>
+                        <!--<redirectTestOutputToFile>true</redirectTestOutputToFile>-->
+                        <!--<jvm>${JAVA.EXE}</jvm>-->
+                        <includes>
+                            <include>**/*Test.java</include>
+                        </includes>
+                        <forkCount>4</forkCount>
+                        <reuseForks>true</reuseForks>
+                        <argLine>-Xmx256m</argLine>
+                        <parallel>methods</parallel>
+                        <threadCount>32</threadCount>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.apache.maven.surefire</groupId>
+                            <artifactId>surefire-junit47</artifactId>
+                            <version>2.18.1</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <!--Add JavaDoc and sources to build, to go in a maven repository-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.4</version>
+
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>1.9.5</version>
+                    <configuration>
+                        <tag>${project.artifactId}-${project.version}</tag>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <version>1.2.2</version>
+                    <configuration>
+                        <targetClasses>
+                            <param>com.sillelien.*</param>
+                        </targetClasses>
+                        <targetTests>
+                            <param>com.sillelien.*</param>
+                        </targetTests>
+                        <mutationThreshold>0</mutationThreshold>
+                        <coverageThreshold>0</coverageThreshold>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.0.1</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>com.versioneye</groupId>
                 <artifactId>versioneye-maven-plugin</artifactId>
-                <version>3.11.4</version>
-                <configuration>
-                    <apiKey>0c797be864338a3649f0</apiKey>
-                    <organisation>sillelien</organisation>
-                    <team>Owners</team>
-                </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.complykit</groupId>
                 <artifactId>license-check-maven-plugin</artifactId>
-                <version>0.5.2</version>
-
-                <configuration>
-                    <excludes>
-                        <!--<param>commons-logging:commons-logging:${commons-logging.version}</param>-->
-                        <!--<param>com.fasterxml.jackson.core:jackson-core:${jackson.version}</param>-->
-                        <!--<param>com.fasterxml.jackson.core:jackson-databind:${jackson.version}</param>-->
-                        <!--<param>com.jayway.restassured:rest-assured:${rest-assured.version}</param>-->
-                        <!--<param>commons-io:commons-io:${commons-io.version}</param>-->
-                        <!--<param>commons-lang:commons-lang:${commons-lang.version}</param>-->
-                        <!--<param>com.sillelien:dollar-core:${project.version}</param>-->
-                        <!--<param>org.apache.httpcomponents:httpclient:${httpclient.version}</param>-->
-                        <!--<param>org.apache.httpcomponents:httpmime:${httpclient.version}</param>-->
-                        <!--<param>org.apache.maven:maven-core:${maven.version}</param>-->
-                        <!--<param>org.json:json:${json.version}</param>-->
-                        <!--<param>org.slf4j:slf4j-api:${slf4j.version}</param>-->
-                    </excludes>
-                    <blacklist>
-                        <param>agpl-3.0</param>
-                        <!--exclude affero-->
-                        <param>gpl-2.0</param>
-                        <!--exclude gpl 2-->
-                        <param>gpl-3.0</param>
-                        <!--exclude gpl 3-->
-                    </blacklist>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>2.5</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.4</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.7</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven-resources-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven-jar-plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <id>enforce-versions</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <dependencyConvergence/>
-                                <!--<requireReleaseDeps>-->
-                                <!--<message>No Snapshots Allowed!</message>-->
-                                <!--</requireReleaseDeps>-->
-                                <requireMavenVersion>
-                                    <version>[${maven.version},]</version>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <version>${jdk.version}</version>
-                                </requireJavaVersion>
-                                <requireOS>
-                                    <family>unix</family>
-                                </requireOS>
-                                <requirePluginVersions>
-                                    <message>Best Practice is to always define plugin versions!</message>
-                                    <banLatest>true</banLatest>
-                                    <banRelease>true</banRelease>
-                                    <banSnapshots>true</banSnapshots>
-                                    <phases>clean,deploy,site</phases>
-                                </requirePluginVersions>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18.1</version>
-                <configuration>
-                    <!--<redirectTestOutputToFile>true</redirectTestOutputToFile>-->
-                    <!--<jvm>${JAVA.EXE}</jvm>-->
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                    <forkCount>4</forkCount>
-                    <reuseForks>true</reuseForks>
-                    <argLine>-Xmx256m</argLine>
-                    <parallel>methods</parallel>
-                    <threadCount>32</threadCount>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.surefire</groupId>
-                        <artifactId>surefire-junit47</artifactId>
-                        <version>2.18.1</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
             <!--Add JavaDoc and sources to build, to go in a maven repository-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
-
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-
-                </executions>
             </plugin>
 
-            <plugin>
-                <artifactId>maven-scm-plugin</artifactId>
-                <version>1.9.4</version>
-                <configuration>
-                    <tag>${project.artifactId}-${project.version}</tag>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -364,7 +443,11 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.2</version>
+                <version>2.4</version>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-scm-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -372,9 +455,12 @@
                 <version>${findbugs-maven-plugin.version}</version>
             </plugin>
             <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
-                <version>0.11</version>
                 <executions>
                     <execution>
                         <phase>verify</phase>
@@ -384,47 +470,14 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>1.1.6</version>
-                <configuration>
-                    <targetClasses>
-                        <param>com.sillelien.*</param>
-                    </targetClasses>
-                    <targetTests>
-                        <param>com.sillelien.*</param>
-                    </targetTests>
-                    <mutationThreshold>0</mutationThreshold>
-                    <coverageThreshold>0</coverageThreshold>
-                </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.4</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
         <extensions>
