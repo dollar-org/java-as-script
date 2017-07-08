@@ -2,21 +2,24 @@ package com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.NestingKind;
+import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.NestingKind;
-import javax.tools.JavaFileObject;
 
 /**
  * @author jmarranz
  */
 public abstract class JavaFileObjectInputClassInFileSystem implements JavaFileObject, JProxyJavaFileObjectInput {
+    @NotNull
     protected final String binaryName;
+    @NotNull
     protected final URI uri;
+    @NotNull
     protected final String name;
 
     public JavaFileObjectInputClassInFileSystem(@NotNull String binaryName, @NotNull URI uri, @NotNull String name) {
@@ -26,16 +29,19 @@ public abstract class JavaFileObjectInputClassInFileSystem implements JavaFileOb
     }
 
     @Override
+    @NotNull
     public URI toUri() {
         return uri;
     }
 
     @Override
+    @NotNull
     public String getName() {
         return name;
     }
 
     @Override
+    @NotNull
     public String getBinaryName() {
         return binaryName;
     }

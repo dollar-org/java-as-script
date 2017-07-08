@@ -2,6 +2,7 @@ package com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo;
 
 import com.sillelien.jas.impl.jproxy.JProxyUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
@@ -11,10 +12,12 @@ import java.io.File;
  * @author jmarranz
  */
 public class JavaFileObjectInputSourceInFile extends JavaFileObjectInputSourceBase {
+    @NotNull
     protected File file;
+    @Nullable
     protected String source;
 
-    public JavaFileObjectInputSourceInFile(@NotNull String name, File file, String encoding) {
+    public JavaFileObjectInputSourceInFile(@NotNull String name, @NotNull File file, @NotNull String encoding) {
         super(name, encoding);
         this.file = file;
     }

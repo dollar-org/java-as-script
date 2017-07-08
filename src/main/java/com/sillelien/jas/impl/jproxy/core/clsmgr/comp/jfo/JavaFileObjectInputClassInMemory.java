@@ -2,12 +2,12 @@ package com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.tools.SimpleJavaFileObject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import javax.tools.SimpleJavaFileObject;
 
 /**
  * http://www.javablogging.com/dynamic-in-memory-compilation/
@@ -15,11 +15,13 @@ import javax.tools.SimpleJavaFileObject;
  * @author jmarranz
  */
 public class JavaFileObjectInputClassInMemory extends SimpleJavaFileObject implements JProxyJavaFileObjectInput {
+    @NotNull
     protected String binaryName;
+    @NotNull
     protected byte[] byteCode;
     protected long timestamp;
 
-    public JavaFileObjectInputClassInMemory(@NotNull String name, byte[] byteCode, long timestamp) {
+    public JavaFileObjectInputClassInMemory(@NotNull String name, @NotNull byte[] byteCode, long timestamp) {
         super(URI.create("string:///" + name.replace('.', '/') + Kind.CLASS.extension), Kind.CLASS);
 
         this.binaryName = name;
@@ -27,6 +29,7 @@ public class JavaFileObjectInputClassInMemory extends SimpleJavaFileObject imple
         this.timestamp = timestamp;
     }
 
+    @NotNull
     public byte[] getBytes() {
         return byteCode;
     }
