@@ -1,17 +1,13 @@
 package com.sillelien.jas.impl.jproxy.core.clsmgr;
 
-import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootFileJavaExt;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceUnit;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceFileJavaNormal;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileRegistry;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileJava;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
 import com.sillelien.jas.RelProxyException;
 import com.sillelien.jas.impl.FileExt;
 import com.sillelien.jas.impl.jproxy.JProxyUtil;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.*;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceFileJavaNormal;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootFileJavaExt;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceUnit;
 import com.sillelien.jas.jproxy.JProxyInputSourceFileExcludedListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,66 +56,24 @@ public class JavaSourcesSearch {
         for (int i = 0; i < folderSourceArray.length; i++) {
             FileExt rootFolderOfSources = folderSourceArray[i];
             String[] children = rootFolderOfSources.getFile().list();
-            if (children == null)
+            if (children == null) {
                 continue; // El que ha configurado los rootFolders es tonto y ha puesto alguno nulo o no es válido el path
-            if (children.length == 0) continue; // Empty
+            }
+            if (children.length == 0) {
+                continue; // Empty
+            }
 
-            if (allEmpty) allEmpty = false;
+            if (allEmpty) {
+                allEmpty = false;
+            }
             recursiveSourceFileJavaSearch(firstTime, scriptFileJavaCannonPath, i, rootFolderOfSources, children, sourceRegistry, updatedSourceFiles, newSourceFiles);
         }
 
-        if (allEmpty)
+        if (allEmpty) {
             throw new RelProxyException("All specified input source folders are empty");
+        }
 
         return scriptFileDesc;
-    }
-
-    private void recursiveSourceFileJavaSearch(boolean firstTime, @Nullable String scriptFileJavaCannonPath, int rootFolderOfSourcesIndex, @NotNull FileExt parentPath, @NotNull String[] relPathList, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry, @NotNull LinkedList<ClassDescriptorSourceUnit> updatedSourceFiles, @NotNull LinkedList<ClassDescriptorSourceUnit> newSourceFiles) {
-        FolderSourceList folderSourceList = parent.getFolderSourceList();
-        assert folderSourceList != null;
-        @Nullable FileExt[] array = folderSourceList.getArray();
-        assert array != null;
-        FileExt rootFolderOfSources = array[rootFolderOfSourcesIndex];
-        assert rootFolderOfSources != null;
-        JProxyInputSourceFileExcludedListener listener = parent.getJProxyInputSourceFileExcludedListener();
-
-        for (String relPath : relPathList) {
-            File file = new File(parentPath.getCanonicalPath() + "/" + relPath);
-            FileExt fileExt = new FileExt(file);
-            if (file.isDirectory()) {
-                if (listener != null && listener.isExcluded(file, rootFolderOfSources.getFile()))
-                    continue;
-
-                @Nullable String[] children = file.list();
-                if (children != null) {
-                    recursiveSourceFileJavaSearch(firstTime, scriptFileJavaCannonPath, rootFolderOfSourcesIndex, fileExt, children, sourceRegistry, updatedSourceFiles, newSourceFiles);
-                }
-            } else {
-                String ext = JProxyUtil.getFileExtension(file); // Si no tiene extensión devuelve ""
-                if (!"java".equals(ext)) continue;
-                //if (!"jsh".equals(ext)) continue;
-
-                String cannonPath = JProxyUtil.getCanonicalPath(file);
-                if (scriptFileJavaCannonPath != null && scriptFileJavaCannonPath.equals(cannonPath))
-                    continue; // Es el propio archivo script inicial que es .java, así evitamos considerarlo dos veces
-
-                if (listener != null && listener.isExcluded(file, rootFolderOfSources.getFile()))
-                    continue;
-
-                SourceFileJavaNormal sourceFile = new SourceFileJavaNormal(fileExt, rootFolderOfSources);
-                processSourceFileJava(firstTime, sourceFile, sourceRegistry, updatedSourceFiles, newSourceFiles);
-            }
-        }
-    }
-
-    @NotNull
-    private ClassDescriptorSourceScript processSourceFileScript(boolean firstTime, @NotNull SourceScriptRoot file, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry, @NotNull LinkedList<ClassDescriptorSourceUnit> updatedSourceFiles, @NotNull LinkedList<ClassDescriptorSourceUnit> newSourceFiles) {
-        return (ClassDescriptorSourceScript) processSourceFile(firstTime, file, true, sourceRegistry, updatedSourceFiles, newSourceFiles);
-    }
-
-    @NotNull
-    private ClassDescriptorSourceFileJava processSourceFileJava(boolean firstTime, @NotNull SourceFileJavaNormal file, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry, @NotNull LinkedList<ClassDescriptorSourceUnit> updatedSourceFiles, @NotNull LinkedList<ClassDescriptorSourceUnit> newSourceFiles) {
-        return (ClassDescriptorSourceFileJava) processSourceFile(firstTime, file, false, sourceRegistry, updatedSourceFiles, newSourceFiles);
     }
 
     @NotNull
@@ -131,12 +85,12 @@ public class JavaSourcesSearch {
         ClassDescriptorSourceUnit sourceFile;
         if (!firstTime) {
             Object monitor = engine.getMonitor();
+
             synchronized (monitor) {
                 sourceFile = sourceRegistry.getClassDescriptorSourceUnit(className);
             }
 
-            if (sourceFile != null) // Cambiado
-            {
+            if (sourceFile != null) { // Changed
                 long oldTimestamp = sourceFile.getTimestamp();
 
                 if (timestampSourceFile > oldTimestamp) {
@@ -146,14 +100,13 @@ public class JavaSourcesSearch {
                     updatedSourceFiles.add(sourceFile);
                 }
 
-                sourceFile.setPendingToRemove(false); // Encontrado, no se elimina porque sigue existiendo
-            } else // Clase nueva
-            {
+                sourceFile.setPendingToRemove(false); // Found, is not deleted because it still exists
+            } else {// New class
                 sourceFile = ClassDescriptorSourceUnit.create(script, engine, className, file, timestampSourceFile);
-                sourceFile.setPendingToRemove(false); // Está ya por defecto pero para que quede claro
+                sourceFile.setPendingToRemove(false); // It is already by default but just to be clear
                 newSourceFiles.add(sourceFile);
             }
-        } else  // Primera vez, vemos si el código fuente se ha cambiado respecto a los .class en el sistema de archivos
+        } else  // The first time, we see if the source code has been changed with respect to the .class in the file system
         {
             String relClassPath = ClassDescriptor.getRelativeClassFilePathFromClassName(className);
             ClassLoader parentClassLoader = engine.getRootClassLoader();
@@ -161,7 +114,7 @@ public class JavaSourcesSearch {
             URL urlClass = parentClassLoader.getResource(relClassPath);
             if (urlClass != null) {
                 String urlClassExt = urlClass.toExternalForm();
-                // Si el .class está en un JAR podríamos obtener el timestamp del archivo dentro del jar pero que haya un .java "fuera" reloadable indica que queremos "reemplazar" el del jar por lo que siempre se considerará que el archivo fuente ha sido modificado más reciente                
+                // If the .class is in a JAR we could get the timestamp of the file inside the jar but that has a .java "out" reloadable indicates that we want to "replace" the jar so you will always be considered that the source file has been modified more recently
                 String path = urlClass.getPath();
                 assert path != null;
                 long timestampCompiledClass = urlClassExt.startsWith("file:") ? new File(path).lastModified() : 0;  // 0 cuando está en un JAR
@@ -176,7 +129,7 @@ public class JavaSourcesSearch {
                     byte[] classBytes = JProxyUtil.readURL(urlClass);
                     sourceFile.setClassBytes(classBytes);
                     // Falta cargar las posibles inner classes, hay que tener en cuenta que este archivo NO se va a compilar porque no ha cambiado respecto a .class conocido
-//System.out.println("NOT UPDATED: " + className + " " + urlClass.toExternalForm() + " " + (timestampSourceFile - timestampCompiledClass));                                    
+//System.out.println("NOT UPDATED: " + className + " " + urlClass.toExternalForm() + " " + (timestampSourceFile - timestampCompiledClass));
                 }
 
             } else // No hay .class, es un archivo fuente nuevo creado antes de cargar la app web, hay que compilar si o si
@@ -192,6 +145,61 @@ public class JavaSourcesSearch {
         }
 
         return sourceFile;
+    }
+
+    @NotNull
+    private ClassDescriptorSourceFileJava processSourceFileJava(boolean firstTime, @NotNull SourceFileJavaNormal file, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry, @NotNull LinkedList<ClassDescriptorSourceUnit> updatedSourceFiles, @NotNull LinkedList<ClassDescriptorSourceUnit> newSourceFiles) {
+        return (ClassDescriptorSourceFileJava) processSourceFile(firstTime, file, false, sourceRegistry, updatedSourceFiles, newSourceFiles);
+    }
+
+    @NotNull
+    private ClassDescriptorSourceScript processSourceFileScript(boolean firstTime, @NotNull SourceScriptRoot file, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry, @NotNull LinkedList<ClassDescriptorSourceUnit> updatedSourceFiles, @NotNull LinkedList<ClassDescriptorSourceUnit> newSourceFiles) {
+        return (ClassDescriptorSourceScript) processSourceFile(firstTime, file, true, sourceRegistry, updatedSourceFiles, newSourceFiles);
+    }
+
+    private void recursiveSourceFileJavaSearch(boolean firstTime, @Nullable String scriptFileJavaCannonPath, int rootFolderOfSourcesIndex, @NotNull FileExt parentPath, @NotNull String[] relPathList, @NotNull ClassDescriptorSourceFileRegistry sourceRegistry, @NotNull LinkedList<ClassDescriptorSourceUnit> updatedSourceFiles, @NotNull LinkedList<ClassDescriptorSourceUnit> newSourceFiles) {
+        FolderSourceList folderSourceList = parent.getFolderSourceList();
+        if (folderSourceList == null) {
+            throw new RelProxyException("Could not search " + parentPath.getCanonicalPath() + " as parent.getFolderSourceList() was null");
+        }
+        @Nullable FileExt[] array = folderSourceList.getArray();
+        assert array != null;
+        FileExt rootFolderOfSources = array[rootFolderOfSourcesIndex];
+        assert rootFolderOfSources != null;
+        JProxyInputSourceFileExcludedListener listener = parent.getJProxyInputSourceFileExcludedListener();
+
+        for (String relPath : relPathList) {
+            File file = new File(parentPath.getCanonicalPath() + "/" + relPath);
+            FileExt fileExt = new FileExt(file);
+            if (file.isDirectory()) {
+                if (listener != null && listener.isExcluded(file, rootFolderOfSources.getFile())) {
+                    continue;
+                }
+
+                @Nullable String[] children = file.list();
+                if (children != null) {
+                    recursiveSourceFileJavaSearch(firstTime, scriptFileJavaCannonPath, rootFolderOfSourcesIndex, fileExt, children, sourceRegistry, updatedSourceFiles, newSourceFiles);
+                }
+            } else {
+                String ext = JProxyUtil.getFileExtension(file); // Si no tiene extensión devuelve ""
+                if (!"java".equals(ext)) {
+                    continue;
+                }
+                //if (!"jsh".equals(ext)) continue;
+
+                String cannonPath = JProxyUtil.getCanonicalPath(file);
+                if (scriptFileJavaCannonPath != null && scriptFileJavaCannonPath.equals(cannonPath)) {
+                    continue; // Es el propio archivo script inicial que es .java, así evitamos considerarlo dos veces
+                }
+
+                if (listener != null && listener.isExcluded(file, rootFolderOfSources.getFile())) {
+                    continue;
+                }
+
+                SourceFileJavaNormal sourceFile = new SourceFileJavaNormal(fileExt, rootFolderOfSources);
+                processSourceFileJava(firstTime, sourceFile, sourceRegistry, updatedSourceFiles, newSourceFiles);
+            }
+        }
     }
 
 }

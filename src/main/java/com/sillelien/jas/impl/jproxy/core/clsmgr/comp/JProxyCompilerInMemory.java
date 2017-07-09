@@ -4,24 +4,14 @@ import com.sillelien.jas.RelProxyException;
 import com.sillelien.jas.impl.FileExt;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.FolderSourceList;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.JProxyEngineChangeDetectorAndCompiler;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorInner;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileJava;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileRegistry;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.*;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectInputSourceInMemory;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectOutputClass;
 import com.sillelien.jas.jproxy.JProxyDiagnosticsListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.tools.DiagnosticCollector;
-import javax.tools.JavaCompiler;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
+import javax.tools.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -48,14 +38,6 @@ public class JProxyCompilerInMemory {
         this.compilationOptions = compilationOptions;
         this.diagnosticsListener = diagnosticsListener;
         this.compiler = ToolProvider.getSystemJavaCompiler();
-    }
-
-    @NotNull
-    public JProxyCompilerContext createJProxyCompilerContext() {
-        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
-        StandardJavaFileManager standardFileManager = compiler.getStandardFileManager(diagnostics, null, null);
-        assert standardFileManager != null;
-        return new JProxyCompilerContext(standardFileManager, diagnostics, diagnosticsListener);
     }
 
     public void compileSourceFile(@NotNull ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, @NotNull ClassLoader currentClassLoader, @Nullable ClassDescriptorSourceFileRegistry sourceRegistry) {
@@ -92,7 +74,7 @@ public class JProxyCompilerInMemory {
                         // "hot reloadable" (quizás a través del package respecto a las demás clases hot pero no es muy determinista pues nada impide la mezcla de hot y no hot en el mismo package)
                         // Es una limitación mínima.
 
-                        // También puede ser un caso de clase excluida por el listener de exclusión, no debería ocurrir, tengo un caso de test en donde ocurre a posta 
+                        // También puede ser un caso de clase excluida por el listener de exclusión, no debería ocurrir, tengo un caso de test en donde ocurre a posta
                         // (caso de JProxyExampleAuxIgnored cuando se cambia la JProxyExampleDocument que la usa) pero en programación normal no.
 
                         if (parent.getJProxyInputSourceFileExcludedListener() == null)
@@ -103,6 +85,14 @@ public class JProxyCompilerInMemory {
                 }
             }
         }
+    }
+
+    @NotNull
+    public JProxyCompilerContext createJProxyCompilerContext() {
+        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+        StandardJavaFileManager standardFileManager = compiler.getStandardFileManager(diagnostics, null, null);
+        assert standardFileManager != null;
+        return new JProxyCompilerContext(standardFileManager, diagnostics, diagnosticsListener);
     }
 
     @Nullable
@@ -161,7 +151,9 @@ public class JProxyCompilerInMemory {
             for (String option : compilationOptions) finalCompilationOptions.add(option);
 
         FolderSourceList folderSourceList1 = parent.getFolderSourceList();
-        assert folderSourceList1 != null;
+        if (folderSourceList1 == null) {
+            throw new RelProxyException("parent.getFolderSourceList() was null while compiling " + compilationUnits);
+        }
         FileExt[] folderSourceList = folderSourceList1.getArray();
         if (folderSourceList != null) {
             finalCompilationOptions.add("-classpath");

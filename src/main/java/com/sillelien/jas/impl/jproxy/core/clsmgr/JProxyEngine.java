@@ -1,12 +1,9 @@
 package com.sillelien.jas.impl.jproxy.core.clsmgr;
 
-import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileRegistry;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorInner;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
+import com.sillelien.jas.RelProxyException;
 import com.sillelien.jas.impl.jproxy.core.JProxyImpl;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.*;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
 import com.sillelien.jas.jproxy.JProxyCompilerListener;
 import com.sillelien.jas.jproxy.JProxyDiagnosticsListener;
 import com.sillelien.jas.jproxy.JProxyInputSourceFileExcludedListener;
@@ -38,13 +35,18 @@ public class JProxyEngine {
     protected boolean pendingReload = false;
     protected final boolean enabled;
 
-    public JProxyEngine(@NotNull JProxyImpl parent, boolean enabled, @Nullable SourceScriptRoot scriptFile, @Nullable ClassLoader rootClassLoader, @NotNull FolderSourceList folderSourceList, @Nullable FolderSourceList requiredExtraJarPaths,
+    public JProxyEngine(@NotNull JProxyImpl parent, boolean enabled, @Nullable SourceScriptRoot scriptFile, @Nullable ClassLoader rootClassLoader, @Nullable FolderSourceList folderSourceList, @Nullable FolderSourceList requiredExtraJarPaths,
                         @Nullable String folderClasses, long scanPeriod, @Nullable JProxyInputSourceFileExcludedListener excludedListener,
                         @Nullable JProxyCompilerListener compilerListener, @Nullable Iterable<String> compilationOptions, @Nullable JProxyDiagnosticsListener diagnosticsListener) {
         this.parent = parent;
         this.enabled = enabled;
         this.rootClassLoader = rootClassLoader;
         this.scanPeriod = scanPeriod;
+
+        if(scriptFile != null && folderSourceList == null) {
+            throw new RelProxyException("No folderSourceList supplied but the scriptFile was supplied");
+        }
+
         this.delegateChangeDetector = new JProxyEngineChangeDetectorAndCompiler(this, scriptFile, folderSourceList, requiredExtraJarPaths, folderClasses, excludedListener, compilationOptions, diagnosticsListener, compilerListener);
         this.customClassLoader = null; //new JProxyClassLoader(this);
     }
