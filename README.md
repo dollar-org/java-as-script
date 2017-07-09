@@ -1,18 +1,30 @@
 Build Status: [![Circle CI](https://circleci.com/gh/sillelien/java-as-script.png?style=badge)](https://circleci.com/gh/sillelien/java-as-script)
 
+[ ![Download](https://api.bintray.com/packages/sillelien/maven/java-as-script/images/download.svg) ](https://bintray.com/sillelien/maven/java-as-script/_latestVersion)
 
 Java-as-Script [![Alpha](https://img.shields.io/badge/Status-Alpha-yellowgreen.svg?style=flat)](http://github.com/sillelien/java-as-script)
 ==============
 Java-as-Script provides a hot reloading JSR-223 implementation for Java. This version is a fork of [the original project](https://github.com/jmarranz/relproxy) (see the Historical Section below) specifically it has been reduced in scope to focus entirely on the JSR-223 aspect of the original project. It is also primarily been forked for use in the [Dollar project](https://github.com/sillelien/dollar).
 
+```xml
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-sillelien-maven</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/sillelien/maven</url>
+        </repository>
+    </repositories>
+```            
 
 ```xml
-<dependency>
-    <groupId>com.sillelien</groupId>
-    <artifactId>java-as-script</artifactId>
-    <version>0.9.100</version>
-    <type>jar</type>
-</dependency>
+    <dependency>
+        <groupId>com.sillelien</groupId>
+        <artifactId>java-as-script</artifactId>
+        <version>0.9.104</version>
+    </dependency>
 ```
 
 
