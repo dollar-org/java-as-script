@@ -10,7 +10,7 @@ Java-as-Script provides a hot reloading JSR-223 implementation for Java. This ve
 <dependency>
     <groupId>com.sillelien</groupId>
     <artifactId>java-as-script</artifactId>
-    <version>0.9.81</version>
+    <version>0.9.85</version>
     <type>jar</type>
 </dependency>
 ```
