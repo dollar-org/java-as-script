@@ -40,6 +40,9 @@ public abstract class JProxyImpl extends GenericProxyImpl {
         super.init(config);
 
         FolderSourceList folderSourceList = config.getFolderSourceList();
+        if(folderSourceList == null) {
+            throw new IllegalArgumentException("config.getFolderSourceList() is required");
+        }
         FolderSourceList requiredExtraJarPaths = config.getRequiredExtraJarPaths();
         JProxyInputSourceFileExcludedListener excludedListener = config.getJProxyInputSourceFileExcludedListener();
         JProxyCompilerListener compilerListener = config.getJProxyCompilerListener();
