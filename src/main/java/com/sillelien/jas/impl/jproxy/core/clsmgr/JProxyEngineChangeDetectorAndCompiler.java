@@ -53,7 +53,7 @@ public class JProxyEngineChangeDetectorAndCompiler {
 
     public JProxyEngineChangeDetectorAndCompiler(@NotNull JProxyEngine engine,
                                                  @Nullable SourceScriptRoot scriptFile,
-                                                 @Nullable FolderSourceList folderSourceList,
+                                                 @NotNull FolderSourceList folderSourceList,
                                                  @Nullable FolderSourceList requiredExtraJarPaths,
                                                  @Nullable String folderClasses,
                                                  @Nullable JProxyInputSourceFileExcludedListener excludedListener,

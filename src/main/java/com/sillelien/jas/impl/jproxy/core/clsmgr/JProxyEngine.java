@@ -38,7 +38,7 @@ public class JProxyEngine {
     protected boolean pendingReload = false;
     protected final boolean enabled;
 
-    public JProxyEngine(@NotNull JProxyImpl parent, boolean enabled, @Nullable SourceScriptRoot scriptFile, @Nullable ClassLoader rootClassLoader, @Nullable FolderSourceList folderSourceList, @Nullable FolderSourceList requiredExtraJarPaths,
+    public JProxyEngine(@NotNull JProxyImpl parent, boolean enabled, @Nullable SourceScriptRoot scriptFile, @Nullable ClassLoader rootClassLoader, @NotNull FolderSourceList folderSourceList, @Nullable FolderSourceList requiredExtraJarPaths,
                         @Nullable String folderClasses, long scanPeriod, @Nullable JProxyInputSourceFileExcludedListener excludedListener,
                         @Nullable JProxyCompilerListener compilerListener, @Nullable Iterable<String> compilationOptions, @Nullable JProxyDiagnosticsListener diagnosticsListener) {
         this.parent = parent;
