@@ -62,9 +62,6 @@ public class JProxyEngineChangeDetectorAndCompiler {
         this.compiler = new JProxyCompilerInMemory(this, compilationOptions, diagnosticsListener);
         this.sourcesSearch = new JavaSourcesSearch(this);
         this.compilerListener = compilerListener;
-        if(scriptFile != null && folderSourceList == null) {
-            throw new RelProxyException("No folderSourceList supplied but the scriptFile was supplied");
-        }
     }
 
     @NotNull
@@ -72,10 +69,10 @@ public class JProxyEngineChangeDetectorAndCompiler {
         return engine;
     }
 
-    @NotNull
+    @Nullable
     public FolderSourceList getFolderSourceList() {
         if(folderSourceList == null) {
-            throw new RelProxyException("Attempted to access folderSourceList when it had a null value");
+            System.err.println("Attempted to access folderSourceList when it had a null value");
         }
         return folderSourceList;
     }

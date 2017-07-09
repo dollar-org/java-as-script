@@ -42,37 +42,39 @@ public class JavaSourcesSearch {
         ClassDescriptorSourceScript scriptFileDesc = (scriptFile == null) ? null : processSourceFileScript(firstTime, scriptFile, sourceRegistry, updatedSourceFiles, newSourceFiles);
         JProxyEngineChangeDetectorAndCompiler parent = this.parent;
         FolderSourceList folderSourceList = parent.getFolderSourceList();
-        assert folderSourceList != null;
-        FileExt[] folderSourceArray = folderSourceList.getArray();
-        // Es el caso de shell interactivo o code snippet
-        if (folderSourceArray == null) {
-            return scriptFileDesc;
-        }
-
-        boolean allEmpty = true;
-
-        String scriptFileJavaCannonPath = (scriptFile != null && (scriptFile instanceof SourceScriptRootFileJavaExt)) ? ((SourceScriptRootFileJavaExt) scriptFile).getFileExt().getCanonicalPath() : null;
-
-        for (int i = 0; i < folderSourceArray.length; i++) {
-            FileExt rootFolderOfSources = folderSourceArray[i];
-            String[] children = rootFolderOfSources.getFile().list();
-            if (children == null) {
-                continue; // El que ha configurado los rootFolders es tonto y ha puesto alguno nulo o no es válido el path
+        if (folderSourceList != null) {
+            FileExt[] folderSourceArray = folderSourceList.getArray();
+            // Es el caso de shell interactivo o code snippet
+            if (folderSourceArray == null) {
+                return scriptFileDesc;
             }
-            if (children.length == 0) {
-                continue; // Empty
+
+
+            boolean allEmpty = true;
+
+            String scriptFileJavaCannonPath = (scriptFile != null && (scriptFile instanceof SourceScriptRootFileJavaExt)) ? ((SourceScriptRootFileJavaExt) scriptFile).getFileExt().getCanonicalPath() : null;
+
+            for (int i = 0; i < folderSourceArray.length; i++) {
+                FileExt rootFolderOfSources = folderSourceArray[i];
+                String[] children = rootFolderOfSources.getFile().list();
+                if (children == null) {
+                    continue; // El que ha configurado los rootFolders es tonto y ha puesto alguno nulo o no es válido el path
+                }
+                if (children.length == 0) {
+                    continue; // Empty
+                }
+
+                if (allEmpty) {
+                    allEmpty = false;
+                }
+                recursiveSourceFileJavaSearch(firstTime, scriptFileJavaCannonPath, i, rootFolderOfSources, children, sourceRegistry, updatedSourceFiles, newSourceFiles);
             }
 
             if (allEmpty) {
-                allEmpty = false;
+                throw new RelProxyException("All specified input source folders are empty");
             }
-            recursiveSourceFileJavaSearch(firstTime, scriptFileJavaCannonPath, i, rootFolderOfSources, children, sourceRegistry, updatedSourceFiles, newSourceFiles);
-        }
 
-        if (allEmpty) {
-            throw new RelProxyException("All specified input source folders are empty");
         }
-
         return scriptFileDesc;
     }
 

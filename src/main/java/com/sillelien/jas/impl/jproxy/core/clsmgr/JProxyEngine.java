@@ -43,9 +43,6 @@ public class JProxyEngine {
         this.rootClassLoader = rootClassLoader;
         this.scanPeriod = scanPeriod;
 
-        if(scriptFile != null && folderSourceList == null) {
-            throw new RelProxyException("No folderSourceList supplied but the scriptFile was supplied");
-        }
 
         this.delegateChangeDetector = new JProxyEngineChangeDetectorAndCompiler(this, scriptFile, folderSourceList, requiredExtraJarPaths, folderClasses, excludedListener, compilationOptions, diagnosticsListener, compilerListener);
         this.customClassLoader = null; //new JProxyClassLoader(this);

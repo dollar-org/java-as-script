@@ -44,8 +44,9 @@ public class JProxyCompilerInMemory {
         //File sourceFile = sourceFileDesc.getSourceFile();
         LinkedList<JavaFileObjectOutputClass> outClassList = compile(sourceFileDesc, context, currentClassLoader, sourceRegistry);
 
-        if (outClassList == null)
+        if (outClassList == null) {
             throw new JProxyCompilationException(sourceFileDesc);
+        }
 
         String className = sourceFileDesc.getClassName();
 
@@ -77,10 +78,11 @@ public class JProxyCompilerInMemory {
                         // También puede ser un caso de clase excluida por el listener de exclusión, no debería ocurrir, tengo un caso de test en donde ocurre a posta
                         // (caso de JProxyExampleAuxIgnored cuando se cambia la JProxyExampleDocument que la usa) pero en programación normal no.
 
-                        if (parent.getJProxyInputSourceFileExcludedListener() == null)
+                        if (parent.getJProxyInputSourceFileExcludedListener() == null) {
                             throw new RelProxyException("Unexpected class when compiling: " + currClassName + " maybe it is an autonomous private class declared in the same java file of the principal class, this kind of classes are not supported in hot reload");
-                        else
+                        } else {
                             System.out.println("Unexpected class when compiling: " + currClassName + " maybe it is an excluded class or is an autonomous private class declared in the same java file of the principal class, this kind of classes are not supported in hot reload");
+                        }
                     }
                 }
             }
@@ -147,26 +149,28 @@ public class JProxyCompilerInMemory {
         */
 
         LinkedList<String> finalCompilationOptions = new LinkedList<String>();
-        if (compilationOptions != null)
-            for (String option : compilationOptions) finalCompilationOptions.add(option);
+        if (compilationOptions != null) {
+            for (String option : compilationOptions) {
+                finalCompilationOptions.add(option);
+            }
+        }
 
         FolderSourceList folderSourceList1 = parent.getFolderSourceList();
-        if (folderSourceList1 == null) {
-            throw new RelProxyException("parent.getFolderSourceList() was null while compiling " + compilationUnits);
-        }
-        FileExt[] folderSourceList = folderSourceList1.getArray();
-        if (folderSourceList != null) {
-            finalCompilationOptions.add("-classpath");
-            StringBuilder classPath = new StringBuilder();
-            for (int i = 0; i < folderSourceList.length; i++) {
-                FileExt folderSources = folderSourceList[i];
-                classPath.append(folderSources.getCanonicalPath());
-                if (i < folderSourceList.length - 1)
-                    classPath.append(File.pathSeparatorChar);
+        if (folderSourceList1 != null) {
+            FileExt[] folderSourceList = folderSourceList1.getArray();
+            if (folderSourceList != null) {
+                finalCompilationOptions.add("-classpath");
+                StringBuilder classPath = new StringBuilder();
+                for (int i = 0; i < folderSourceList.length; i++) {
+                    FileExt folderSources = folderSourceList[i];
+                    classPath.append(folderSources.getCanonicalPath());
+                    if (i < folderSourceList.length - 1) {
+                        classPath.append(File.pathSeparatorChar);
+                    }
+                }
+                finalCompilationOptions.add(classPath.toString());
             }
-            finalCompilationOptions.add(classPath.toString());
         }
-
         DiagnosticCollector<JavaFileObject> diagnostics = context.getDiagnosticCollector();
         JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, finalCompilationOptions, null, compilationUnits);
         boolean success = task.call();
