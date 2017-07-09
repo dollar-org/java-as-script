@@ -1,5 +1,4 @@
 Build Status: [![Circle CI](https://circleci.com/gh/sillelien/java-as-script.png?style=badge)](https://circleci.com/gh/sillelien/java-as-script)
-
 [ ![Download](https://api.bintray.com/packages/sillelien/maven/java-as-script/images/download.svg) ](https://bintray.com/sillelien/maven/java-as-script/_latestVersion)
 
 Java-as-Script [![Alpha](https://img.shields.io/badge/Status-Alpha-yellowgreen.svg?style=flat)](http://github.com/sillelien/java-as-script)
@@ -23,7 +22,7 @@ Java-as-Script provides a hot reloading JSR-223 implementation for Java. This ve
     <dependency>
         <groupId>com.sillelien</groupId>
         <artifactId>java-as-script</artifactId>
-        <version>0.9.107</version>
+        <version>0.9.110</version>
     </dependency>
 ```
 
