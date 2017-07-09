@@ -4,7 +4,7 @@ Build Status: [![Circle CI](https://circleci.com/gh/sillelien/java-as-script.png
 
 Java-as-Script [![Alpha](https://img.shields.io/badge/Status-Alpha-yellowgreen.svg?style=flat)](http://github.com/sillelien/java-as-script)
 ==============
-Java-as-Script provides a hot reloading JSR-223 implementation for Java. This version is a fork of [the original project](https://github.com/jmarranz/relproxy) (see the Historical Section below) specifically it has been reduced in scope to focus entirely on the JSR-223 aspect of the original project. It is also primarily been forked for use in the [Dollar project](https://github.com/sillelien/dollar).
+Java-as-Script provides a hot reloading JSR-223 implementation for Java. This version is a fork of [the original project](https://github.com/jmarranz/relproxy) specifically it has been reduced in scope to focus entirely on the JSR-223 aspect of the original project. It is also primarily been forked for use in the [Dollar project](https://github.com/sillelien/dollar).
 
 ```xml
     <repositories>
@@ -23,7 +23,7 @@ Java-as-Script provides a hot reloading JSR-223 implementation for Java. This ve
     <dependency>
         <groupId>com.sillelien</groupId>
         <artifactId>java-as-script</artifactId>
-        <version>0.9.104</version>
+        <version>0.9.107</version>
     </dependency>
 ```
 
