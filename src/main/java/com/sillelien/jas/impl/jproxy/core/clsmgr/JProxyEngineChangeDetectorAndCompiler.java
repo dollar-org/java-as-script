@@ -71,9 +71,6 @@ public class JProxyEngineChangeDetectorAndCompiler {
 
     @Nullable
     public FolderSourceList getFolderSourceList() {
-        if(folderSourceList == null) {
-            System.err.println("Attempted to access folderSourceList when it had a null value");
-        }
         return folderSourceList;
     }
 

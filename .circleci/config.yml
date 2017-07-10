@@ -1,7 +1,7 @@
 jobs:
     build:
       docker:
-        - image: circleci/openjdk:8-jdk-browsers
+        - image: sillelien/circleci-dollar-build-image
 
       environment:
         MAJOR_VERSION: 0.9
@@ -24,7 +24,6 @@ jobs:
         - run:
             name: dependencies
             command: |
-              cd ~ && git clone https://github.com/sillelien/build-utils.git && chmod a+x ~/build-utils/*.sh && cd -
               ~/build-utils/maven_make_deps.sh
 
         - save_cache:
@@ -41,7 +40,6 @@ jobs:
         - deploy:
             command: |
               if [ "${CIRCLE_BRANCH}" == "staging" ]; then
-                      sudo apt-get -y install gettext-base
                       ~/build-utils/promote_from_staging.sh
               fi
               if [ "${CIRCLE_BRANCH}" == "master" ]; then
