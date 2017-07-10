@@ -1,0 +1,11 @@
+<root>
+    <item name='javax.script.ScriptEngine javax.script.Bindings createBindings()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='javax.script.ScriptEngineFactory javax.script.ScriptEngine getScriptEngine()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='javax.script.ScriptEngineManager javax.script.Bindings getBindings()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+</root>

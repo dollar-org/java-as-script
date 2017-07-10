@@ -1,0 +1,5 @@
+<root>
+    <item name='java.util.jar.JarFile java.util.Enumeration&lt;java.util.jar.JarEntry&gt; entries()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+</root>

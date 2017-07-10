@@ -1,0 +1,5 @@
+<root>
+    <item name='java.lang.reflect.Field java.lang.String getName()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+</root>

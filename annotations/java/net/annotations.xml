@@ -1,0 +1,20 @@
+<root>
+    <item name='java.net.JarURLConnection java.lang.String getEntryName()'>
+        <annotation name='org.jetbrains.annotations.Nullable'/>
+    </item>
+    <item name='java.net.URI java.lang.String getPath()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='java.net.URI java.lang.String getSchemeSpecificPart()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='java.net.URL java.lang.String toExternalForm()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='java.net.URL java.net.URLConnection openConnection()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='java.net.URLConnection java.io.InputStream getInputStream()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+</root>

@@ -1,0 +1,14 @@
+<root>
+    <item name='javax.tools.ForwardingJavaFileManager java.lang.Iterable&lt;javax.tools.JavaFileObject&gt; list(javax.tools.JavaFileManager.Location, java.lang.String, java.util.Set&lt;javax.tools.JavaFileObject.Kind&gt;, boolean)'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='javax.tools.ForwardingJavaFileManager java.lang.String inferBinaryName(javax.tools.JavaFileManager.Location, javax.tools.JavaFileObject)'>
+        <annotation name='org.jetbrains.annotations.Nullable'/>
+    </item>
+    <item name='javax.tools.JavaCompiler javax.tools.JavaCompiler.CompilationTask getTask(java.io.Writer, javax.tools.JavaFileManager, javax.tools.DiagnosticListener&lt;? super javax.tools.JavaFileObject&gt;, java.lang.Iterable&lt;java.lang.String&gt;, java.lang.Iterable&lt;java.lang.String&gt;, java.lang.Iterable&lt;? extends javax.tools.JavaFileObject&gt;)'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='javax.tools.JavaCompiler.CompilationTask java.lang.Boolean call()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+</root>

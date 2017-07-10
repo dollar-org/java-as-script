@@ -1,0 +1,5 @@
+<root>
+    <item name='java.io.ByteArrayOutputStream byte[] toByteArray()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+</root>
