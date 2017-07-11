@@ -45,7 +45,7 @@ public class Demo {
 
         //Your code goes here, e.g.
 
-        scriptEngine.eval("System.out.println(\"Hello \"+context.getAttribute(\"in\",javax.script.ScriptContext.ENGINE_SCOPE));return null;\n", bindings);
+        scriptEngine.eval("System.out.println(\"Hello \"+context.getAttribute(\"in\",javax.script.ScriptContext.ENGINE_SCOPE));return null;\n");
 
     }
 }
