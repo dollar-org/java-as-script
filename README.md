@@ -27,7 +27,7 @@ Make sure you have the JCenter repo in your pom.xml
     <dependency>
         <groupId>com.sillelien</groupId>
         <artifactId>java-as-script</artifactId>
-        <version>0.9.133</version>
+        <version>0.9.135</version>
     </dependency>
 ```
 
@@ -104,5 +104,3 @@ Please contact me through Gitter (chat) or through GitHub Issues.
 
 For commercial support please <a href="mailto:hello@neilellis.me">contact me directly</a>.
 -------
-
-Java-as-Script is a JSR 223 [Java Scripting API](http://docs.oracle.com/javase/6/docs/technotes/guides/scripting/programmer_guide/index.html) implementation for "Java" as the target scripting language. You can embed and execute Java code as scripting into your Java program. In case of Java "scripting", there is no a new language, is pure Java code with compilation on the fly.
