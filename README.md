@@ -27,9 +27,13 @@ Make sure you have the JCenter repo in your pom.xml
     <dependency>
         <groupId>com.sillelien</groupId>
         <artifactId>java-as-script</artifactId>
-        <version>0.9.131</version>
+        <version>0.9.133</version>
     </dependency>
 ```
+
+[ ![Download](https://api.bintray.com/packages/sillelien/maven/java-as-script/images/download.svg) ](https://bintray.com/sillelien/maven/java-as-script/_latestVersion)
+
+Below is a complete example of using Java-as-Script as a JSR-223 scripting engine, with the language being Java.
 
 ```java
 package com.sillelien.jas;
@@ -39,6 +43,7 @@ import com.sillelien.jas.jproxy.JProxyConfig;
 import com.sillelien.jas.jproxy.JProxyScriptEngine;
 import com.sillelien.jas.jproxy.JProxyScriptEngineFactory;
 
+import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.tools.Diagnostic;
@@ -71,7 +76,8 @@ public class Demo {
 
         ScriptEngineManager manager = new ScriptEngineManager();
         manager.registerEngineName("java", factory);
-        manager.getBindings().put("in", "World");
+        Bindings bindings = manager.getBindings();
+        bindings.put("in", "World");
 
         ScriptEngine engine = manager.getEngineByName("java");
         JProxyScriptEngine scriptEngine = (JProxyScriptEngine) engine;
@@ -79,7 +85,7 @@ public class Demo {
 
         //Your code goes here, e.g.
 
-        scriptEngine.eval("System.out.println(\"Hello \"+context.getAttribute(\"in\",javax.script.ScriptContext.ENGINE_SCOPE));return null;\n", bindings);
+        scriptEngine.eval("System.out.println(\"Hello \"+context.getAttribute(\"in\",javax.script.ScriptContext.ENGINE_SCOPE));return null;\n",bindings);
 
     }
 }
