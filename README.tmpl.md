@@ -29,6 +29,10 @@ Make sure you have the JCenter repo in your pom.xml
     </dependency>
 ```
 
+${DOWNLOAD}
+
+Below is a complete example of using Java-as-Script as a JSR-223 scripting engine, with the language being Java.
+
 ```java
 package com.sillelien.jas;
 
