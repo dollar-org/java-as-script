@@ -27,7 +27,7 @@ Make sure you have the JCenter repo in your pom.xml
     <dependency>
         <groupId>com.sillelien</groupId>
         <artifactId>java-as-script</artifactId>
-        <version>0.9.129</version>
+        <version>0.9.131</version>
     </dependency>
 ```
 
