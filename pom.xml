@@ -485,6 +485,7 @@
         </extensions>
     </build>
 
+
     <profiles>
         <profile>
             <id>s3</id>
@@ -501,7 +502,7 @@
                     <url>s3://dollar-repo/release</url>
                 </repository>
                 <snapshotRepository>
-                    <id>Component1-s3-snapshot-repo</id>
+                    <id>dollar-s3-snapshot-repo</id>
                     <name>Snapshot Repository for Dollar</name>
                     <url>s3://dollar-repo/snapshot</url>
                 </snapshotRepository>
@@ -538,11 +539,6 @@
         </profile>
         <profile>
             <id>bintray</id>
-            <activation>
-                <property>
-                    <name>bintray</name>
-                </property>
-            </activation>
             <distributionManagement>
                 <site>
                     <id>http://sillelien.github.io/${project.artifactId}</id>
@@ -569,5 +565,6 @@
 
         </profile>
     </profiles>
+
 
 </project>
