@@ -5,6 +5,8 @@ jobs:
 
       environment:
         MAJOR_VERSION: 0.9
+        NEXT_MAJOR_VERSION: 0.10
+
         MAVEN_OPTS: "-Xmx1g -DbuildNumber=${CIRCLE_BUILD_NUM}"
         TZ: "/usr/share/zoneinfo/Europe/London"
 
