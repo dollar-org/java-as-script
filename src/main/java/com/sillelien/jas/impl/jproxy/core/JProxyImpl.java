@@ -1,3 +1,19 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl.jproxy.core;
 
 import com.sillelien.jas.impl.GenericProxyImpl;
@@ -13,6 +29,8 @@ import com.sillelien.jas.jproxy.JProxyInputSourceFileExcludedListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * @author jmarranz
  */
@@ -20,6 +38,8 @@ public abstract class JProxyImpl extends GenericProxyImpl {
     public static JProxyImpl SINGLETON;
     @Nullable
     protected JProxyEngine engine;
+    private List<String> imports;
+    private List<String> staticImports;
 
 
     protected JProxyImpl() {
@@ -48,7 +68,8 @@ public abstract class JProxyImpl extends GenericProxyImpl {
         Iterable<String> compilationOptions = config.getCompilationOptions();
         JProxyDiagnosticsListener diagnosticsListener = config.getJProxyDiagnosticsListener();
         boolean enabled = config.isEnabled();
-
+        imports= config.getImports();
+        staticImports= config.getStaticImports();
         classLoader = classLoader != null ? classLoader : getDefaultClassLoader();
         this.engine = new JProxyEngine(this, enabled, scriptFile, classLoader, folderSourceList, requiredExtraJarPaths, classFolder, scanPeriod, excludedListener, compilerListener, compilationOptions, diagnosticsListener);
 
@@ -88,4 +109,20 @@ public abstract class JProxyImpl extends GenericProxyImpl {
 
     @Nullable
     public abstract Class getMainParamClass();
+
+    public List<String> getImports() {
+        return imports;
+    }
+
+    public void setImports(List<String> imports) {
+        this.imports = imports;
+    }
+
+    public List<String> getStaticImports() {
+        return staticImports;
+    }
+
+    public void setStaticImports(List<String> staticImports) {
+        this.staticImports = staticImports;
+    }
 }

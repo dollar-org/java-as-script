@@ -1,3 +1,19 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl.jproxy;
 
 import com.sillelien.jas.RelProxyException;
@@ -12,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author jmarranz
@@ -44,6 +62,9 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
     protected JProxyDiagnosticsListener diagnosticsListener;
 
     protected boolean test = false;
+
+    private List<String> imports= new ArrayList<>();
+    private List<String> staticImports= new ArrayList<>();
 
     @NotNull
     @Override
@@ -171,4 +192,21 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         this.test = test;
     }
 
+    public List<String> getImports() {
+        return imports;
+    }
+
+    public JProxyConfig setImports(List<String> imports) {
+        this.imports = imports;
+        return this;
+    }
+
+    public List<String> getStaticImports() {
+        return staticImports;
+    }
+
+    public JProxyConfig setStaticImports(List<String> staticImports) {
+        this.staticImports = staticImports;
+        return this;
+    }
 }

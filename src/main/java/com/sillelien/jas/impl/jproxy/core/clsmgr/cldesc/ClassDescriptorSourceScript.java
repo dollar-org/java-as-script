@@ -1,3 +1,19 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc;
 
 import com.sillelien.jas.RelProxyException;
@@ -12,6 +28,7 @@ import javax.script.ScriptEngine;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author jmarranz
@@ -59,6 +76,16 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
 
                 if (scriptCode.equals("")) scriptCode = "return null;";
             }
+
+             List<String> imports= jproxy.getImports();
+            for (String anImport : imports) {
+                finalCode.append("import "+anImport+";\n");
+            }
+             List<String> staticImports= jproxy.getStaticImports();
+            for (String anImport : staticImports) {
+                finalCode.append("import static "+anImport+";\n");
+            }
+
 
             finalCode.append("public class " + className + " { public static " + mainReturnType + " main(" + mainParamsDec + ") {\n"); // Lo ponemos todo en una línea para que en caso de error la línea de error coincida con el script original pues hemos quitado la primera línea #!
             finalCode.append(scriptCode);
