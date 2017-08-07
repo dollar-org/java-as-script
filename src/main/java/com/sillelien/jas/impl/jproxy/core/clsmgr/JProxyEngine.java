@@ -1,14 +1,35 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl.jproxy.core.clsmgr;
 
-import com.sillelien.jas.RelProxyException;
 import com.sillelien.jas.impl.jproxy.core.JProxyImpl;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.*;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorInner;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileRegistry;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
 import com.sillelien.jas.jproxy.JProxyCompilerListener;
 import com.sillelien.jas.jproxy.JProxyDiagnosticsListener;
 import com.sillelien.jas.jproxy.JProxyInputSourceFileExcludedListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.Timer;
@@ -19,6 +40,10 @@ import java.util.TimerTask;
  */
 public class JProxyEngine {
     protected final Object monitor = new Object(); // Podríamos usar este objeto JProxyEngine directamente pero el monitor es mejor para análisis de dependencias
+
+    @NotNull
+    private static final Logger log = LoggerFactory.getLogger("JProxyEngine");
+
     @NotNull
     protected final JProxyImpl parent;
     @NotNull
@@ -104,7 +129,8 @@ public class JProxyEngine {
                     try {
                         detectChangesInSources(); // Está sincronizado las partes que lo necesitan
                     } catch (Exception ex) {
-                        ex.printStackTrace(System.err); // Si dejamos subir la excepción se acabó el timer
+                       log.error(ex.getMessage(),ex); // Si dejamos subir la excepción se acabó el
+                        // timer
                     }
                 }
             };

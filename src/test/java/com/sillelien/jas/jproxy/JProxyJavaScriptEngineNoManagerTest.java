@@ -1,3 +1,19 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.jproxy;
 
 import com.sillelien.jas.RelProxyOnReloadListener;
@@ -8,6 +24,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
@@ -28,7 +46,10 @@ import static org.junit.Assert.*;
  */
 public class JProxyJavaScriptEngineNoManagerTest
 {
-   
+
+    @NotNull
+    private static final Logger log = LoggerFactory.getLogger("JProxyJavaScriptEngineNoManagerTest");
+
     public JProxyJavaScriptEngineNoManagerTest()
     {
     }
@@ -98,16 +119,16 @@ public class JProxyJavaScriptEngineNoManagerTest
                 int i = 1;
                 for (Diagnostic diagnostic : diagList)
                 {
-                   System.err.println("Diagnostic " + i);
-                   System.err.println("  code: " + diagnostic.getCode());
-                   System.err.println("  kind: " + diagnostic.getKind());
-                   System.err.println("  line number: " + diagnostic.getLineNumber());
-                   System.err.println("  column number: " + diagnostic.getColumnNumber());
-                   System.err.println("  start position: " + diagnostic.getStartPosition());
-                   System.err.println("  position: " + diagnostic.getPosition());
-                   System.err.println("  end position: " + diagnostic.getEndPosition());
-                   System.err.println("  source: " + diagnostic.getSource());
-                   System.err.println("  message: " + diagnostic.getMessage(null));
+                   log.debug("Diagnostic " + i);
+                   log.debug("  code: " + diagnostic.getCode());
+                   log.debug("  kind: " + diagnostic.getKind());
+                   log.debug("  line number: " + diagnostic.getLineNumber());
+                   log.debug("  column number: " + diagnostic.getColumnNumber());
+                   log.debug("  start position: " + diagnostic.getStartPosition());
+                   log.debug("  position: " + diagnostic.getPosition());
+                   log.debug("  end position: " + diagnostic.getEndPosition());
+                   log.debug("  source: " + diagnostic.getSource());
+                   log.debug("  message: " + diagnostic.getMessage(null));
                    i++;
                 }
             }
