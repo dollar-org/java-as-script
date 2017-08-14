@@ -41,7 +41,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    public JProxyConfig setEnabled(boolean enabled);
+    JProxyConfig setEnabled(boolean enabled);
 
     /**
      * Sets the class reload listener.
@@ -50,7 +50,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    public JProxyConfig setRelProxyOnReloadListener(RelProxyOnReloadListener relListener);
+    JProxyConfig setRelProxyOnReloadListener(RelProxyOnReloadListener relListener);
 
     /**
      * Defines the folder root to locate source code Java files.
@@ -65,7 +65,7 @@ public interface JProxyConfig {
      * @see #setInputPaths(java.lang.String[])
      */
     @NotNull
-    public JProxyConfig setInputPath(String inputPath);
+    JProxyConfig setInputPath(String inputPath);
 
     /**
      * Defines the folder roots to locate source code Java files.
@@ -81,7 +81,7 @@ public interface JProxyConfig {
      * @see #setRequiredExtraJarPaths(String[])
      */
     @NotNull
-    public JProxyConfig setInputPaths(String[] inputPaths);
+    JProxyConfig setInputPaths(String[] inputPaths);
 
     /**
      * Defines the extra required jars providing the absolute paths to them.
@@ -97,7 +97,7 @@ public interface JProxyConfig {
      * @see #setInputPaths(String[])
      */
     @NotNull
-    public JProxyConfig setRequiredExtraJarPaths(String[] inputJarPaths);
+    JProxyConfig setRequiredExtraJarPaths(String[] inputJarPaths);
 
     /**
      * Registers the listener implementing excluding rules to filter source files not to be part of the hot reloading system in spite of included in input paths.
@@ -106,7 +106,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    public JProxyConfig setJProxyInputSourceFileExcludedListener(@Nullable JProxyInputSourceFileExcludedListener listener);
+    JProxyConfig setJProxyInputSourceFileExcludedListener(@Nullable JProxyInputSourceFileExcludedListener listener);
 
     /**
      * Registers the listener for monitoring files being compiled.
@@ -115,7 +115,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    public JProxyConfig setJProxyCompilerListener(JProxyCompilerListener listener);
+    JProxyConfig setJProxyCompilerListener(JProxyCompilerListener listener);
 
 
     /**
@@ -129,7 +129,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    public JProxyConfig setClassFolder(@Nullable String classFolder);
+    JProxyConfig setClassFolder(@Nullable String classFolder);
 
     /**
      * Sets the delay between source code change checking.
@@ -141,7 +141,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    public JProxyConfig setScanPeriod(long scanPeriod);
+    JProxyConfig setScanPeriod(long scanPeriod);
 
     /**
      * Sets the compilation options to be provided to the compiler built-in in JDK like <code>JavaCompiler.getTask()</code> method and the same you would provide to javac.
@@ -153,7 +153,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    public JProxyConfig setCompilationOptions(Iterable<String> compilationOptions);
+    JProxyConfig setCompilationOptions(Iterable<String> compilationOptions);
 
     /**
      * Sets the diagnostic listener to capture compilation errors and warnings thrown by the internal compiler.
@@ -190,12 +190,13 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    public JProxyConfig setJProxyDiagnosticsListener(JProxyDiagnosticsListener diagnosticsListener);
+    JProxyConfig setJProxyDiagnosticsListener(JProxyDiagnosticsListener diagnosticsListener);
 
 
-    public JProxyConfig setImports(List<String> imports);
+    @NotNull
+    JProxyConfig setImports(List<String> imports);
 
 
-
-    public JProxyConfig setStaticImports(List<String> staticImports);
+    @NotNull
+    JProxyConfig setStaticImports(List<String> staticImports);
 }

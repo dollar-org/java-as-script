@@ -196,6 +196,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         return imports;
     }
 
+    @NotNull
     public JProxyConfig setImports(List<String> imports) {
         this.imports = imports;
         return this;
@@ -205,6 +206,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         return staticImports;
     }
 
+    @NotNull
     public JProxyConfig setStaticImports(List<String> staticImports) {
         this.staticImports = staticImports;
         return this;
