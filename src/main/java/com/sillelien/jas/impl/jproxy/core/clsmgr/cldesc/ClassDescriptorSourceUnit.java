@@ -1,3 +1,19 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc;
 
 import com.sillelien.jas.impl.jproxy.core.clsmgr.JProxyEngine;
@@ -22,12 +38,12 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor {
 
     protected LinkedList<ClassDescriptorInner> innerClasses;
 
-    protected boolean pendingToRemove = false; // Se usa como monohilo, no hay problemas de sincronización
+    protected boolean pendingToRemove; // Se usa como monohilo, no hay problemas de sincronización
 
     public ClassDescriptorSourceUnit(@NotNull JProxyEngine engine, @NotNull String className, @NotNull  SourceUnit sourceFile, long timestamp) {
         super(className);
         this.engine = engine;
-        this.sourceUnit = sourceFile;
+        sourceUnit = sourceFile;
         this.timestamp = timestamp;
     }
 

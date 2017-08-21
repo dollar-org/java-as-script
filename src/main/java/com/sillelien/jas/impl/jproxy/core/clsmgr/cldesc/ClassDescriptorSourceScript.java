@@ -92,7 +92,7 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
             finalCode.append("  }\n");
             finalCode.append("}\n");
         }
-        this.source = finalCode.toString();
+        source = finalCode.toString();
     }
 
     private boolean isCompleteClass(@NotNull String code) {
@@ -158,11 +158,11 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
         return source;
     }
 
-    public void callMainMethod(@NotNull LinkedList<String> argsToScript) throws Throwable, NoSuchMethodException {
+    public void callMainMethod(@NotNull LinkedList<String> argsToScript) throws Throwable {
         try {
             Class scriptClass = getLastLoadedClass();
             assert scriptClass != null;
-            Method method = scriptClass.getDeclaredMethod("main", new Class[]{String[].class});
+            Method method = scriptClass.getDeclaredMethod("main", String[].class);
             String[] argsToScriptArr = argsToScript.size() > 0 ? argsToScript.toArray(new String[argsToScript.size()]) : new String[0];
             if (method != null) {
                 method.invoke(null, new Object[]{argsToScriptArr});
@@ -187,9 +187,9 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
     @Nullable
     public static Object callMainMethod(@NotNull Class scriptClass, @NotNull ScriptEngine engine, @NotNull  ScriptContext context) throws Throwable {
         try {
-            Method method = scriptClass.getDeclaredMethod("main", new Class[]{ScriptEngine.class, ScriptContext.class});
+            Method method = scriptClass.getDeclaredMethod("main", ScriptEngine.class, ScriptContext.class);
             if (method != null) {
-                return method.invoke(null, new Object[]{engine, context});
+                return method.invoke(null, engine, context);
             } else {
                 throw new IllegalAccessException("No main method could be found");
             }

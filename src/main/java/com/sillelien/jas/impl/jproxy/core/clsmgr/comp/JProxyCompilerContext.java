@@ -63,7 +63,7 @@ public class JProxyCompilerContext {
 
     public void close() {
         try {
-            this.standardFileManager.close();
+            standardFileManager.close();
         } catch (IOException ex) {
             throw new RelProxyException(ex);
         }

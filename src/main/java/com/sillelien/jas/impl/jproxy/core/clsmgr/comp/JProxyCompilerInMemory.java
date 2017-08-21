@@ -1,17 +1,43 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl.jproxy.core.clsmgr.comp;
 
 import com.sillelien.jas.RelProxyException;
 import com.sillelien.jas.impl.FileExt;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.FolderSourceList;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.JProxyEngineChangeDetectorAndCompiler;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.*;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorInner;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileJava;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileRegistry;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectInputSourceInMemory;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectOutputClass;
 import com.sillelien.jas.jproxy.JProxyDiagnosticsListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.tools.*;
+import javax.tools.DiagnosticCollector;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -34,10 +60,10 @@ public class JProxyCompilerInMemory {
     protected JProxyDiagnosticsListener diagnosticsListener;
 
     public JProxyCompilerInMemory(@NotNull JProxyEngineChangeDetectorAndCompiler engine, @Nullable Iterable<String> compilationOptions, @Nullable JProxyDiagnosticsListener diagnosticsListener) {
-        this.parent = engine;
+        parent = engine;
         this.compilationOptions = compilationOptions;
         this.diagnosticsListener = diagnosticsListener;
-        this.compiler = ToolProvider.getSystemJavaCompiler();
+        compiler = ToolProvider.getSystemJavaCompiler();
     }
 
     public void compileSourceFile(@NotNull ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, @NotNull ClassLoader currentClassLoader, @Nullable ClassDescriptorSourceFileRegistry sourceRegistry) {

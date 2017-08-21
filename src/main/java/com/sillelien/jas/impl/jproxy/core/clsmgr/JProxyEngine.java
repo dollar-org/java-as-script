@@ -54,10 +54,10 @@ public class JProxyEngine {
     protected JProxyClassLoader customClassLoader;
     protected final long scanPeriod;
     protected final String sourceEncoding = "UTF-8"; // Por ahora, provisional
-    public volatile boolean stop = false;
+    public volatile boolean stop;
     @Nullable
     protected TimerTask task;
-    protected boolean pendingReload = false;
+    protected boolean pendingReload;
     protected final boolean enabled;
 
     public JProxyEngine(@NotNull JProxyImpl parent, boolean enabled, @Nullable SourceScriptRoot scriptFile, @Nullable ClassLoader rootClassLoader, @Nullable FolderSourceList folderSourceList, @Nullable FolderSourceList requiredExtraJarPaths,
@@ -69,8 +69,11 @@ public class JProxyEngine {
         this.scanPeriod = scanPeriod;
 
 
-        this.delegateChangeDetector = new JProxyEngineChangeDetectorAndCompiler(this, scriptFile, folderSourceList, requiredExtraJarPaths, folderClasses, excludedListener, compilationOptions, diagnosticsListener, compilerListener);
-        this.customClassLoader = null; //new JProxyClassLoader(this);
+        delegateChangeDetector = new JProxyEngineChangeDetectorAndCompiler(this, scriptFile, folderSourceList,
+                                                                           requiredExtraJarPaths, folderClasses, excludedListener,
+                                                                           compilationOptions, diagnosticsListener,
+                                                                           compilerListener);
+        customClassLoader = null; //new JProxyClassLoader(this);
     }
 
     @NotNull
@@ -118,7 +121,7 @@ public class JProxyEngine {
     private boolean startScanner() {
         if (scanPeriod > 0)  // Si es 0 o negativo sólo se recargan una vez (la inicial ya ejecutada)
         {
-            this.task = new TimerTask() {
+            task = new TimerTask() {
                 @Override
                 public void run() {
                     if (stop) {
@@ -143,7 +146,7 @@ public class JProxyEngine {
     }
 
     public void setPendingReload() {
-        this.pendingReload = true;
+        pendingReload = true;
     }
 
 
@@ -166,9 +169,9 @@ public class JProxyEngine {
     public boolean stop() {
         synchronized (getMonitor()) {
             if (task != null) {
-                this.stop = true;
+                stop = true;
                 task.cancel();
-                this.task = null;
+                task = null;
                 return true;
             } else {
                 return false;
@@ -179,7 +182,7 @@ public class JProxyEngine {
     public boolean start() {
         synchronized (getMonitor()) {
             if (task == null) {
-                this.stop = false;
+                stop = false;
                 return startScanner();
             } else return false;
         }
@@ -219,7 +222,7 @@ public class JProxyEngine {
             sourceFile.resetLastLoadedClass(); // resetea también las innerclasses
         }
 
-        this.customClassLoader = new JProxyClassLoader(this);
+        customClassLoader = new JProxyClassLoader(this);
     }
 
 
@@ -292,7 +295,7 @@ public class JProxyEngine {
                     reloadSource(sourceFile); // Ponemos detectInnerClasses a true porque son archivos fuente que posiblemente nunca se hayan tocado desde la carga inicial y por tanto quizás se desconocen las innerclasses                 
                 }
 
-                this.pendingReload = false;
+                pendingReload = false;
                 return true;
             }
             return false;

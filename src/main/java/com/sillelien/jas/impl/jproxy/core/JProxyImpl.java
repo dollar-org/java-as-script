@@ -19,9 +19,9 @@ package com.sillelien.jas.impl.jproxy.core;
 import com.sillelien.jas.impl.GenericProxyImpl;
 import com.sillelien.jas.impl.GenericProxyInvocationHandler;
 import com.sillelien.jas.impl.jproxy.JProxyConfigImpl;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.FolderSourceList;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.JProxyEngine;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
 import com.sillelien.jas.jproxy.JProxyCompilerListener;
 import com.sillelien.jas.jproxy.JProxyDiagnosticsListener;
@@ -71,7 +71,8 @@ public abstract class JProxyImpl extends GenericProxyImpl {
         imports= config.getImports();
         staticImports= config.getStaticImports();
         classLoader = classLoader != null ? classLoader : getDefaultClassLoader();
-        this.engine = new JProxyEngine(this, enabled, scriptFile, classLoader, folderSourceList, requiredExtraJarPaths, classFolder, scanPeriod, excludedListener, compilerListener, compilationOptions, diagnosticsListener);
+        engine = new JProxyEngine(this, enabled, scriptFile, classLoader, folderSourceList, requiredExtraJarPaths, classFolder,
+                                  scanPeriod, excludedListener, compilerListener, compilationOptions, diagnosticsListener);
 
         return engine.init();
     }

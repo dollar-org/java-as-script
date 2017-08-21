@@ -1,3 +1,19 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl;
 
 import com.sillelien.jas.RelProxyException;
@@ -57,7 +73,7 @@ public abstract class GenericProxyVersionedObject {
 
         Class oldClass = obj.getClass();
         if (newClass != oldClass) {
-            this.obj = copy(oldClass, obj, newClass);
+            obj = copy(oldClass, obj, newClass);
         }
 
         return obj;
@@ -76,7 +92,7 @@ public abstract class GenericProxyVersionedObject {
         if (enclosingClassNew == null) {
             Constructor construc;
             try {
-                construc = newClass.getConstructor(new Class[0]);
+                construc = newClass.getConstructor();
             } catch (NoSuchMethodException ex) {
                 throw new RelProxyException("Cannot reload " + newClass.getName() + " a default empty of params constructor is required", ex);
             }
@@ -86,7 +102,7 @@ public abstract class GenericProxyVersionedObject {
             // En el caso de inner class o anonymous inner class el constructor por defecto se obtiene de forma diferente, útil para los EventListener de ItsNat
             Constructor construc;
             try {
-                construc = newClass.getDeclaredConstructor(new Class[]{enclosingClassNew});
+                construc = newClass.getDeclaredConstructor(enclosingClassNew);
             } catch (NoSuchMethodException ex) // Yo creo que nunca ocurre al menos no en anonymous inner classes pero por si acaso
             {
                 throw new RelProxyException("Cannot reload " + newClass.getName() + " a default empty of params constructor is required", ex);

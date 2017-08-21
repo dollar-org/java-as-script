@@ -1,3 +1,19 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,8 +39,8 @@ public abstract class ClassDescriptor {
     public ClassDescriptor(@NotNull String className) {
         this.className = className;
         int pos = className.lastIndexOf('.');
-        this.simpleClassName = (pos != -1) ? className.substring(pos + 1) : className;
-        this.packageName = (pos != -1) ? className.substring(0, pos + 1) : "";  // SE INCLUYE EL . en el caso de existir package
+        simpleClassName = (pos != -1) ? className.substring(pos + 1) : className;
+        packageName = (pos != -1) ? className.substring(0, pos + 1) : "";  // SE INCLUYE EL . en el caso de existir package
     }
 
     public abstract boolean isInnerClass();

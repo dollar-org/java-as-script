@@ -61,7 +61,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
     @Nullable
     protected JProxyDiagnosticsListener diagnosticsListener;
 
-    protected boolean test = false;
+    protected boolean test;
 
     private List<String> imports= new ArrayList<>();
     private List<String> staticImports= new ArrayList<>();
@@ -91,14 +91,14 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
     @NotNull
     @Override
     public JProxyConfig setInputPaths(@Nullable String[] inputPaths) {
-        this.folderSourceList = new FolderSourceList(inputPaths, true); // inputPaths es null en el caso de shell interactive
+        folderSourceList = new FolderSourceList(inputPaths, true); // inputPaths es null en el caso de shell interactive
         return this;
     }
 
     @NotNull
     @Override
     public JProxyConfig setRequiredExtraJarPaths(String[] inputJarPaths) {
-        this.requiredExtraJarPaths = new FolderSourceList(inputJarPaths, false); // inputPaths es null en el caso de shell interactive
+        requiredExtraJarPaths = new FolderSourceList(inputJarPaths, false); // inputPaths es null en el caso de shell interactive
         return this;
     }
 

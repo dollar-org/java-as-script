@@ -1,3 +1,19 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl.jproxy.screngine;
 
 import com.sillelien.jas.RelProxyException;
@@ -23,8 +39,8 @@ public class JProxyScriptEngineDelegateImpl extends JProxyImpl {
     protected JProxyScriptEngineImpl parent;
     @Nullable
     protected ClassDescriptorSourceScript classDescSourceScript;
-    protected long codeBufferModTimestamp = 0;
-    protected long lastCodeCompiledTimestamp = 0;
+    protected long codeBufferModTimestamp;
+    protected long lastCodeCompiledTimestamp;
 
     public JProxyScriptEngineDelegateImpl(JProxyScriptEngineImpl parent) {
         this.parent = parent;
@@ -42,7 +58,7 @@ public class JProxyScriptEngineDelegateImpl extends JProxyImpl {
             classLoader = new JProxyShellClassLoader(defaultClassLoader, new File(classFolder));
         }
 
-        this.classDescSourceScript = init(config, sourceFileScript, classLoader);
+        classDescSourceScript = init(config, sourceFileScript, classLoader);
         return classDescSourceScript;
     }
 
@@ -68,7 +84,7 @@ public class JProxyScriptEngineDelegateImpl extends JProxyImpl {
         synchronized (monitor) {
             ClassDescriptorSourceScript classDescSourceScript = this.classDescSourceScript;
             if (!code.equals(getSourceScriptInMemory().getScriptCode())) {
-                this.codeBufferModTimestamp = System.currentTimeMillis();
+                codeBufferModTimestamp = System.currentTimeMillis();
 
                 getSourceScriptInMemory().setScriptCode(code, codeBufferModTimestamp);
                 // Recuerda que cada vez que se obtiene el timestamp se llama a System.currentTimeMillis(), es imposible que el usuario haga algo en menos de 1ms
@@ -83,7 +99,7 @@ public class JProxyScriptEngineDelegateImpl extends JProxyImpl {
                 if (classDescSourceScript2 != classDescSourceScript)
                     throw new RelProxyException("Internal Error");
 
-                this.lastCodeCompiledTimestamp = System.currentTimeMillis();
+                lastCodeCompiledTimestamp = System.currentTimeMillis();
                 if (lastCodeCompiledTimestamp == codeBufferModTimestamp) // Demasiado rápido compilando
                 {
                     // Aseguramos que el siguiente código se ejecuta si o si con un codeBufferModTimestamp mayor que el timestamp de la compilación
