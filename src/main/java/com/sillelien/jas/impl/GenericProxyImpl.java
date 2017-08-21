@@ -54,7 +54,7 @@ public abstract class GenericProxyImpl {
     }
 
     @Nullable
-    public <T> T create(@Nullable T obj, Class<T> clasz) {
+    public <T> T create(@Nullable T obj, @NotNull Class<T> clasz) {
         if (obj == null) return null;
 
         return (T) create(obj, new Class[]{clasz});
@@ -74,5 +74,5 @@ public abstract class GenericProxyImpl {
 
 
     @NotNull
-    public abstract GenericProxyInvocationHandler createGenericProxyInvocationHandler(Object obj);
+    public abstract GenericProxyInvocationHandler createGenericProxyInvocationHandler(@NotNull Object obj);
 }

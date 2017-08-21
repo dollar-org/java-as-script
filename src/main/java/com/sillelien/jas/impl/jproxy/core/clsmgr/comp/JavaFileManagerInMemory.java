@@ -50,7 +50,7 @@ import java.util.Set;
  */
 public class JavaFileManagerInMemory extends ForwardingJavaFileManager {
     @NotNull
-    private final LinkedList<JavaFileObjectOutputClass> outputClassList = new LinkedList<JavaFileObjectOutputClass>();
+    private final LinkedList<JavaFileObjectOutputClass> outputClassList = new LinkedList<>();
 
     @NotNull
     private final JavaFileObjectInputClassFinderByClassLoader classFinder;
@@ -71,7 +71,10 @@ public class JavaFileManagerInMemory extends ForwardingJavaFileManager {
 
     @NotNull
     @Override
-    public JavaFileObject getJavaFileForOutput(Location location, @NotNull String className, @NotNull Kind kind, FileObject sibling) throws IOException {
+    public JavaFileObject getJavaFileForOutput(@NotNull Location location,
+                                               @NotNull String className,
+                                               @NotNull Kind kind,
+                                               @NotNull FileObject sibling) throws IOException {
         // Normalmente sólo habrá un resultado pero se da el caso de compilar una clase con una o varias inner classes, el compilador las compila de una vez
         JavaFileObjectOutputClass outClass = new JavaFileObjectOutputClass(className, kind);
         outputClassList.add(outClass);
@@ -80,11 +83,15 @@ public class JavaFileManagerInMemory extends ForwardingJavaFileManager {
 
     @NotNull
     @Override
-    public Iterable list(Location location, @NotNull String packageName, @NotNull Set kinds, boolean recurse) throws IOException {
+    public Iterable list(@NotNull Location location,
+                         @NotNull String packageName,
+                         @NotNull Set kinds,
+                         boolean recurse) throws IOException {
         if (location == StandardLocation.PLATFORM_CLASS_PATH) // let standard manager hanfle         
             return super.list(location, packageName, kinds, recurse);  // En este caso nunca (con PLATFORM_CLASS_PATH) va a encontrar nuestros sources ni .class
-        else if (location == StandardLocation.CLASS_PATH && kinds.contains(JavaFileObject.Kind.CLASS)) {
-            if (packageName.equals("java") || packageName.startsWith("java."))  // a hack to let standard manager handle locations like "java.lang" or "java.util", clases sólo cargables por el system class loader. Estrictamente no es necesario pero derivamos la inmensa mayoría de las clases estándar al método por defecto, NO añadimos "javax." pues hay extensiones tal y como el estándar servlet que no forma parte del Java core
+        else if ((location == StandardLocation.CLASS_PATH) && kinds.contains(Kind.CLASS)) {
+            if ("java".equals(packageName) || packageName.startsWith(
+                    "java."))  // a hack to let standard manager handle locations like "java.lang" or "java.util", clases sólo cargables por el system class loader. Estrictamente no es necesario pero derivamos la inmensa mayoría de las clases estándar al método por defecto, NO añadimos "javax." pues hay extensiones tal y como el estándar servlet que no forma parte del Java core
                 return super.list(location, packageName, kinds, recurse);
             else {
                 // El StandardJavaFileManager al que hacemos forward es "configurado" por el compilador al que está asociado cuando hay una tarea de compilación
@@ -94,7 +101,7 @@ public class JavaFileManagerInMemory extends ForwardingJavaFileManager {
                 // Ahora bien, no es el caso de los archivos fuente en donde sí tenemos un path claro el cual pasamos como classpath al compilador y por tanto un super.list(location, packageName, kinds, recurse)
                 // nos devolverá los .java (como JavaFileObject claro) si encuentra archivos correspondientes al package buscado.
 
-                LinkedList<JavaFileObject> result = new LinkedList<JavaFileObject>();
+                LinkedList<JavaFileObject> result = new LinkedList<>();
 
                 Iterable inFileMgr = super.list(location, packageName, kinds, recurse); // Esperamos o archivos fuente o .class de clases no recargables
                 if (inFileMgr instanceof Collection) {
@@ -113,7 +120,7 @@ public class JavaFileManagerInMemory extends ForwardingJavaFileManager {
                     String className = fileObj.getBinaryName();
                     assert className != null;
                     ClassDescriptorSourceUnit sourceFileDesc = sourceRegistry.getClassDescriptorSourceUnit(className);
-                    if (sourceFileDesc != null && sourceFileDesc.getClassBytes() != null) {
+                    if ((sourceFileDesc != null) && (sourceFileDesc.getClassBytes() != null)) {
                         JavaFileObjectInputClassInMemory fileInput = new JavaFileObjectInputClassInMemory(className, sourceFileDesc.getClassBytes(), sourceFileDesc.getTimestamp());
                         result.add(fileInput);
                     } else {
@@ -131,7 +138,7 @@ public class JavaFileManagerInMemory extends ForwardingJavaFileManager {
 
     @Override
     @Nullable
-    public String inferBinaryName(Location location, JavaFileObject file) {
+    public String inferBinaryName(@NotNull Location location, @NotNull JavaFileObject file) {
         if (file instanceof JProxyJavaFileObjectInput)
             return ((JProxyJavaFileObjectInput) file).getBinaryName();
 

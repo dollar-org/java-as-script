@@ -117,14 +117,17 @@ public class JProxyCompilerInMemory {
 
     @NotNull
     public JProxyCompilerContext createJProxyCompilerContext() {
-        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
         StandardJavaFileManager standardFileManager = compiler.getStandardFileManager(diagnostics, null, null);
         assert standardFileManager != null;
         return new JProxyCompilerContext(standardFileManager, diagnostics, diagnosticsListener);
     }
 
     @Nullable
-    private LinkedList<JavaFileObjectOutputClass> compile(ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, @NotNull ClassLoader currentClassLoader, @Nullable ClassDescriptorSourceFileRegistry sourceRegistry) {
+    private LinkedList<JavaFileObjectOutputClass> compile(@NotNull ClassDescriptorSourceUnit sourceFileDesc,
+                                                          @NotNull JProxyCompilerContext context,
+                                                          @NotNull ClassLoader currentClassLoader,
+                                                          @Nullable ClassDescriptorSourceFileRegistry sourceRegistry) {
         // http://stackoverflow.com/questions/12173294/compiling-fully-in-memory-with-javax-tools-javacompiler
         // http://www.accordess.com/wpblog/an-overview-of-java-compilation-api-jsr-199/
         // http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/com/sun/tools/javac/util/JavacFileManager.java?av=h#JavacFileManager
@@ -143,12 +146,12 @@ public class JProxyCompilerInMemory {
         Iterable<? extends JavaFileObject> compilationUnits;
 
         if (sourceFileDesc instanceof ClassDescriptorSourceFileJava) {
-            List<File> sourceFileList = new ArrayList<File>();
+            List<File> sourceFileList = new ArrayList<>();
             sourceFileList.add(((ClassDescriptorSourceFileJava) sourceFileDesc).getSourceFile().getFile());
             compilationUnits = standardFileManager.getJavaFileObjectsFromFiles(sourceFileList);
         } else if (sourceFileDesc instanceof ClassDescriptorSourceScript) {
             ClassDescriptorSourceScript sourceFileDescScript = (ClassDescriptorSourceScript) sourceFileDesc;
-            LinkedList<JavaFileObject> compilationUnitsList = new LinkedList<JavaFileObject>();
+            LinkedList<JavaFileObject> compilationUnitsList = new LinkedList<>();
             String code = sourceFileDescScript.getSourceCode();
             compilationUnitsList.add(new JavaFileObjectInputSourceInMemory(sourceFileDescScript.getClassName(), code, sourceFileDescScript.getEncoding(), sourceFileDescScript.getTimestamp()));
             compilationUnits = compilationUnitsList;
@@ -169,12 +172,14 @@ public class JProxyCompilerInMemory {
         return classObj;
     }
 
-    private boolean compile(Iterable<? extends JavaFileObject> compilationUnits, JavaFileManager fileManager, @NotNull JProxyCompilerContext context) {
+    private boolean compile(@NotNull Iterable<? extends JavaFileObject> compilationUnits,
+                            @NotNull JavaFileManager fileManager,
+                            @NotNull JProxyCompilerContext context) {
         /*
         String systemClassPath = System.getProperty("java.class.path");
         */
 
-        LinkedList<String> finalCompilationOptions = new LinkedList<String>();
+        LinkedList<String> finalCompilationOptions = new LinkedList<>();
         if (compilationOptions != null) {
             for (String option : compilationOptions) {
                 finalCompilationOptions.add(option);
@@ -190,7 +195,7 @@ public class JProxyCompilerInMemory {
                 for (int i = 0; i < folderSourceList.length; i++) {
                     FileExt folderSources = folderSourceList[i];
                     classPath.append(folderSources.getCanonicalPath());
-                    if (i < folderSourceList.length - 1) {
+                    if (i < (folderSourceList.length - 1)) {
                         classPath.append(File.pathSeparatorChar);
                     }
                 }

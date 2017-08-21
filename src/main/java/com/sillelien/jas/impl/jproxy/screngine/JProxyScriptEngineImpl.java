@@ -38,15 +38,18 @@ import java.io.Reader;
  * @author jmarranz
  */
 public class JProxyScriptEngineImpl extends AbstractScriptEngine implements JProxyScriptEngine {
+    @NotNull
     protected JProxyScriptEngineDelegateImpl jproxy;
+    @NotNull
     protected JProxyScriptEngineFactoryImpl factory;
 
-    public JProxyScriptEngineImpl(JProxyScriptEngineFactoryImpl factory) {
+    public JProxyScriptEngineImpl(@NotNull JProxyScriptEngineFactoryImpl factory) {
+        super();
         this.factory = factory;
     }
 
     @Override
-    public void init(JProxyConfig config) {
+    public void init(@NotNull JProxyConfig config) {
         JProxyConfigImpl configImpl = (JProxyConfigImpl) config;
         assert configImpl != null;
         if (!configImpl.isEnabled()) return; // jproxy quedará null
@@ -87,7 +90,7 @@ public class JProxyScriptEngineImpl extends AbstractScriptEngine implements JPro
 
     @Nullable
     @Override
-    public <T> T create(T obj, @NotNull Class<T> clasz) {
+    public <T> T create(@NotNull T obj, @NotNull Class<T> clasz) {
         if (jproxy == null) {
             return obj; // No se ha llamado al init o enabled = false
         }
@@ -96,7 +99,7 @@ public class JProxyScriptEngineImpl extends AbstractScriptEngine implements JPro
 
     @Nullable
     @Override
-    public Object create(Object obj, @NotNull Class<?>[] classes) {
+    public Object create(@NotNull Object obj, @NotNull Class<?>[] classes) {
         if (jproxy == null)
             return obj; // No se ha llamado al init o enabled = false
         return jproxy.create(obj, classes);

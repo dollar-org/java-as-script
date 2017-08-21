@@ -32,11 +32,11 @@ public class ClassDescriptorSourceFileRegistry {
     protected final Map<String, ClassDescriptorSourceUnit> sourceUnitMapByClassName;
 
     public ClassDescriptorSourceFileRegistry() {
-        sourceUnitMapByClassName = new HashMap<String, ClassDescriptorSourceUnit>();
+        sourceUnitMapByClassName = new HashMap<>();
     }
 
     public ClassDescriptorSourceFileRegistry(@NotNull ClassDescriptorSourceFileRegistry origin) {
-        sourceUnitMapByClassName = new HashMap<String, ClassDescriptorSourceUnit>(origin.sourceUnitMapByClassName);
+        sourceUnitMapByClassName = new HashMap<>(origin.sourceUnitMapByClassName);
     }
 
     public boolean isEmpty() {
@@ -49,12 +49,12 @@ public class ClassDescriptorSourceFileRegistry {
     }
 
     @Nullable
-    public ClassDescriptorSourceUnit getClassDescriptorSourceUnit(String className) {
+    public ClassDescriptorSourceUnit getClassDescriptorSourceUnit(@NotNull String className) {
         return sourceUnitMapByClassName.get(className);
     }
 
     @Nullable
-    public ClassDescriptorSourceUnit removeClassDescriptorSourceUnit(String className) {
+    public ClassDescriptorSourceUnit removeClassDescriptorSourceUnit(@NotNull String className) {
         return sourceUnitMapByClassName.remove(className);
     }
 

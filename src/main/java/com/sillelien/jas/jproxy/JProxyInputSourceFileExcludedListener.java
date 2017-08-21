@@ -16,6 +16,8 @@
 
 package com.sillelien.jas.jproxy;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
 /**
@@ -32,5 +34,5 @@ public interface JProxyInputSourceFileExcludedListener {
      * @param rootFolderOfSources the folder root of sources where this file is located.
      * @return true whether the file must be ignored.
      */
-    boolean isExcluded(File file, File rootFolderOfSources);
+    boolean isExcluded(@NotNull File file, @NotNull File rootFolderOfSources);
 }

@@ -16,6 +16,8 @@
 
 package com.sillelien.jas.jproxy;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaFileObject;
 
@@ -31,5 +33,5 @@ public interface JProxyDiagnosticsListener {
      *
      * @param diagnostics the list of diagnostics.
      */
-    void onDiagnostics(DiagnosticCollector<JavaFileObject> diagnostics);
+    void onDiagnostics(@NotNull DiagnosticCollector<JavaFileObject> diagnostics);
 }

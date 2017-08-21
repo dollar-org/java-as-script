@@ -63,7 +63,9 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
 
     protected boolean test;
 
+    @NotNull
     private List<String> imports= new ArrayList<>();
+    @NotNull
     private List<String> staticImports= new ArrayList<>();
 
     @NotNull
@@ -83,7 +85,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
     @NotNull
     @Override
     public JProxyConfig setInputPath(@Nullable String inputPath) {
-        String[] inputPaths = inputPath != null ? new String[]{inputPath} : null;
+        String[] inputPaths = (inputPath != null) ? new String[]{inputPath} : null;
         setInputPaths(inputPaths); // inputPath es null en el caso de shell interactive
         return this;
     }
@@ -97,7 +99,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
 
     @NotNull
     @Override
-    public JProxyConfig setRequiredExtraJarPaths(String[] inputJarPaths) {
+    public JProxyConfig setRequiredExtraJarPaths(@NotNull String[] inputJarPaths) {
         requiredExtraJarPaths = new FolderSourceList(inputJarPaths, false); // inputPaths es null en el caso de shell interactive
         return this;
     }
@@ -111,7 +113,7 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
 
     @NotNull
     @Override
-    public JProxyConfig setJProxyCompilerListener(JProxyCompilerListener compilerListener) {
+    public JProxyConfig setJProxyCompilerListener(@NotNull JProxyCompilerListener compilerListener) {
         this.compilerListener = compilerListener;
         return this;
     }
@@ -133,14 +135,14 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
 
     @NotNull
     @Override
-    public JProxyConfig setCompilationOptions(Iterable<String> compilationOptions) {
+    public JProxyConfig setCompilationOptions(@NotNull Iterable<String> compilationOptions) {
         this.compilationOptions = compilationOptions;
         return this;
     }
 
     @NotNull
     @Override
-    public JProxyConfig setJProxyDiagnosticsListener(JProxyDiagnosticsListener diagnosticsListener) {
+    public JProxyConfig setJProxyDiagnosticsListener(@NotNull JProxyDiagnosticsListener diagnosticsListener) {
         this.diagnosticsListener = diagnosticsListener;
         return this;
     }
@@ -192,22 +194,24 @@ public class JProxyConfigImpl extends GenericProxyConfigBaseImpl implements JPro
         this.test = test;
     }
 
+    @NotNull
     public List<String> getImports() {
         return imports;
     }
 
     @NotNull
-    public JProxyConfig setImports(List<String> imports) {
+    public JProxyConfig setImports(@NotNull List<String> imports) {
         this.imports = imports;
         return this;
     }
 
+    @NotNull
     public List<String> getStaticImports() {
         return staticImports;
     }
 
     @NotNull
-    public JProxyConfig setStaticImports(List<String> staticImports) {
+    public JProxyConfig setStaticImports(@NotNull List<String> staticImports) {
         this.staticImports = staticImports;
         return this;
     }

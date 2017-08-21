@@ -74,20 +74,22 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
                 mainParamsDec = ScriptEngine.class.getName() + " engine," + ScriptContext.class.getName() + " context";
                 mainReturnType = "Object";
 
-                if (scriptCode.equals("")) scriptCode = "return null;";
+                if ("".equals(scriptCode)) scriptCode = "return null;";
             }
 
              List<String> imports= jproxy.getImports();
             for (String anImport : imports) {
-                finalCode.append("import "+anImport+";\n");
+                finalCode.append("import ").append(anImport).append(";\n");
             }
              List<String> staticImports= jproxy.getStaticImports();
             for (String anImport : staticImports) {
-                finalCode.append("import static "+anImport+";\n");
+                finalCode.append("import static ").append(anImport).append(";\n");
             }
 
 
-            finalCode.append("public class " + className + " { public static " + mainReturnType + " main(" + mainParamsDec + ") {\n"); // Lo ponemos todo en una línea para que en caso de error la línea de error coincida con el script original pues hemos quitado la primera línea #!
+            finalCode.append("public class ").append(className).append(" { public static ").append(mainReturnType).append(
+                    " main(").append(mainParamsDec).append(
+                    ") {\n"); // Lo ponemos todo en una línea para que en caso de error la línea de error coincida con el script original pues hemos quitado la primera línea #!
             finalCode.append(scriptCode);
             finalCode.append("  }\n");
             finalCode.append("}\n");
@@ -121,8 +123,8 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
         int i = -1;
         for (i = 0; i < code.length(); i++) {
             char c = code.charAt(i);
-            if (c == ' ' || c == '\n' || c == '\t') continue;
-            else if (c == '/' && i + 1 < code.length()) {
+            if ((c == ' ') || (c == '\n') || (c == '\t')) continue;
+            else if ((c == '/') && ((i + 1) < code.length())) {
                 char c2 = code.charAt(i + 1);
                 if (c2 == '/') {
                     i = getFirstPosIgnoringOneLineComment(code, i);
@@ -163,7 +165,8 @@ public class ClassDescriptorSourceScript extends ClassDescriptorSourceUnit {
             Class scriptClass = getLastLoadedClass();
             assert scriptClass != null;
             Method method = scriptClass.getDeclaredMethod("main", String[].class);
-            String[] argsToScriptArr = argsToScript.size() > 0 ? argsToScript.toArray(new String[argsToScript.size()]) : new String[0];
+            String[] argsToScriptArr = !argsToScript.isEmpty() ? argsToScript.toArray(
+                    new String[argsToScript.size()]) : new String[0];
             if (method != null) {
                 method.invoke(null, new Object[]{argsToScriptArr});
             } else {

@@ -54,7 +54,7 @@ public class JProxyVersionedObject extends GenericProxyVersionedObject {
     }
 
     @Override
-    protected boolean ignoreField(Field field) {
+    protected boolean ignoreField(@NotNull Field field) {
         return false; // Todos cuentan (útil en Groovy no en Java)
     }
 }

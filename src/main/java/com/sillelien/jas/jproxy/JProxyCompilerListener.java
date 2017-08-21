@@ -16,6 +16,8 @@
 
 package com.sillelien.jas.jproxy;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
 /**
@@ -25,7 +27,7 @@ import java.io.File;
  * @see JProxyConfig#setJProxyCompilerListener(JProxyCompilerListener)
  */
 public interface JProxyCompilerListener {
-    void beforeCompile(File file);
+    void beforeCompile(@NotNull File file);
 
-    void afterCompile(File file);
+    void afterCompile(@NotNull File file);
 }

@@ -1,12 +1,28 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl.jproxy.core.clsmgr.comp;
 
+import com.sillelien.jas.RelProxyException;
+import com.sillelien.jas.impl.FileExt;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.FolderSourceList;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectInputClassInFile;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectInputClassInFileSystem;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectInputClassInJar;
-import com.sillelien.jas.RelProxyException;
-import com.sillelien.jas.impl.FileExt;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.FolderSourceList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,6 +50,7 @@ import java.util.zip.ZipInputStream;
  * @author jmarranz
  */
 public class JavaFileObjectInputClassFinderByClassLoader {
+    @NotNull
     private static final String CLASS_FILE_EXTENSION = ".class";
 
     @NotNull
@@ -53,7 +70,7 @@ public class JavaFileObjectInputClassFinderByClassLoader {
 
         String packagePath = packageName.replaceAll("\\.", "/");
 
-        List<JavaFileObjectInputClassInFileSystem> result = new ArrayList<JavaFileObjectInputClassInFileSystem>();
+        List<JavaFileObjectInputClassInFileSystem> result = new ArrayList<>();
 
         Enumeration<URL> urlEnumeration = classLoader.getResources(packagePath);
         if (urlEnumeration.hasMoreElements()) {
@@ -142,7 +159,7 @@ public class JavaFileObjectInputClassFinderByClassLoader {
                 String name = jarEntry.getName();
                 // Empieza por packagePath y no hay más folders siguientes, terminando en un .class (una clase concreta)                                
                 assert name != null;
-                if (name.startsWith(rootEntryName) && name.indexOf('/', rootEnd) == -1 && name.endsWith(CLASS_FILE_EXTENSION)) {
+                if (name.startsWith(rootEntryName) && (name.indexOf('/', rootEnd) == -1) && name.endsWith(CLASS_FILE_EXTENSION)) {
                     URI uri = URI.create(jarUri + "!/" + name);
                     String binaryName = ClassDescriptor.getClassNameFromRelativeClassFilePath(name);
                     result.add(new JavaFileObjectInputClassInJar(binaryName, uri, jarEntry.getTime()));
@@ -187,7 +204,7 @@ public class JavaFileObjectInputClassFinderByClassLoader {
                 String name = zipEntry.getName();
                 // Empieza por packagePath y no hay más folders siguientes, terminando en un .class (una clase concreta)
                 assert name != null;
-                if (name.startsWith(packagePath) && name.indexOf('/', posEnd) == -1 && name.endsWith(CLASS_FILE_EXTENSION)) {
+                if (name.startsWith(packagePath) && (name.indexOf('/', posEnd) == -1) && name.endsWith(CLASS_FILE_EXTENSION)) {
                     URI uri = URI.create(jarUri + "!/" + name);
                     String binaryName = ClassDescriptor.getClassNameFromRelativeClassFilePath(name);
                     result.add(new JavaFileObjectInputClassInJar(binaryName, uri, zipEntry.getTime()));

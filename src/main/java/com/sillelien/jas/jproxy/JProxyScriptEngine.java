@@ -16,6 +16,7 @@
 
 package com.sillelien.jas.jproxy;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.script.ScriptEngine;
@@ -33,7 +34,7 @@ public interface JProxyScriptEngine extends ScriptEngine {
      *
      * @param config the configuration object.
      */
-    void init(JProxyConfig config);
+    void init(@NotNull JProxyConfig config);
 
     /**
      * This method is the same as {@link JProxy#create(java.lang.Object, java.lang.Class)} but applied to this <code>JProxyScriptEngine</code>
@@ -44,7 +45,7 @@ public interface JProxyScriptEngine extends ScriptEngine {
      * @return the <code>java.lang.reflect.Proxy</code> object associated or the original object when is disabled.
      */
     @Nullable
-    <T> T create(T obj, Class<T> clasz);
+    <T> T create(@NotNull T obj, @NotNull Class<T> clasz);
 
     /**
      * This method is the same as {@link JProxy#create(java.lang.Object, java.lang.Class[])} but applied to this <code>JProxyScriptEngine</code>
@@ -54,7 +55,7 @@ public interface JProxyScriptEngine extends ScriptEngine {
      * @return the <code>java.lang.reflect.Proxy</code> object associated or the original object when is disabled.
      */
     @Nullable
-    Object create(Object obj, Class<?>[] classes);
+    Object create(@NotNull Object obj, @NotNull Class<?>[] classes);
 
     /**
      * This method is the same as {@link JProxy#isEnabled()} but applied to this <code>JProxyScriptEngine</code>

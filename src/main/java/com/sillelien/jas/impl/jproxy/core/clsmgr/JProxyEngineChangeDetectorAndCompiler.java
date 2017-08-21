@@ -163,12 +163,12 @@ public class JProxyEngineChangeDetectorAndCompiler {
             }
         }
 
-        LinkedList<ClassDescriptorSourceUnit> updatedSourceFiles = new LinkedList<ClassDescriptorSourceUnit>();
-        LinkedList<ClassDescriptorSourceUnit> newSourceFiles = new LinkedList<ClassDescriptorSourceUnit>();
+        LinkedList<ClassDescriptorSourceUnit> updatedSourceFiles = new LinkedList<>();
+        LinkedList<ClassDescriptorSourceUnit> newSourceFiles = new LinkedList<>();
 
         ClassDescriptorSourceScript scriptFileDesc = sourcesSearch.sourceFileSearch(firstTime, scriptFile, sourceRegistry, updatedSourceFiles, newSourceFiles);
 
-        LinkedList<ClassDescriptorSourceUnit> deletedSourceFiles = new LinkedList<ClassDescriptorSourceUnit>();
+        LinkedList<ClassDescriptorSourceUnit> deletedSourceFiles = new LinkedList<>();
 
         if (!firstTime) {
             synchronized (monitor) {
@@ -197,7 +197,7 @@ public class JProxyEngineChangeDetectorAndCompiler {
                 }
             }
 
-            ArrayList<ClassDescriptorSourceUnit> sourceFilesToCompile = new ArrayList<ClassDescriptorSourceUnit>(updatedSourceFiles.size() + newSourceFiles.size());
+            ArrayList<ClassDescriptorSourceUnit> sourceFilesToCompile = new ArrayList<>(updatedSourceFiles.size() + newSourceFiles.size());
             sourceFilesToCompile.addAll(updatedSourceFiles);
             sourceFilesToCompile.addAll(newSourceFiles);
 
@@ -227,12 +227,12 @@ public class JProxyEngineChangeDetectorAndCompiler {
                                 file = null;
                         }
 
-                        if (compilerListener != null && file != null)
+                        if ((compilerListener != null) && (file != null))
                             compilerListener.beforeCompile(file);
 
                         compile(sourceFile, context);
 
-                        if (compilerListener != null && file != null)
+                        if ((compilerListener != null) && (file != null))
                             compilerListener.afterCompile(file);
                     }
                 } finally {
@@ -284,7 +284,7 @@ public class JProxyEngineChangeDetectorAndCompiler {
 
         // Salvamos las innerclasses si hay, no hay problema de clases inner no detectadas pues lo están todas pues sólo se salva tras una compilación
         LinkedList<ClassDescriptorInner> innerClassDescList = sourceFile.getInnerClassDescriptors();
-        if (innerClassDescList != null && !innerClassDescList.isEmpty()) {
+        if ((innerClassDescList != null) && !innerClassDescList.isEmpty()) {
             for (ClassDescriptorInner innerClassDesc : innerClassDescList) {
                 File classFilePath = ClassDescriptor.getAbsoluteClassFilePathFromClassNameAndClassPath(innerClassDesc.getClassName(), folderClasses);
                 JProxyUtil.saveFile(classFilePath, Objects.requireNonNull(innerClassDesc.getClassBytes()));

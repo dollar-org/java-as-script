@@ -1,9 +1,29 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl.jproxy.core.clsmgr;
 
 import com.sillelien.jas.RelProxyException;
 import com.sillelien.jas.impl.FileExt;
 import com.sillelien.jas.impl.jproxy.JProxyUtil;
-import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.*;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptor;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileJava;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceFileRegistry;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceScript;
+import com.sillelien.jas.impl.jproxy.core.clsmgr.cldesc.ClassDescriptorSourceUnit;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceFileJavaNormal;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRoot;
 import com.sillelien.jas.impl.jproxy.core.clsmgr.srcunit.SourceScriptRootFileJavaExt;
@@ -52,7 +72,7 @@ public class JavaSourcesSearch {
 
             boolean allEmpty = true;
 
-            String scriptFileJavaCannonPath = (scriptFile != null && (scriptFile instanceof SourceScriptRootFileJavaExt)) ? ((SourceScriptRootFileJavaExt) scriptFile).getFileExt().getCanonicalPath() : null;
+            String scriptFileJavaCannonPath = ((scriptFile != null) && (scriptFile instanceof SourceScriptRootFileJavaExt)) ? ((SourceScriptRootFileJavaExt) scriptFile).getFileExt().getCanonicalPath() : null;
 
             for (int i = 0; i < folderSourceArray.length; i++) {
                 FileExt rootFolderOfSources = folderSourceArray[i];
@@ -174,7 +194,7 @@ public class JavaSourcesSearch {
             File file = new File(parentPath.getCanonicalPath() + "/" + relPath);
             FileExt fileExt = new FileExt(file);
             if (file.isDirectory()) {
-                if (listener != null && listener.isExcluded(file, rootFolderOfSources.getFile())) {
+                if ((listener != null) && listener.isExcluded(file, rootFolderOfSources.getFile())) {
                     continue;
                 }
 
@@ -190,11 +210,11 @@ public class JavaSourcesSearch {
                 //if (!"jsh".equals(ext)) continue;
 
                 String cannonPath = JProxyUtil.getCanonicalPath(file);
-                if (scriptFileJavaCannonPath != null && scriptFileJavaCannonPath.equals(cannonPath)) {
+                if ((scriptFileJavaCannonPath != null) && scriptFileJavaCannonPath.equals(cannonPath)) {
                     continue; // Es el propio archivo script inicial que es .java, así evitamos considerarlo dos veces
                 }
 
-                if (listener != null && listener.isExcluded(file, rootFolderOfSources.getFile())) {
+                if ((listener != null) && listener.isExcluded(file, rootFolderOfSources.getFile())) {
                     continue;
                 }
 

@@ -118,6 +118,7 @@ public abstract class ClassDescriptor {
         return new File(classPath + relativePath);
     }
 
+    @NotNull
     public static String getClassNameFromRelativeClassFilePath(@NotNull String path) {
         // Ej. org/w3c/dom/Element.class => org.w3c.dom.Element
         String binaryName = path.replaceAll("/", ".");
@@ -125,7 +126,8 @@ public abstract class ClassDescriptor {
         return binaryName.replaceAll(".class$", "");    // El $ indica "el .class del final"
     }
 
-    public static String getClassNameFromPackageAndClassFileName(String packageName, String fileName) {
+    @NotNull
+    public static String getClassNameFromPackageAndClassFileName(@NotNull String packageName, @NotNull String fileName) {
         String className = packageName + "." + fileName;
         return className.replaceAll(".class$", "");    // El $ indica "el .class del final" 
     }

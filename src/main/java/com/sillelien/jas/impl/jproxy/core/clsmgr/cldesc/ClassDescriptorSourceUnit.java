@@ -36,6 +36,7 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor {
     @NotNull
     protected final SourceUnit sourceUnit;
 
+    @NotNull
     protected LinkedList<ClassDescriptorInner> innerClasses;
 
     protected boolean pendingToRemove; // Se usa como monohilo, no hay problemas de sincronización
@@ -135,7 +136,7 @@ public abstract class ClassDescriptorSourceUnit extends ClassDescriptor {
             return null;
 
         if (innerClasses == null)
-            innerClasses = new LinkedList<ClassDescriptorInner>();
+            innerClasses = new LinkedList<>();
 
         ClassDescriptorInner classDesc = new ClassDescriptorInner(className, this);
         innerClasses.add(classDesc);

@@ -39,6 +39,7 @@ import java.util.TimerTask;
  * @author jmarranz
  */
 public class JProxyEngine {
+    @NotNull
     protected final Object monitor = new Object(); // Podríamos usar este objeto JProxyEngine directamente pero el monitor es mejor para análisis de dependencias
 
     @NotNull
@@ -53,6 +54,7 @@ public class JProxyEngine {
     @Nullable
     protected JProxyClassLoader customClassLoader;
     protected final long scanPeriod;
+    @NotNull
     protected final String sourceEncoding = "UTF-8"; // Por ahora, provisional
     public volatile boolean stop;
     @Nullable
@@ -162,7 +164,7 @@ public class JProxyEngine {
 
     public boolean isRunning() {
         synchronized (getMonitor()) {
-            return task != null && scanPeriod > 0;
+            return (task != null) && (scanPeriod > 0);
         }
     }
 
@@ -237,7 +239,7 @@ public class JProxyEngine {
     private void reloadInnerClassesOnly(@NotNull ClassDescriptorSourceUnit sourceFile, @NotNull Class classParent) {
 
         LinkedList<ClassDescriptorInner> innerClassDescList = sourceFile.getInnerClassDescriptors();
-        if (innerClassDescList != null && !innerClassDescList.isEmpty()) {
+        if ((innerClassDescList != null) && !innerClassDescList.isEmpty()) {
             // En el caso de una clase que ha sido compilada, las inner classes se descubren todas
             for (ClassDescriptorInner innerClassDesc : innerClassDescList) {
                 assert customClassLoader != null;

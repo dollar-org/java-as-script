@@ -1,3 +1,19 @@
+/*
+ *    Copyright (c) 2014-2017 Neil Ellis
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package com.sillelien.jas.impl.jproxy.screngine;
 
 import com.sillelien.jas.RelProxy;
@@ -15,7 +31,9 @@ import java.util.List;
  * @author jmarranz
  */
 public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory {
+    @NotNull
     protected static final String SHORT_NAME = "java";
+    @NotNull
     protected static final String LANGUAGE_NAME = "Java";
 
     @NotNull
@@ -28,16 +46,16 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory {
     static {
         ArrayList<String> n;
 
-        n = new ArrayList<String>(2);
+        n = new ArrayList<>(2);
         n.add(SHORT_NAME);
         n.add(LANGUAGE_NAME);
         names = Collections.unmodifiableList(n);
 
-        n = new ArrayList<String>(1);
+        n = new ArrayList<>(1);
         n.add("java");
         extensions = Collections.unmodifiableList(n);
 
-        n = new ArrayList<String>(2);
+        n = new ArrayList<>(2);
         http:
 //reference.sitepoint.com/html/mime-types-full
         n.add("text/x-java-source");
@@ -46,6 +64,7 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory {
     }
 
     public JProxyScriptEngineFactoryImpl() {
+        super();
     }
 
     public static JProxyScriptEngineFactory create() {
@@ -97,7 +116,7 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory {
 
     @NotNull
     @Override
-    public Object getParameter(String key) {
+    public Object getParameter(@NotNull String key) {
         if (ScriptEngine.NAME.equals(key)) {
             return SHORT_NAME;
         } else if (ScriptEngine.ENGINE.equals(key)) {
@@ -117,9 +136,9 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory {
 
     @NotNull
     @Override
-    public String getMethodCallSyntax(String obj, String method, @NotNull String... args) {
+    public String getMethodCallSyntax(@NotNull String obj, @NotNull String method, @NotNull String... args) {
         StringBuilder ret = new StringBuilder();
-        ret.append(obj + "." + method + "(");
+        ret.append(obj).append(".").append(method).append("(");
         int len = args.length;
         if (len == 0) {
             ret.append(")");
@@ -128,7 +147,7 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory {
 
         for (int i = 0; i < len; i++) {
             ret.append(args[i]);
-            if (i != len - 1) {
+            if (i != (len - 1)) {
                 ret.append(",");
             } else {
                 ret.append(")");

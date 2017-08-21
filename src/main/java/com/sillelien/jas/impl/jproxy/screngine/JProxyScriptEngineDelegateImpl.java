@@ -31,18 +31,21 @@ import org.jetbrains.annotations.Nullable;
 import javax.script.ScriptContext;
 import javax.script.ScriptException;
 import java.io.File;
+import java.util.Objects;
 
 /**
  * @author jmarranz
  */
 public class JProxyScriptEngineDelegateImpl extends JProxyImpl {
+    @NotNull
     protected JProxyScriptEngineImpl parent;
     @Nullable
     protected ClassDescriptorSourceScript classDescSourceScript;
     protected long codeBufferModTimestamp;
     protected long lastCodeCompiledTimestamp;
 
-    public JProxyScriptEngineDelegateImpl(JProxyScriptEngineImpl parent) {
+    public JProxyScriptEngineDelegateImpl(@NotNull JProxyScriptEngineImpl parent) {
+        super();
         this.parent = parent;
     }
 
@@ -96,7 +99,7 @@ public class JProxyScriptEngineDelegateImpl extends JProxyImpl {
                     throw new ScriptException(ex);
                 }
 
-                if (classDescSourceScript2 != classDescSourceScript)
+                if (!Objects.equals(classDescSourceScript2, classDescSourceScript))
                     throw new RelProxyException("Internal Error");
 
                 lastCodeCompiledTimestamp = System.currentTimeMillis();

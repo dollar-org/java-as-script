@@ -46,7 +46,9 @@ public class JProxyCompilerContext {
     @NotNull
     private static final Logger log = LoggerFactory.getLogger("JProxyCompilerContext");
 
-    public JProxyCompilerContext(@NotNull StandardJavaFileManager standardFileManager, DiagnosticCollector<JavaFileObject> diagnostics, @Nullable JProxyDiagnosticsListener diagnosticsListener) {
+    public JProxyCompilerContext(@NotNull StandardJavaFileManager standardFileManager,
+                                 @NotNull DiagnosticCollector<JavaFileObject> diagnostics,
+                                 @Nullable JProxyDiagnosticsListener diagnosticsListener) {
         this.standardFileManager = standardFileManager;
         this.diagnostics = diagnostics;
         this.diagnosticsListener = diagnosticsListener;
@@ -77,16 +79,16 @@ public class JProxyCompilerContext {
                 } else {
                     int i = 1;
                     for (Diagnostic diagnostic : diagList) {
-                        log.debug("Diagnostic " + i);
-                        log.debug("  code: " + diagnostic.getCode());
-                        log.debug("  kind: " + diagnostic.getKind());
-                        log.debug("  line number: " + diagnostic.getLineNumber());
-                        log.debug("  column number: " + diagnostic.getColumnNumber());
-                        log.debug("  start position: " + diagnostic.getStartPosition());
-                        log.debug("  position: " + diagnostic.getPosition());
-                        log.debug("  end position: " + diagnostic.getEndPosition());
-                        log.debug("  source: " + diagnostic.getSource());
-                        log.debug("  message: " + diagnostic.getMessage(null));
+                        log.debug("Diagnostic {}", i);
+                        log.debug("  code: {}", diagnostic.getCode());
+                        log.debug("  kind: {}", diagnostic.getKind());
+                        log.debug("  line number: {}", diagnostic.getLineNumber());
+                        log.debug("  column number: {}", diagnostic.getColumnNumber());
+                        log.debug("  start position: {}", diagnostic.getStartPosition());
+                        log.debug("  position: {}", diagnostic.getPosition());
+                        log.debug("  end position: {}", diagnostic.getEndPosition());
+                        log.debug("  source: {}", diagnostic.getSource());
+                        log.debug("  message: {}", diagnostic.getMessage(null));
                         i++;
                     }
                 }

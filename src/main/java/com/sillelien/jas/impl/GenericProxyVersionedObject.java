@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * @author jmarranz
@@ -32,9 +33,10 @@ import java.util.ArrayList;
 public abstract class GenericProxyVersionedObject {
     @NotNull
     protected Object obj;
+    @NotNull
     protected GenericProxyInvocationHandler parent;
 
-    public GenericProxyVersionedObject(@NotNull Object obj, GenericProxyInvocationHandler parent) {
+    public GenericProxyVersionedObject(@NotNull Object obj, @NotNull GenericProxyInvocationHandler parent) {
         this.obj = obj;
         this.parent = parent;
     }
@@ -46,7 +48,10 @@ public abstract class GenericProxyVersionedObject {
             getTreeFields(superClass, obj, fieldList, valueList);
     }
 
-    protected static void getFields(@NotNull Class clasz, Object obj, @NotNull ArrayList<Field> fieldList, @Nullable ArrayList<Object> valueList) throws IllegalAccessException {
+    protected static void getFields(@NotNull Class clasz,
+                                    @NotNull Object obj,
+                                    @NotNull ArrayList<Field> fieldList,
+                                    @Nullable ArrayList<Object> valueList) throws IllegalAccessException {
         Field[] fieldListClass = clasz.getDeclaredFields();
         assert fieldListClass != null;
         for (int i = 0; i < fieldListClass.length; i++) {
@@ -72,7 +77,7 @@ public abstract class GenericProxyVersionedObject {
             return obj;
 
         Class oldClass = obj.getClass();
-        if (newClass != oldClass) {
+        if (!Objects.equals(newClass, oldClass)) {
             obj = copy(oldClass, obj, newClass);
         }
 
@@ -83,8 +88,8 @@ public abstract class GenericProxyVersionedObject {
     private Object copy(@NotNull Class oldClass, @NotNull Object oldObj, @NotNull Class newClass) throws IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException {
         Object newObj;
 
-        ArrayList<Field> fieldListOld = new ArrayList<Field>();
-        ArrayList<Object> valueListOld = new ArrayList<Object>();
+        ArrayList<Field> fieldListOld = new ArrayList<>();
+        ArrayList<Object> valueListOld = new ArrayList<>();
 
         getTreeFields(oldClass, oldObj, fieldListOld, valueListOld);
 
@@ -129,7 +134,7 @@ public abstract class GenericProxyVersionedObject {
         }
 
 
-        ArrayList<Field> fieldListNew = new ArrayList<Field>();
+        ArrayList<Field> fieldListNew = new ArrayList<>();
 
         getTreeFields(newClass, newObj, fieldListNew, null);
 
@@ -142,7 +147,7 @@ public abstract class GenericProxyVersionedObject {
             assert fieldOld != null;
             assert fieldNew != null;
 
-            if (enclosingClassNew != null && "this$0".equals(fieldOld.getName()) && "this$0".equals(fieldNew.getName()))
+            if ((enclosingClassNew != null) && "this$0".equals(fieldOld.getName()) && "this$0".equals(fieldNew.getName()))
                 continue; // Ya están correctamente definidos
 
 
@@ -184,5 +189,5 @@ public abstract class GenericProxyVersionedObject {
     @Nullable
     protected abstract <T> Class<T> reloadClass();
 
-    protected abstract boolean ignoreField(Field field);
+    protected abstract boolean ignoreField(@NotNull Field field);
 }

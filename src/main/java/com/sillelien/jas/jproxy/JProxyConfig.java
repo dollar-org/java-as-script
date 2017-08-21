@@ -50,7 +50,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    JProxyConfig setRelProxyOnReloadListener(RelProxyOnReloadListener relListener);
+    JProxyConfig setRelProxyOnReloadListener(@NotNull RelProxyOnReloadListener relListener);
 
     /**
      * Defines the folder root to locate source code Java files.
@@ -65,7 +65,7 @@ public interface JProxyConfig {
      * @see #setInputPaths(java.lang.String[])
      */
     @NotNull
-    JProxyConfig setInputPath(String inputPath);
+    JProxyConfig setInputPath(@NotNull String inputPath);
 
     /**
      * Defines the folder roots to locate source code Java files.
@@ -81,7 +81,7 @@ public interface JProxyConfig {
      * @see #setRequiredExtraJarPaths(String[])
      */
     @NotNull
-    JProxyConfig setInputPaths(String[] inputPaths);
+    JProxyConfig setInputPaths(@NotNull String[] inputPaths);
 
     /**
      * Defines the extra required jars providing the absolute paths to them.
@@ -97,7 +97,7 @@ public interface JProxyConfig {
      * @see #setInputPaths(String[])
      */
     @NotNull
-    JProxyConfig setRequiredExtraJarPaths(String[] inputJarPaths);
+    JProxyConfig setRequiredExtraJarPaths(@NotNull String[] inputJarPaths);
 
     /**
      * Registers the listener implementing excluding rules to filter source files not to be part of the hot reloading system in spite of included in input paths.
@@ -115,7 +115,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    JProxyConfig setJProxyCompilerListener(JProxyCompilerListener listener);
+    JProxyConfig setJProxyCompilerListener(@NotNull JProxyCompilerListener listener);
 
 
     /**
@@ -153,7 +153,7 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    JProxyConfig setCompilationOptions(Iterable<String> compilationOptions);
+    JProxyConfig setCompilationOptions(@NotNull Iterable<String> compilationOptions);
 
     /**
      * Sets the diagnostic listener to capture compilation errors and warnings thrown by the internal compiler.
@@ -190,13 +190,13 @@ public interface JProxyConfig {
      * @return this object for flow API use.
      */
     @NotNull
-    JProxyConfig setJProxyDiagnosticsListener(JProxyDiagnosticsListener diagnosticsListener);
+    JProxyConfig setJProxyDiagnosticsListener(@NotNull JProxyDiagnosticsListener diagnosticsListener);
 
 
     @NotNull
-    JProxyConfig setImports(List<String> imports);
+    JProxyConfig setImports(@NotNull List<String> imports);
 
 
     @NotNull
-    JProxyConfig setStaticImports(List<String> staticImports);
+    JProxyConfig setStaticImports(@NotNull List<String> staticImports);
 }

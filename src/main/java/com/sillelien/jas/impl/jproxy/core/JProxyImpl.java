@@ -35,14 +35,18 @@ import java.util.List;
  * @author jmarranz
  */
 public abstract class JProxyImpl extends GenericProxyImpl {
+    @NotNull
     public static JProxyImpl SINGLETON;
     @Nullable
     protected JProxyEngine engine;
+    @NotNull
     private List<String> imports;
+    @NotNull
     private List<String> staticImports;
 
 
     protected JProxyImpl() {
+        super();
     }
 
     @Nullable
@@ -70,7 +74,7 @@ public abstract class JProxyImpl extends GenericProxyImpl {
         boolean enabled = config.isEnabled();
         imports= config.getImports();
         staticImports= config.getStaticImports();
-        classLoader = classLoader != null ? classLoader : getDefaultClassLoader();
+        classLoader = (classLoader != null) ? classLoader : getDefaultClassLoader();
         engine = new JProxyEngine(this, enabled, scriptFile, classLoader, folderSourceList, requiredExtraJarPaths, classFolder,
                                   scanPeriod, excludedListener, compilerListener, compilationOptions, diagnosticsListener);
 
@@ -111,19 +115,21 @@ public abstract class JProxyImpl extends GenericProxyImpl {
     @Nullable
     public abstract Class getMainParamClass();
 
+    @NotNull
     public List<String> getImports() {
         return imports;
     }
 
-    public void setImports(List<String> imports) {
+    public void setImports(@NotNull List<String> imports) {
         this.imports = imports;
     }
 
+    @NotNull
     public List<String> getStaticImports() {
         return staticImports;
     }
 
-    public void setStaticImports(List<String> staticImports) {
+    public void setStaticImports(@NotNull List<String> staticImports) {
         this.staticImports = staticImports;
     }
 }

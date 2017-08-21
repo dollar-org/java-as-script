@@ -32,12 +32,12 @@ import javax.tools.JavaFileObject;
 import java.util.Collections;
 import java.util.List;
 
-public class Demo {
+public final class Demo {
 
     @NotNull
     private static final Logger log = LoggerFactory.getLogger("Demo");
 
-    public static void main(String[] ignored) throws Exception {
+    public static void main(@NotNull String[] ignored) throws Exception {
 
         //Initializing and configuring the JSR-223 script engine
         JProxyConfig jpConfig = JProxy.createJProxyConfig();
