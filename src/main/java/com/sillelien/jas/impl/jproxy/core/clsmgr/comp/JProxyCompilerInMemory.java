@@ -31,6 +31,8 @@ import com.sillelien.jas.impl.jproxy.core.clsmgr.comp.jfo.JavaFileObjectOutputCl
 import com.sillelien.jas.jproxy.JProxyDiagnosticsListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler;
@@ -48,25 +50,29 @@ import java.util.List;
  */
 public class JProxyCompilerInMemory {
     @NotNull
+    private static final Logger log = LoggerFactory.getLogger(JProxyCompilerInMemory.class);
+    @NotNull
     protected JProxyEngineChangeDetectorAndCompiler parent;
-
     @NotNull
     protected JavaCompiler compiler;
-
     @Nullable
     protected Iterable<String> compilationOptions;
-
     @Nullable
     protected JProxyDiagnosticsListener diagnosticsListener;
 
-    public JProxyCompilerInMemory(@NotNull JProxyEngineChangeDetectorAndCompiler engine, @Nullable Iterable<String> compilationOptions, @Nullable JProxyDiagnosticsListener diagnosticsListener) {
+    public JProxyCompilerInMemory(@NotNull JProxyEngineChangeDetectorAndCompiler engine,
+                                  @Nullable Iterable<String> compilationOptions,
+                                  @Nullable JProxyDiagnosticsListener diagnosticsListener) {
         parent = engine;
         this.compilationOptions = compilationOptions;
         this.diagnosticsListener = diagnosticsListener;
         compiler = ToolProvider.getSystemJavaCompiler();
     }
 
-    public void compileSourceFile(@NotNull ClassDescriptorSourceUnit sourceFileDesc, @NotNull JProxyCompilerContext context, @NotNull ClassLoader currentClassLoader, @Nullable ClassDescriptorSourceFileRegistry sourceRegistry) {
+    public void compileSourceFile(@NotNull ClassDescriptorSourceUnit sourceFileDesc,
+                                  @NotNull JProxyCompilerContext context,
+                                  @NotNull ClassLoader currentClassLoader,
+                                  @Nullable ClassDescriptorSourceFileRegistry sourceRegistry) {
         //File sourceFile = sourceFileDesc.getSourceFile();
         LinkedList<JavaFileObjectOutputClass> outClassList = compile(sourceFileDesc, context, currentClassLoader, sourceRegistry);
 
@@ -107,7 +113,8 @@ public class JProxyCompilerInMemory {
                         if (parent.getJProxyInputSourceFileExcludedListener() == null) {
                             throw new RelProxyException("Unexpected class when compiling: " + currClassName + " maybe it is an autonomous private class declared in the same java file of the principal class, this kind of classes are not supported in hot reload");
                         } else {
-                            System.out.println("Unexpected class when compiling: " + currClassName + " maybe it is an excluded class or is an autonomous private class declared in the same java file of the principal class, this kind of classes are not supported in hot reload");
+                            log.error(
+                                    "Unexpected class when compiling: " + currClassName + " maybe it is an excluded class or is an autonomous private class declared in the same java file of the principal class, this kind of classes are not supported in hot reload");
                         }
                     }
                 }
@@ -153,14 +160,18 @@ public class JProxyCompilerInMemory {
             ClassDescriptorSourceScript sourceFileDescScript = (ClassDescriptorSourceScript) sourceFileDesc;
             LinkedList<JavaFileObject> compilationUnitsList = new LinkedList<>();
             String code = sourceFileDescScript.getSourceCode();
-            compilationUnitsList.add(new JavaFileObjectInputSourceInMemory(sourceFileDescScript.getClassName(), code, sourceFileDescScript.getEncoding(), sourceFileDescScript.getTimestamp()));
+            compilationUnitsList.add(new JavaFileObjectInputSourceInMemory(sourceFileDescScript.getClassName(), code,
+                                                                           sourceFileDescScript.getEncoding(),
+                                                                           sourceFileDescScript.getTimestamp()));
             compilationUnits = compilationUnitsList;
         } else {
             throw new RelProxyException("Internal error");
         }
 
         assert sourceRegistry != null;
-        JavaFileManagerInMemory fileManagerInMemory = new JavaFileManagerInMemory(standardFileManager, currentClassLoader, sourceRegistry, parent.getRequiredExtraJarPaths());
+        JavaFileManagerInMemory fileManagerInMemory = new JavaFileManagerInMemory(standardFileManager, currentClassLoader,
+                                                                                  sourceRegistry,
+                                                                                  parent.getRequiredExtraJarPaths());
 
         assert compilationUnits != null;
         boolean success = compile(compilationUnits, fileManagerInMemory, context);
@@ -203,7 +214,8 @@ public class JProxyCompilerInMemory {
             }
         }
         DiagnosticCollector<JavaFileObject> diagnostics = context.getDiagnosticCollector();
-        JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, finalCompilationOptions, null, compilationUnits);
+        JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, finalCompilationOptions, null,
+                                                             compilationUnits);
         boolean success = task.call();
 
         return success;
