@@ -32,16 +32,15 @@ import java.util.List;
  */
 public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory {
     @NotNull
-    protected static final String SHORT_NAME = "java";
-    @NotNull
     protected static final String LANGUAGE_NAME = "Java";
-
     @NotNull
-    protected static final List names;
+    protected static final String SHORT_NAME = "java";
     @NotNull
     protected static final List extensions;
     @NotNull
     protected static final List mimeTypes;
+    @NotNull
+    protected static final List names;
 
     static {
         ArrayList<String> n;
@@ -107,7 +106,6 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory {
         return LANGUAGE_NAME;
     }
 
-    @SuppressWarnings("ConstantConditions")
     @NotNull
     @Override
     public String getLanguageVersion() {
@@ -117,20 +115,21 @@ public class JProxyScriptEngineFactoryImpl extends JProxyScriptEngineFactory {
     @NotNull
     @Override
     public Object getParameter(@NotNull String key) {
-        if (ScriptEngine.NAME.equals(key)) {
-            return SHORT_NAME;
-        } else if (ScriptEngine.ENGINE.equals(key)) {
-            return getEngineName();
-        } else if (ScriptEngine.ENGINE_VERSION.equals(key)) {
-            return getEngineVersion();
-        } else if (ScriptEngine.LANGUAGE.equals(key)) {
-            return getLanguageName();
-        } else if (ScriptEngine.LANGUAGE_VERSION.equals(key)) {
-            return getLanguageVersion();
-        } else if ("THREADING".equals(key)) {
-            return "MULTITHREADED";
-        } else {
-            throw new IllegalArgumentException("Invalid key");
+        switch (key) {
+            case ScriptEngine.NAME:
+                return SHORT_NAME;
+            case ScriptEngine.ENGINE:
+                return getEngineName();
+            case ScriptEngine.ENGINE_VERSION:
+                return getEngineVersion();
+            case ScriptEngine.LANGUAGE:
+                return getLanguageName();
+            case ScriptEngine.LANGUAGE_VERSION:
+                return getLanguageVersion();
+            case "THREADING":
+                return "MULTITHREADED";
+            default:
+                throw new IllegalArgumentException("Invalid key");
         }
     }
 
