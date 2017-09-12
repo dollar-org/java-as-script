@@ -32,8 +32,29 @@ import java.util.List;
  */
 public interface JProxyConfig {
     /**
+     * Sets the folder where to save .class files result of recompiling source code changed.
+     * <p>This setting is optional and the folder must be included in Java classpath because the objective is to avoid recompiling.</p>
+     * <p>Be careful when executing several Java scripts in the same time and source code has been changed, some file write collisions may happen.</p>
+     *
+     * @param classFolder the folder where to save .class files. By default is null (not defined, .class files are not saved).
+     * @return this object for flow API use.
+     */
+    @NotNull
+    JProxyConfig setClassFolder(@Nullable String classFolder);
+
+    /**
+     * Sets the compilation options to be provided to the compiler built-in in JDK like <code>JavaCompiler.getTask()</code> method and the same you would provide to javac.
+     * <p>Example of compilation options:</p>
+     * <p><code>Iterable&lt;String&gt; compilationOptions = Arrays.asList(new String[]{"-source","1.6","-target","1.6"});</code></p>
+     *
+     * @param compilationOptions compilation options passed to the internal compiler. By default is null (default compiler settings).
+     * @return this object for flow API use.
+     */
+    @NotNull
+    JProxyConfig setCompilationOptions(@NotNull Iterable<String> compilationOptions);
+
+    /**
      * Sets whether automatic detection of source code changes is enabled.
-     * <p>
      * <p>If set to false other configuration parameters are ignored, there is no automatic source code change detection/reload and original objects are returned
      * instead of proxies, performance penalty is zero. Setting to false is recommended in production whether source code change detection/reload is not required.</p>
      *
@@ -43,21 +64,13 @@ public interface JProxyConfig {
     @NotNull
     JProxyConfig setEnabled(boolean enabled);
 
-    /**
-     * Sets the class reload listener.
-     *
-     * @param relListener the class reload listener. By default is null.
-     * @return this object for flow API use.
-     */
     @NotNull
-    JProxyConfig setRelProxyOnReloadListener(@NotNull RelProxyOnReloadListener relListener);
+    JProxyConfig setImports(@NotNull List<String> imports);
 
     /**
      * Defines the folder root to locate source code Java files.
-     * <p>
      * <p>Structure of the source tree must be the same as a JavaSE application, the only difference is shell scripts, shell scripts must be
      * located on the top level of the source tree (default package) and file extension is not required .</p>
-     * <p>
      * <p>Setting some input path is required.</p>
      *
      * @param inputPath the folder root to locate source code Java files.
@@ -69,10 +82,8 @@ public interface JProxyConfig {
 
     /**
      * Defines the folder roots to locate source code Java files.
-     * <p>
      * <p>Structure of the source tree must be the same as a JavaSE application, the only difference is shell scripts, shell scripts must be
      * located on the top level of the source tree (default package).</p>
-     * <p>
      * <p>Setting some input path is required.</p>
      *
      * @param inputPaths the folder roots to locate source code Java files.
@@ -84,31 +95,6 @@ public interface JProxyConfig {
     JProxyConfig setInputPaths(@NotNull String[] inputPaths);
 
     /**
-     * Defines the extra required jars providing the absolute paths to them.
-     * <p>
-     * <p>In some circunstances RelProxy is not able to find some required classes by the compiler because the jar containing them is not found in spite of existing in classpath,
-     * the reason may be due some conflictive configuration of <code>META-INF/MANIFEST.MF</code> of the jar. This problem can be fixed modifying accordingly the <code>META-INF/MANIFEST.MF</code>
-     * file, or alternatively providing the paths to the conflictive jars calling to this method, in this case RelProxy will find the required classes searching on them by using brute force
-     * avoiding the jar modification (not recommended).
-     * </p>
-     *
-     * @param inputJarPaths the paths of the required extra jars.
-     * @return this object for flow API use.
-     * @see #setInputPaths(String[])
-     */
-    @NotNull
-    JProxyConfig setRequiredExtraJarPaths(@NotNull String[] inputJarPaths);
-
-    /**
-     * Registers the listener implementing excluding rules to filter source files not to be part of the hot reloading system in spite of included in input paths.
-     *
-     * @param listener the listener. By default is null.
-     * @return this object for flow API use.
-     */
-    @NotNull
-    JProxyConfig setJProxyInputSourceFileExcludedListener(@Nullable JProxyInputSourceFileExcludedListener listener);
-
-    /**
      * Registers the listener for monitoring files being compiled.
      *
      * @param listener the listener. By default is null.
@@ -117,49 +103,9 @@ public interface JProxyConfig {
     @NotNull
     JProxyConfig setJProxyCompilerListener(@NotNull JProxyCompilerListener listener);
 
-
-    /**
-     * Sets the folder where to save .class files result of recompiling source code changed.
-     * <p>
-     * <p>This setting is optional and the folder must be included in Java classpath because the objective is to avoid recompiling.</p>
-     * <p>
-     * <p>Be careful when executing several Java scripts in the same time and source code has been changed, some file write collisions may happen.</p>
-     *
-     * @param classFolder the folder where to save .class files. By default is null (not defined, .class files are not saved).
-     * @return this object for flow API use.
-     */
-    @NotNull
-    JProxyConfig setClassFolder(@Nullable String classFolder);
-
-    /**
-     * Sets the delay between source code change checking.
-     * <p>
-     * <p>If this value is set to 0 or negative, no periodic source code change detection is executed and only compilation on the fly happens in load time,
-     * this is valid for one shot scripts but it has no sense when using proxies.
-     *
-     * @param scanPeriod the delay between source code change checking.
-     * @return this object for flow API use.
-     */
-    @NotNull
-    JProxyConfig setScanPeriod(long scanPeriod);
-
-    /**
-     * Sets the compilation options to be provided to the compiler built-in in JDK like <code>JavaCompiler.getTask()</code> method and the same you would provide to javac.
-     * <p>
-     * <p>Example of compilation options:</p>
-     * <p><code>Iterable&lt;String&gt; compilationOptions = Arrays.asList(new String[]{"-source","1.6","-target","1.6"});</code></p>
-     *
-     * @param compilationOptions compilation options passed to the internal compiler. By default is null (default compiler settings).
-     * @return this object for flow API use.
-     */
-    @NotNull
-    JProxyConfig setCompilationOptions(@NotNull Iterable<String> compilationOptions);
-
     /**
      * Sets the diagnostic listener to capture compilation errors and warnings thrown by the internal compiler.
-     * <p>
      * <p>The following is an example similar to the default behavior when this listener is not specified:</p>
-     * <p>
      * <pre>
      * JProxyDiagnosticsListener diagnosticsListener = new JProxyDiagnosticsListener()
      * {
@@ -192,10 +138,49 @@ public interface JProxyConfig {
     @NotNull
     JProxyConfig setJProxyDiagnosticsListener(@NotNull JProxyDiagnosticsListener diagnosticsListener);
 
-
+    /**
+     * Registers the listener implementing excluding rules to filter source files not to be part of the hot reloading system in spite of included in input paths.
+     *
+     * @param listener the listener. By default is null.
+     * @return this object for flow API use.
+     */
     @NotNull
-    JProxyConfig setImports(@NotNull List<String> imports);
+    JProxyConfig setJProxyInputSourceFileExcludedListener(@Nullable JProxyInputSourceFileExcludedListener listener);
 
+    /**
+     * Sets the class reload listener.
+     *
+     * @param relListener the class reload listener. By default is null.
+     * @return this object for flow API use.
+     */
+    @NotNull
+    JProxyConfig setRelProxyOnReloadListener(@NotNull RelProxyOnReloadListener relListener);
+
+    /**
+     * Defines the extra required jars providing the absolute paths to them.
+     * <p>In some circunstances RelProxy is not able to find some required classes by the compiler because the jar containing them is not found in spite of existing in classpath,
+     * the reason may be due some conflictive configuration of <code>META-INF/MANIFEST.MF</code> of the jar. This problem can be fixed modifying accordingly the <code>META-INF/MANIFEST.MF</code>
+     * file, or alternatively providing the paths to the conflictive jars calling to this method, in this case RelProxy will find the required classes searching on them by using brute force
+     * avoiding the jar modification (not recommended).
+     * </p>
+     *
+     * @param inputJarPaths the paths of the required extra jars.
+     * @return this object for flow API use.
+     * @see #setInputPaths(String[])
+     */
+    @NotNull
+    JProxyConfig setRequiredExtraJarPaths(@NotNull String[] inputJarPaths);
+
+    /**
+     * Sets the delay between source code change checking.
+     * <p>If this value is set to 0 or negative, no periodic source code change detection is executed and only compilation on the fly happens in load time,
+     * this is valid for one shot scripts but it has no sense when using proxies.
+     *
+     * @param scanPeriod the delay between source code change checking.
+     * @return this object for flow API use.
+     */
+    @NotNull
+    JProxyConfig setScanPeriod(long scanPeriod);
 
     @NotNull
     JProxyConfig setStaticImports(@NotNull List<String> staticImports);
